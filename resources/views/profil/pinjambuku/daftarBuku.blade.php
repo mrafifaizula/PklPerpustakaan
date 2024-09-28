@@ -102,7 +102,6 @@
             font-size: 14px;
             font-weight: bold;
         }
-
     </style>
 @endsection
 
@@ -120,7 +119,7 @@
             @endforeach
         </ul>
 
-        <!-- Books Section -->
+
         <div class="cards-container m-4">
             @foreach ($buku as $item)
                 <div class="card m-3 {{ $item->kategori->nama_kategori }}">
@@ -133,6 +132,31 @@
                 </div>
             @endforeach
         </div>
+        
+        <nav aria-label="Page navigation example" class="text-center">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {{ $buku->onFirstPage() ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $buku->previousPageUrl() }}&kategori={{ request()->get('kategori') }}"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                @for ($i = 1; $i <= $buku->lastPage(); $i++)
+                    <li class="page-item {{ $i == $buku->currentPage() ? 'active' : '' }}">
+                        <a class="page-link"
+                            href="{{ $buku->url($i) }}&kategori={{ request()->get('kategori') }}">{{ $i }}</a>
+                    </li>
+                @endfor
+
+                <li class="page-item {{ $buku->hasMorePages() ? '' : 'disabled' }}">
+                    <a class="page-link" href="{{ $buku->nextPageUrl() }}&kategori={{ request()->get('kategori') }}"
+                        aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 @endsection
 
@@ -140,39 +164,88 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Include Isotope -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+
     <script>
         $(document).ready(function() {
-            // Initialize Isotope on the container with the card items
+            // Inisialisasi Isotope pada container dengan item kartu
             var $grid = $('.cards-container').isotope({
                 itemSelector: '.card',
                 layoutMode: 'fitRows',
-                transitionDuration: '0.6s', // Set the transition duration for a smooth animation
-                hiddenStyle: {
-                    opacity: 0,
-                    transform: 'scale(0.8)' // Shrinks the hidden items
-                },
-                visibleStyle: {
-                    opacity: 1,
-                    transform: 'scale(1)' // Enlarges the visible items
-                }
+                transitionDuration: '0.6s' // Durasi transisi untuk animasi yang halus
             });
 
-            // Filter items on click
+            // Filter item saat klik
             $('.event_filter li a').click(function(e) {
-                e.preventDefault(); // Prevent default action for anchor links
+                e.preventDefault(); // Cegah aksi default pada tautan anchor
 
-                // Remove active class from all filter links and add to the clicked one
+                // Hapus kelas aktif dari semua tautan filter dan tambahkan ke yang diklik
                 $('.event_filter li a').removeClass('is_active');
                 $(this).addClass('is_active');
 
-                // Get the filter value from data-filter attribute
-                var filterValue = $(this).attr('data-filter');
+                // Ambil nilai filter dari atribut data-filter
+                var nilaiFilter = $(this).attr('data-filter');
 
-                // Apply the filter to Isotope
+                // Terapkan filter ke Isotope dengan animasi transisi tunggal
                 $grid.isotope({
-                    filter: filterValue
+                    filter: nilaiFilter
                 });
             });
+        });
+    </script>
+
+    {{-- pagination --}}
+    <script>
+        $(document).ready(function() {
+            // Inisialisasi Isotope saat halaman pertama kali dimuat
+            var $grid = $('.cards-container').isotope({
+                itemSelector: '.card',
+                layoutMode: 'fitRows',
+                transitionDuration: '0.6s' // Durasi transisi untuk animasi yang halus
+            });
+
+            // Fungsi untuk menangani pagination dengan AJAX
+            function handlePagination() {
+                $('.pagination a').on('click', function(e) {
+                    e.preventDefault(); // Cegah aksi default dari anchor tag
+                    const url = $(this).attr('href'); // Ambil URL dari pagination
+
+                    // Memuat konten baru dengan AJAX
+                    fetch(url)
+                        .then(response => response.text())
+                        .then(html => {
+                            // Ganti konten buku dengan yang baru
+                            const newContent = $(html).find('.cards-container').html();
+                            $('.cards-container').html(newContent);
+
+                            // Ganti pagination dengan yang baru
+                            const newPagination = $(html).find('.pagination').html();
+                            $('.pagination').html(newPagination);
+
+                            // Inisialisasi ulang Isotope setelah konten diperbarui
+                            $grid.isotope('reloadItems').isotope({
+                                itemSelector: '.card',
+                                layoutMode: 'fitRows'
+                            });
+
+                            // Atur ulang layout untuk memastikan posisi item sesuai
+                            $grid.isotope('layout');
+
+                            // Panggil fungsi handlePagination lagi untuk pagination baru
+                            handlePagination();
+
+                            // Scroll ke atas setelah konten dimuat
+                            window.scrollTo({
+                                top: document.querySelector('.container')
+                                    .offsetTop, // Scroll ke bagian atas section buku
+                                behavior: 'smooth' // Menambahkan efek scroll yang halus
+                            });
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            }
+
+            // Panggil fungsi handlePagination saat halaman pertama kali dimuat
+            handlePagination();
         });
     </script>
 @endpush

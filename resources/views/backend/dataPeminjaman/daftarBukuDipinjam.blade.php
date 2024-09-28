@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', 'Pengajuan')
+@section('title', 'Daftar Buku Yang di Pinjam')
 
 @section('styles')
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
@@ -21,30 +21,31 @@
 </style>
 
 @section('content')
-    <h4 class="m-5"><span style="color: white">Pengajuan </span>Peminjaman & Pengembalian</h4>
+    <h4 class="m-5"><span style="color: white">Buku </span> Yang Dipinjam
+    </h4>
     <div class="card m-5">
         <div class="card-header">
             <div class="float-start">
-                <h5>Pengajuan Peminjaman & Pengembalian</h5>
+                <h5>
+                    Buku Yang Dipinjam
+                </h5>
             </div>
         </div>
         <div class="card-body">
             <div class="table-responsive text-nowrap">
                 <table class="table" id="example">
                     <thead>
-                        <tr>
-                            <td class="text-center">No</td>
-                            <td>Nama</td>
-                            <td>Judul</td>
-                            <td>Jumlah</td>
-                            {{-- <td>Tanggal Pinjam</td> --}}
-                            <td>Batas Pengembalian</td>
-                            <td>Status</td>
-                            <td>Aksi</td>
-                        </tr>
+                        <td class="text-center">No</td>
+                        <td>Name</td>
+                        <td>Judul</td>
+                        <td>Jumlah</td>
+                        {{-- <td>Tanggal Pinjam</td> --}}
+                        <td class="text-center">Batas Pengembalian</td>
+                        <td>Status</td>
+                        <td class="text-center">Aksi</td>
                     </thead>
-                    @php $no = 1; @endphp
                     <tbody>
+                        @php $no = 1; @endphp
                         @foreach ($pinjambuku as $item)
                             <tr>
                                 <td class="text-center">{{ $no++ }}</td>
@@ -52,30 +53,33 @@
                                 <td>{{ $item->buku->judul }}</td>
                                 <td class="text-center">{{ $item->jumlah }}</td>
                                 {{-- <td>{{ $item->tanggal_pinjambuku }}</td> --}}
-                                <td>{{ $item->tanggal_kembali }}</td>
+                                <td class="text-center">{{ $item->tanggal_kembali }}</td>
                                 <td>
                                     <span
                                         class="badge badge-sm 
-                                    @if ($item->status == 'menunggu') bg-gradient-info
-                                    @elseif($item->status == 'diterima') bg-gradient-success
-                                    @elseif($item->status == 'ditolak') bg-gradient-danger
-                                    @elseif($item->status == 'dikembalikan') bg-gradient-primary
-                                    @elseif($item->status == 'menunggu pengembalian') bg-gradient-warning @endif
-                                ">
+                                @if ($item->status == 'menunggu') bg-gradient-info
+                                @elseif($item->status == 'diterima') bg-gradient-success
+                                @elseif($item->status == 'ditolak') bg-gradient-danger
+                                @elseif($item->status == 'dikembalikan') bg-gradient-primary
+                                @elseif($item->status == 'menunggu pengembalian') bg-gradient-warning 
+                                @elseif($item->status == 'pengembalian ditolak') bg-gradient-warning @endif
+                            ">
                                         @if ($item->status == 'menunggu')
                                             Menunggu
                                         @elseif($item->status == 'diterima')
-                                            Disetujui
+                                            Dipinjam
                                         @elseif($item->status == 'ditolak')
                                             Ditolak
                                         @elseif($item->status == 'dikembalikan')
                                             Sudah Dikembalikan
                                         @elseif($item->status == 'menunggu pengembalian')
                                             Menunggu Pengembalian
+                                        @elseif($item->status == 'pengembalian ditolak')
+                                            Pengembalian Ditolak
                                         @endif
                                     </span>
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" title="Detail"
                                         data-bs-target="#exampleModal{{ $item->id }}">
                                         <i class="bi bi-eye"></i>
@@ -89,7 +93,8 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Data Peminjam
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                Riwayat
                                             </h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
@@ -108,9 +113,10 @@
                                                             value="{{ $item->buku->judul }}" disabled>
                                                     </div>
                                                 </div>
+
                                                 <div class="row mb-2">
                                                     <div class="col-md-6">
-                                                        <label for="">Jumlah Buku</label>
+                                                        <label for="">Jumlah</label>
                                                         <input type="text" class="form-control" name="jumlah_buku"
                                                             value="{{ $item->jumlah }}" disabled>
                                                     </div>
@@ -120,6 +126,7 @@
                                                             value="{{ $item->buku->code_buku }}" disabled>
                                                     </div>
                                                 </div>
+
                                                 <div class="row mb-2">
                                                     <div class="col-md-6">
                                                         <label for="">Tanggal Pinjam</label>
@@ -132,65 +139,11 @@
                                                             value="{{ $item->tanggal_kembali }}" disabled>
                                                     </div>
                                                 </div>
-                                                <div class="row mb-2">
-                                                    <div class="col-md-12">
-                                                        <label for="">Total Harga</label>
-                                                        <input type="text" class="form-control" name="total_harga"
-                                                            value="{{ number_format($item->total_harga, 2, ',', '.') }}"
-                                                            disabled>
-                                                    </div>
-                                                </div>
-                                                @if ($item->status == 'menunggu' || $item->status == 'menunggu pengembalian')
-                                                    <div class="row mb-2">
-                                                        <div class="col-md-12">
-                                                            <label for="pesan{{ $item->id }}">Alasan Penolakan</label>
-                                                            <textarea id="pesan{{ $item->id }}" name="pesan" class="form-control" rows="3"
-                                                                placeholder="Masukkan alasan penolakan"></textarea>
-                                                        </div>
-                                                    </div>
-                                                @endif
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <div style="display: flex; gap: 5px;">
-                                                @if ($item->status == 'menunggu')
-                                                    <form action="{{ route('pinjambuku.menyetujui', $item->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button type="submit"
-                                                            class="btn btn-sm btn-success">Setujui</button>
-                                                    </form>
-                                                    <form action="{{ route('pinjambuku.tolak', $item->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <input type="hidden" name="pesan"
-                                                            id="hidden-pesan{{ $item->id }}">
-                                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                            onclick="document.getElementById('hidden-pesan{{ $item->id }}').value = document.getElementById('pesan{{ $item->id }}').value;">Tolak</button>
-                                                    </form>
-                                                @elseif ($item->status == 'menunggu pengembalian')
-                                                    <form
-                                                        action="{{ route('admin.dataPeminjaman.accpengembalian', $item->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button type="submit"
-                                                            class="btn btn-sm btn-success">Setujui</button>
-                                                    </form>
-                                                    <form action="{{ route('pinjambuku.tolak', $item->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="pesan"
-                                                            id="hidden-pesan{{ $item->id }}">
-                                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                            onclick="document.getElementById('hidden-pesan{{ $item->id }}').value = document.getElementById('pesan{{ $item->id }}').value;">Tolak</button>
-                                                    </form>
-                                                @endif
-                                                <button type="button" class="btn btn-sm btn-secondary"
-                                                    data-bs-dismiss="modal">kembali</button>
-                                            </div>
+                                            <button type="button" class="btn btn-sm btn-secondary"
+                                                data-bs-dismiss="modal">Kembali</button>
                                         </div>
                                     </div>
                                 </div>
@@ -248,7 +201,7 @@
                     },
                 ],
                 language: {
-                    search: "Mencari:",
+                    search: "Mencari:", // Translations
                     lengthMenu: "Tampilkan _MENU_ entri",
                     info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
                     infoEmpty: "Menampilkan 0 sampai 0 dari 0 entri",

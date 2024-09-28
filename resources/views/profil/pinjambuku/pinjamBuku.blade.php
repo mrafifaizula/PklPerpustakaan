@@ -169,33 +169,6 @@
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label for="harga">Harga</label>
-                                                <input type="text" id="harga" placeholder="harga Pinjam Buku"
-                                                    class="form-control @error('harga') is-invalid @enderror" name="harga"
-                                                    value="{{ number_format($buku->harga, 2, ',', '.') }}" readonly>
-                                                @error('harga')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label for="total_harga">Total Harga</label>
-                                                <input type="text" id="total_harga" placeholder="Total Harga Pinjam Buku"
-                                                    class="form-control @error('total_harga') is-invalid @enderror"
-                                                    name="total_harga"
-                                                    value="{{ number_format($totalHarga, 2, ',', '.') }}" readonly>
-                                                @error('total_harga')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-
-                                            <div class="col-md-6">
                                                 <label for="status">Status</label>
                                                 <select name="status"
                                                     class="form-control @error('status') is-invalid @enderror" required>
@@ -209,8 +182,7 @@
                                             </div>
                                         </div>
 
-
-                                        <div class="button-container">
+                                        <div class="button-container" >
                                             <button class="btn btn-sm btn-primary" type="submit">Pinjam</button>
                                             <button class="btn btn-sm btn-warning" type="reset">Reset</button>
                                             <a href="{{ url()->previous() }}" class="btn btn-sm btn-secondary">
@@ -230,40 +202,5 @@
 
 
 @push('scripts')
-    <script>
-        function updateTotalHarga() {
-            // Ambil nilai harga dan jumlah
-            var hargaElement = document.getElementById('harga');
-            var jumlahElement = document.getElementById('jumlah');
-
-            // Remove non-numeric characters and parse the price
-            var harga = parseFloat(hargaElement.value.replace(/[^0-9,-]+/g, "").replace(',', '.') || 0);
-            var jumlah = parseFloat(jumlahElement.value) || 0;
-
-            // Periksa apakah harga dan jumlah adalah angka yang valid
-            if (!isNaN(harga) && !isNaN(jumlah)) {
-                // Hitung total harga
-                var total_harga = harga * jumlah;
-
-                // Simpan total harga tanpa format (number only)
-                document.getElementById('total_harga').value = total_harga;
-
-                // Format harga field as Rupiah when displaying
-                hargaElement.value = new Intl.NumberFormat('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR'
-                }).format(harga);
-            } else {
-                // Jika harga atau jumlah tidak valid, set total_harga kosong
-                document.getElementById('total_harga').value = '';
-            }
-        }
-
-        // Event listeners
-        document.getElementById('jumlah').addEventListener('input', updateTotalHarga);
-        document.getElementById('harga').addEventListener('input', updateTotalHarga);
-
-        // Initial calculation
-        updateTotalHarga();
-    </script>
+    
 @endpush

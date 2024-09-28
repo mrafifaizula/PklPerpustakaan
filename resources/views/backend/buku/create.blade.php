@@ -54,18 +54,6 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="mb-2">
-                                <label for="harga">Harga</label>
-                                <input type="text" name="harga" id="harga"
-                                    class="form-control @error('harga') is-invalid @enderror" placeholder="Harga"
-                                    oninput="formatHarga(this)">
-                                @error('harga')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-
 
                             <div class="mb-3">
                                 <label for="image_buku" class="form-label">Foto Buku</label>
@@ -140,10 +128,5 @@
     </div>
 @endsection
 @push('scripts')
-    <script>
-        function formatHarga(input) {
-            let value = input.value.replace(/[Rp.]/g, ''); // Hilangkan simbol Rp dan titik
-            input.value = 'Rp ' + new Intl.NumberFormat('id-ID').format(value); // Format ulang
-        }
-    </script>
+   
 @endpush

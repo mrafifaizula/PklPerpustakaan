@@ -16,21 +16,21 @@
             <a class="nav-link" href="{{ url('admin/dashboard') }}">
                 <div
                     class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                    <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                    <i class="bi bi-columns-gap text-primary text-sm opacity-10"></i>
                 </div>
                 <span class="nav-link-text ms-1">Dashboard</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " href="{{ url('admin/user') }}">
-                <div
-                    class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                    {{-- <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i> --}}
-                    <i class="ni ni-world-2 text-sm" style="color: black;"></i>
-                </div>
-                <span class="nav-link-text ms-1">User</span>
-            </a>
-        </li>
+            @if(Auth::check() && Auth::user()->role === 'admin')
+                <a class="nav-link" href="{{ url('admin/user') }}">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-world-2 text-sm" style="color: black;"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">User</span>
+                </a>
+            @endif
+        </li>        
         {{-- <li class="nav-item">
             <a class="nav-link " href="{{ url('admin/kontak') }}">
                 <div
@@ -49,7 +49,7 @@
                 <div
                     class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                     {{-- <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10" style="color: black"></i> --}}
-                    <i class="ni ni-calendar-grid-58 text-sm" style="color: blue;"></i>
+                    <i class="bi bi-list text-sm" style="color: blue;"></i>
                 </div>
                 <span class="nav-link-text ms-1">kategori</span>
             </a>
@@ -59,7 +59,7 @@
                 <div
                     class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                     {{-- <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i> --}}
-                    <i class="ni ni-calendar-grid-58 text-sm" style="color: yellow"></i>
+                    <i class="bi bi-pencil-square text-sm" style="color: yellow"></i>
                 </div>
                 <span class="nav-link-text ms-1">Penulis</span>
             </a>
@@ -69,7 +69,7 @@
                 <div
                     class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                     {{-- <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i> --}}
-                    <i class="ni ni-calendar-grid-58 text-sm" style="color: red;"></i>
+                    <i class=" bi-file-earmark-text text-sm" style="color: red;"></i>
                 </div>
                 <span class="nav-link-text ms-1">Penerbit</span>
             </a>
@@ -79,7 +79,7 @@
                 <div
                     class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                     {{-- <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i> --}}
-                    <i class="ni ni-calendar-grid-58 text-sm" style="color: green;"></i>
+                    <i class="bi bi-book-half text-sm" style="color: green;"></i>
                 </div>
                 <span class="nav-link-text ms-1">Buku</span>
             </a>
@@ -91,7 +91,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ url('admin/pinjambuku') }}">
                 <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center position-relative">
-                    <i class="bi bi-book-half text-sm" style="color: pink"></i>
+                    <i class="bi bi-envelope text-sm" style="color: pink"></i>
                     @if($notifymenunggu > 0)
                         <span class="position-absolute top-0 start-100 translate-middle badge bg-danger" style="font-size: 0.6rem; padding: 0.2em 0.4em;">
                             {{ $notifymenunggu }}
@@ -119,7 +119,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ url('admin/dipinjam') }}">
                 <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center position-relative">
-                    <i class="bi bi-book-half text-sm" style="color: blue"></i>
+                    <i class="bi bi-archive-fill text-sm" style="color: blue"></i>
                 </div>
                 <span class="nav-link-text ms-1">Buku Yang dipinjam</span>
             </a>
@@ -128,7 +128,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ url('admin/pengembalian') }}">
                 <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center position-relative">
-                    <i class="bi bi-book-half text-sm" style="color: black"></i>
+                    <i class="bi bi-hourglass-split text-sm" style="color: black"></i>
                 </div>
                 <span class="nav-link-text ms-1">Riwayat</span>
             </a>

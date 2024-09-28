@@ -214,7 +214,7 @@
                                 <i class="bi bi-r-circle" style="margin-right: 10px;"></i> Register
                             </a>
                         @else
-                            @if (Auth::user()->isAdmin)
+                            @if (Auth::user()->role === 'admin')
                                 <a href="{{ url('admin/dashboard') }}"
                                     style="display: flex; align-items: center; text-decoration: none; color: #333; padding: 5px 0;">
                                     <i class="bi bi-speedometer2" style="margin-right: 10px;"></i> Admin Dashboard

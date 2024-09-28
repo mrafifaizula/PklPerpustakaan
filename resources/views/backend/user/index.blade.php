@@ -26,27 +26,27 @@
                 <table class="table" id="example">
                     <thead>
                         <tr>
-                            <td>No</td>
-                            <td>Name</td>
-                            <td>Addess</td>
-                            <td>Phone Number</td>
+                            <td class="text-center">No</td>
+                            <td>Nama</td>
+                            <td>Alamat</td>
+                            <td class="text-center">Telepon</td>
                             <td>Email</td>
                             <td>Role</td>
-                            <td>Actions</td>
+                            <td class="text-center">Aksi</td>
                         </tr>
                     </thead>
                     <tbody>
                         @php $i=1; @endphp
                         @foreach ($user as $data)
                             <tr>
-                                <td>{{ $i++ }}</td>
+                                <td class="text-center">{{ $i++ }}</td>
                                 <td>{{ $data->name }}</td>
                                 <td>{{ $data->alamat }}</td>
-                                <td>{{ $data->tlp }}</td>
+                                <td class="text-center">{{ $data->tlp }}</td>
                                 <td>{{ $data->email }}</td>
                                 {{-- <td>{{ $data->isAdmin == 1 ? 'Admin' : ($data->isAdmin == 2 ? 'Manager' : 'User') }}</td> --}}
                                 <td>{{ $data->isAdmin == 1 ? 'Admin' : 'User' }}</td>
-                                <td>
+                                <td class="text-center">
                                     <form action="{{ route('user.destroy', $data->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')

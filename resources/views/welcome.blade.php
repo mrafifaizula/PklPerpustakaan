@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+{{-- <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -129,4 +129,14 @@
             </div>
         </div>
     </body>
+</html> --}}
+<html>
+<head>
+    <title>Selamat Datang!</title>
+</head>
+<body>
+    <h1>Hi {{ $user->name }},</h1>
+    <p>Silakan klik tautan berikut untuk memverifikasi email Anda:</p>
+    <a href="{{ $verificationUrl }}">Verifikasi Email</a>
+</body>
 </html>

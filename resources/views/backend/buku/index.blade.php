@@ -139,16 +139,6 @@
                                                 </div>
                                                 <div class="row mb-2">
                                                     <div class="col-md-12">
-                                                        <label for="">Harga</label>
-                                                        <input type="text"
-                                                            class="form-control @error('harga') is-invalid @enderror"
-                                                            name="harga"
-                                                            value="{{ number_format($item->harga, 2, ',', '.') }}"
-                                                            disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-2">
-                                                    <div class="col-md-12">
                                                         <label for="">Deskripsi</label>
                                                         <textarea class="form-control @error('desc_buku') is-invalid @enderror" name="desc_buku" disabled>{{ $item->desc_buku }}
                                                         </textarea>

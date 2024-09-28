@@ -155,7 +155,7 @@
                                             style="color: black">Profile</span>
                                     </a>
 
-                                    @if (Auth::user()->isAdmin)
+                                    @if (in_array(Auth::user()->role, ['admin', 'staf']))
                                         <a class="dropdown-item" href="{{ url('admin/dashboard') }}">
                                             <i class="fas fa-cogs" style="color: black"></i> <span style="color: #000">Admin
                                                 Dashboard</span>

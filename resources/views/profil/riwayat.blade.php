@@ -129,7 +129,7 @@
                     @endif
                 </div>
                 <a href="#" class="image">
-                    <img src="{{ file_exists(public_path('images/buku/' . $item->buku->image_buku)) ? asset('images/buku/' . $item->nuku->image_buku) : asset('assets/img/noimage.png') }}" alt="{{ $item->buku->judul }}">
+                    <img src="{{ file_exists(public_path('images/buku/' . $item->buku->image_buku)) ? asset('images/buku/' . $item->buku->image_buku) : asset('assets/img/noimage.png') }}" alt="{{ $item->buku->judul }}">
                 </a>
                 <div class="title">
                     <p>{{ $item->buku->judul }}</p>
@@ -193,15 +193,10 @@
                                     </div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label for="">Status</label>
-                                        <input type="text" class="form-control" name="total_harga"
+                                        <input type="text" class="form-control" name="status"
                                             value="{{ $item->status }}" disabled>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="">Total Harga</label>
-                                        <input type="text" class="form-control" name="total_harga"
-                                            value="{{ $item->status !== 'ditolak' ? $item->total_harga : 0 }}" disabled>
                                     </div>
                                 </div>
                             </div>

@@ -6,14 +6,16 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, ...$roles)
     {
-        // Pastikan user sudah login dan periksa role-nya
-        if (!Auth::check() || Auth::user()->role !== $role) {
-            // Redirect jika user tidak memiliki akses
-            return redirect('/')->with('error', 'You do not have access to this page.');
+        $roles = array_map('trim', $roles);
+
+        if (Auth::check()) {
+            if (in_array(Auth::user()->role, $roles)) {
+                return $next($request);
+            }
         }
 
-        return $next($request);
+        return abort(403); 
     }
 }

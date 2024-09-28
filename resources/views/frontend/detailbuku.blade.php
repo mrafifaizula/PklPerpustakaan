@@ -82,7 +82,6 @@
                                     <h5 class="card-title text-center mb-4">{{$buku->judul}}</h5>
                                     <p class="card-text">Code Buku: <span>{{$buku->code_buku}}</span></p>
                                     <p class="card-text">Stok Buku : <span>{{$buku->jumlah_buku}}</span></p>
-                                    <p class="card-text">Harga: <span>{{ number_format($buku->harga, 2, ',', '.') }}</span></p>
                                     <p class="card-text">Kategori: <span>{{$buku->kategori->nama_kategori}}</span></p>
                                     <p class="card-text">Nama Penulis: <span>{{$buku->Penulis->nama_penulis}}</span></p>
                                     <p class="card-text">Nama Penerbit: <span>{{$buku->Penerbit->nama_penerbit}}</span></p>

@@ -22,7 +22,7 @@ class BukuController extends Controller
         $pinjambuku = pinjambuku::all();
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
-        return view('admin.buku.index', compact('kategori', 'penulis', 'penerbit', 'pinjambuku', 'buku', 'notifymenunggu'));
+        return view('backend.buku.index', compact('kategori', 'penulis', 'penerbit', 'pinjambuku', 'buku', 'notifymenunggu'));
 
     }
 
@@ -36,23 +36,18 @@ class BukuController extends Controller
         $pinjambuku = pinjambuku::all();
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
-        return view('admin.buku.create', compact('buku', 'kategori', 'penulis', 'penerbit', 'pinjambuku', 'notifymenunggu'));
+        return view('backend.buku.create', compact('buku', 'kategori', 'penulis', 'penerbit', 'pinjambuku', 'notifymenunggu'));
     }
 
 
     public function store(Request $request)
     {
-        $request->merge([
-            'harga' => str_replace(['Rp ', '.'], '', $request->harga)
-        ]);
-
         $validator = Validator::make($request->all(), [
             'judul' => 'required|unique:bukus,judul',
             'jumlah_buku' => 'required',
             'tahun_terbit' => 'required|date',
             'desc_buku' => 'required',
             'code_buku' => 'required',
-            'harga' => 'required|numeric',
             'id_kategori' => 'required',
             'id_penulis' => 'required',
             'id_penerbit' => 'required',
@@ -65,7 +60,6 @@ class BukuController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $hargaFormatted = str_replace(['Rp ', '.'], '', $request->harga);
 
         $buku = new buku();
         $buku->judul = $request->judul;
@@ -73,7 +67,6 @@ class BukuController extends Controller
         $buku->tahun_terbit = $request->tahun_terbit;
         $buku->desc_buku = $request->desc_buku;
         $buku->code_buku = $request->code_buku;
-        $buku->harga = $hargaFormatted;
         $buku->id_kategori = $request->id_kategori;
         $buku->id_penulis = $request->id_penulis;
         $buku->id_penerbit = $request->id_penerbit;
@@ -108,7 +101,7 @@ class BukuController extends Controller
         $penerbit = penerbit::all();
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
-        return view('admin.buku.edit', compact('buku', 'kategori', 'penulis', 'penerbit', 'notifymenunggu'));
+        return view('backend.buku.edit', compact('buku', 'kategori', 'penulis', 'penerbit', 'notifymenunggu'));
     }
 
 
@@ -122,7 +115,6 @@ class BukuController extends Controller
                 'tahun_terbit' => 'required|date',
                 'desc_buku' => 'required',
                 'code_buku' => 'required',
-                'harga' => 'required',
                 'id_kategori' => 'required',
                 'id_penulis' => 'required',
                 'id_penerbit' => 'required',
@@ -142,7 +134,6 @@ class BukuController extends Controller
         $buku->tahun_terbit = $request->tahun_terbit;
         $buku->desc_buku = $request->desc_buku;
         $buku->code_buku = $request->code_buku;
-        $buku->harga = str_replace(['Rp', '.', ','], ['', '', '.'], $request->harga);
         $buku->id_kategori = $request->id_kategori;
         $buku->id_penulis = $request->id_penulis;
         $buku->id_penerbit = $request->id_penerbit;
@@ -153,7 +144,7 @@ class BukuController extends Controller
             $name = rand(1000, 9999) . $img->getClientOriginalName(); // Generate a unique filename
             $img->move('images/buku/', $name); // Move the file to the specified directory
             $buku->image_buku = $name; // Save the new filename in the model
-        }        
+        }
 
         $buku->save();
         Alert::success('Success', 'Data Berhasil Diubah')->autoClose(1000);
@@ -161,7 +152,7 @@ class BukuController extends Controller
     }
 
 
-    
+
 
     public function destroy($id)
     {

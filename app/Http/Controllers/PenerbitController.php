@@ -16,7 +16,7 @@ class PenerbitController extends Controller
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
         confirmDelete('Delete', 'Apakah Kamu Yakin?');
-        return view('admin.penerbit.index', compact('penerbit', 'notifymenunggu'));
+        return view('backend.penerbit.index', compact('penerbit', 'notifymenunggu'));
     }
 
    
@@ -25,7 +25,7 @@ class PenerbitController extends Controller
         $notifymenunggu = pinjambuku::where('status', 'menunggu')->count();
         $notifpengajuankembali = pinjambuku::where('status', 'menunggu pengembalian')->count();
    
-        return view('admin.penerbit.create', compact('notifymenunggu','notifpengajuankembali'));
+        return view('backend.penerbit.create', compact('notifymenunggu','notifpengajuankembali'));
     }
 
     
@@ -61,7 +61,7 @@ class PenerbitController extends Controller
         $penerbit = penerbit::findOrFail($id);
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
        
-        return view('admin.penerbit.edit', compact('penerbit', 'notifymenunggu'));
+        return view('backend.penerbit.edit', compact('penerbit', 'notifymenunggu'));
     }
 
    

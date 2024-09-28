@@ -10,6 +10,7 @@ use App\Models\pinjambuku;
 use App\Models\kontak;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use Illuminate\Http\Request;
 
 class BackController extends Controller
 {
@@ -53,7 +54,7 @@ class BackController extends Controller
         $jumlahPenerbit = Penerbit::count();
         $jumlahBuku = Buku::count();
 
-        return view('admin.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'user', 'notifymenunggu', 'bukuYangDipinjam', 'namaBulan', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku'));
+        return view('backend.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'user', 'notifymenunggu', 'bukuYangDipinjam', 'namaBulan', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku'));
     }
 
     public function permintaan()
@@ -66,7 +67,7 @@ class BackController extends Controller
         $user = User::all();
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
-        return view('admin.dataPeminjaman.permintaan', compact('pinjambuku', 'buku', 'user', 'notifymenunggu'));
+        return view('backend.dataPeminjaman.permintaan', compact('pinjambuku', 'buku', 'user', 'notifymenunggu'));
     }
 
     public function riwayat()
@@ -80,20 +81,20 @@ class BackController extends Controller
 
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
-        return view('admin.dataPeminjaman.riwayat', compact('pinjambuku', 'buku', 'user', 'notifymenunggu'));
+        return view('backend.dataPeminjaman.riwayat', compact('pinjambuku', 'buku', 'user', 'notifymenunggu'));
     }
 
 
     public function dipinjam()
     {
-        $pinjambuku = pinjambuku::where('status', 'diterima')
+        $pinjambuku = pinjambuku::whereIn('status', ['diterima', 'pengembalian ditolak'])
             ->orderBy("id", "desc")
             ->get();
         $buku = buku::all();
         $user = User::all();
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
-        return view('admin.dataPeminjaman.daftarBukuDipinjam', compact('pinjambuku', 'buku', 'user', 'notifymenunggu'));
+        return view('backend.dataPeminjaman.daftarBukuDipinjam', compact('pinjambuku', 'buku', 'user', 'notifymenunggu'));
     }
 
     public function kontak()
@@ -102,7 +103,6 @@ class BackController extends Controller
         $user = User::all();
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
-        return view('admin.kontak', compact('kontak', 'user', 'notifymenunggu'));
+        return view('backend.kontak', compact('kontak', 'user', 'notifymenunggu'));
     }
-
 }

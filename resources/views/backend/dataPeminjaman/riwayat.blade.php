@@ -136,14 +136,6 @@
                                                             value="{{ $item->tanggal_kembali }}" disabled>
                                                     </div>
                                                 </div>
-                                                <div class="row mb-2">
-                                                    <div class="col-md-12">
-                                                        <label for="">Total Harga</label>
-                                                        <input type="text" class="form-control" name="total_harga"
-                                                            value="{{ number_format($item->total_harga, 2, ',', '.') }}"
-                                                            disabled>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">

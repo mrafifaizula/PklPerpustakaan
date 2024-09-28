@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\pinjambuku;
 use App\Models\testimoni;
 use App\Models\notification;
+use Illuminate\Http\Request;
 use Auth;
 
 class FrontController extends Controller
@@ -16,19 +17,23 @@ class FrontController extends Controller
 
     // halaman utama
 
-    public function index()
+    public function index(Request $request)
     {
-        $buku = buku::all();
-        $kategori = kategori::all();
-        $penulis = penulis::all();
-        $penerbit = penerbit::all();
-        $user = User::all();
+        $kategori = Kategori::all();
+        $penulis = Penulis::all();
+        $penerbit = Penerbit::all();
         $user = Auth::user();
-        $pinjambuku = pinjambuku::all();
-        $testimoni = testimoni::all();
+        $pinjambuku = PinjamBuku::all();
+        $testimoni = Testimoni::all();
+
+
+        $buku = Buku::with('Kategori')
+            ->where('jumlah_buku', '>', 0)
+            ->paginate(6);
 
         return view('frontend.index', compact('buku', 'kategori', 'penulis', 'penerbit', 'user', 'pinjambuku', 'testimoni'));
     }
+
 
     public function detailbuku()
     {
@@ -52,15 +57,7 @@ class FrontController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        if ($pinjambuku) {
-            $totalHarga = $pinjambuku->total_harga;
-        } else {
-            $totalHarga = 0;
-        }
-
-
-
-        return view('profil.pinjambuku.pinjamBuku', compact('buku', 'pinjambuku', 'user', 'notification', 'totalHarga'));
+        return view('profil.pinjambuku.pinjamBuku', compact('buku', 'pinjambuku', 'user', 'notification'));
     }
 
 
@@ -69,6 +66,11 @@ class FrontController extends Controller
 
     public function perpustakaan()
     {
+
+        if (Auth::check() && !Auth::user()->hasVerifiedEmail()) {
+            return redirect('/email/verify')->with('error', 'Please verify your email first.');
+        }
+
         $buku = buku::all();
         $kategori = kategori::all();
         $penulis = penulis::all();
@@ -110,9 +112,11 @@ class FrontController extends Controller
         return view('profil.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'user', 'totalpinjam', 'notification', 'pinjambuku', 'jumlahBukuPinjam', 'userPinjamBuku', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'totalJumlahBukuDipinjam'));
     }
 
-    public function daftarbuku()
+    public function daftarbuku(Request $request)
     {
-        $buku = buku::all();
+        $buku = Buku::where('jumlah_buku', '>', 0)
+            ->paginate(9);
+
         $idUser = Auth::id();
         $kategori = kategori::all();
         // Ambil notifikasi yang belum dibaca

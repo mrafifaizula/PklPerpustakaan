@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PengembalianBukuKirimEmail;
+use App\Mail\PinjambBukuKirimEmail;
 use App\Models\pinjambuku;
 use App\Models\buku;
 use App\Models\User;
@@ -11,6 +13,7 @@ use App\Models\penerbit;
 use App\Models\notification;
 use Alert;
 use Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 
 class PinjambukuController extends Controller
@@ -54,7 +57,6 @@ class PinjambukuController extends Controller
     {
         $validated = $request->validate([
             'jumlah' => 'required|numeric',
-            'total_harga' => 'required|numeric',
             'tanggal_pinjambuku' => 'required|date',
             'tanggal_kembali' => 'required|date',
             'id_buku' => 'required|numeric',
@@ -97,7 +99,6 @@ class PinjambukuController extends Controller
 
         $pinjambuku = new pinjambuku();
         $pinjambuku->jumlah = $request->jumlah;
-        $pinjambuku->total_harga = $request->total_harga;
         $pinjambuku->tanggal_pinjambuku = $request->tanggal_pinjambuku;
         $pinjambuku->tanggal_kembali = $request->tanggal_kembali;
         $pinjambuku->status = 'menunggu';
@@ -115,15 +116,23 @@ class PinjambukuController extends Controller
     {
         $pinjambuku = pinjambuku::findOrFail($id);
 
+        // Mengecek apakah status peminjaman saat ini adalah 'menunggu'
         if ($pinjambuku->status == 'menunggu') {
             $buku = buku::findOrFail($pinjambuku->id_buku);
+
+            // Mengecek apakah stok buku cukup untuk dipinjam
             if ($buku->jumlah_buku >= $pinjambuku->jumlah) {
+                // Mengurangi stok buku sesuai dengan jumlah yang dipinjam
                 $buku->jumlah_buku -= $pinjambuku->jumlah;
                 $buku->save();
 
+                // Mengubah status peminjaman menjadi 'diterima'
                 $pinjambuku->status = 'diterima';
                 $pinjambuku->save();
 
+                Mail::to($pinjambuku->user->email)->send(new PinjambBukuKirimEmail($pinjambuku, $buku));
+
+                // Membuat notifikasi untuk pengguna
                 notification::create([
                     'id_user' => $pinjambuku->id_user,
                     'pesan' => 'Pengajuan peminjaman buku "' . $buku->judul . '" diterima.',
@@ -131,16 +140,21 @@ class PinjambukuController extends Controller
                     'status' => 'diterima',
                 ]);
 
+                // Menampilkan pesan sukses menggunakan SweetAlert
                 Alert::success('Sukses', 'Peminjaman buku disetujui.')->autoClose(2000);
             } else {
+                // Menampilkan pesan gagal jika stok buku tidak mencukupi
                 Alert::error('Gagal', 'Stok buku tidak mencukupi')->autoClose(2000);
             }
         } else {
+            // Menampilkan pesan gagal jika peminjaman sudah diproses sebelumnya
             Alert::error('Gagal', 'Pengajuan peminjaman sudah diproses.')->autoClose(2000);
         }
 
+        // Redirect ke halaman lain setelah proses selesai
         return redirect()->route('admin.dataPeminjaman.permintaanPeminjaman');
     }
+
 
 
 
@@ -153,9 +167,11 @@ class PinjambukuController extends Controller
             $item->status = 'dibatalkan';
             $item->save();
 
+            Alert::success('Sukses', 'Pengajuan berhasil dibatalkan.')->autoClose(2000);
             return redirect()->back()->with('success', 'Pengajuan berhasil dibatalkan.');
         }
 
+        Alert::error('Gagal', 'Pengajuan tidak dapat dibatalkan.')->autoClose(2000);
         return redirect()->back()->with('error', 'Pengajuan tidak dapat dibatalkan.');
     }
 
@@ -236,31 +252,33 @@ class PinjambukuController extends Controller
     // penolakan pengembalian
     public function tolakpengembalian(Request $request, $id)
     {
-        // Temukan data pinjambuku berdasarkan ID
         $pinjambuku = Pinjambuku::findOrFail($id);
 
-        // Cek status pengembalian
+        if (empty($request->input('pesan'))) {
+            Alert::error('Gagal', 'Alasan penolakan wajib diisi.')->autoClose(2000);
+            return redirect()->back()->with('error', 'Alasan penolakan wajib diisi.');
+        }
+
         if ($pinjambuku->status == 'menunggu pengembalian') {
-            // Ambil pesan penolakan dari request atau gunakan default
-            $pesan = $request->input('pesan', 'Alasan tidak disebutkan');
-
-            // Ubah status dan simpan alasan
-            $pinjambuku->status = 'pengembalian ditolak'; // Pastikan ini sesuai dengan keinginan Anda
+            $pesan = $request->input('pesan');
+            $pinjambuku->status = 'pengembalian ditolak';
             $pinjambuku->pesan = $pesan;
+            $pinjambuku->save();
 
-            // Simpan perubahan ke database
-            if ($pinjambuku->save()) {
-                Alert::success('Sukses', 'Pengajuan pengembalian telah ditolak.')->autoClose(2000);
-                return redirect()->back()->with('message', 'Pengajuan pengembalian untuk buku "' . $pinjambuku->buku->judul . '" telah ditolak. Alasan: ' . $pesan);
-            } else {
-                return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
-            }
+            // Tambahkan notification
+            notification::create([
+                'id_user' => $pinjambuku->id_user,
+                'pesan' => 'Pemgembalian peminjaman buku "' . $pinjambuku->buku->judul . '" ditolak. Alasan: ' . $pesan,
+                'type' => 'pegembalian',
+                'status' => 'pengembalian ditolak',
+            ]);
+
+            Alert::success('Sukses', 'Pengembalian telah ditolak.')->autoClose(2000);
+            return redirect()->back()->with('message', 'Pengembalian untuk buku "' . $pinjambuku->buku->judul . '" telah ditolak. Alasan: ' . $pesan);
         }
 
         return redirect()->back()->with('error', 'Pengajuan pengembalian sudah diproses atau tidak valid.');
     }
-
-
 
 
     // mnerima pengembalian
@@ -276,7 +294,8 @@ class PinjambukuController extends Controller
             $pinjambuku->status = 'dikembalikan';
             $pinjambuku->save();
 
-            // Tambahkan notification
+            Mail::to($pinjambuku->user->email)->send(new PengembalianBukuKirimEmail($pinjambuku, $buku));
+
             notification::create([
                 'id_user' => $pinjambuku->id_user,
                 'pesan' => 'Pengembalian buku "' . $buku->judul . '" berhasil disetujui.',

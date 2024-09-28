@@ -17,7 +17,7 @@ class UsersController extends Controller
         $notifpengajuankembali = pinjambuku::where('status', 'menunggu pengembalian')->count();
 
         confirmDelete('Delete', 'Apakah Kamu Yakin?');
-        return view('admin.user.index', compact('user', 'notifymenunggu', 'notifpengajuankembali')); // Compact with plural 'user'
+        return view('backend.user.index', compact('user', 'notifymenunggu', 'notifpengajuankembali')); // Compact with plural 'user'
     }
 
     public function create()
@@ -25,7 +25,7 @@ class UsersController extends Controller
         $notifymenunggu = pinjambuku::where('status', 'menunggu')->count();
         $notifpengajuankembali = pinjambuku::where('status', 'menunggu pengembalian')->count();
 
-        return view('admin.user.create', compact('notifymenunggu', 'notifpengajuankembali'));
+        return view('backend.user.create', compact('notifymenunggu', 'notifpengajuankembali'));
     }
 
     public function store(Request $request)
@@ -36,7 +36,7 @@ class UsersController extends Controller
             'tlp' => 'required',
             'email' => 'required|unique:users', // Updated table name to 'users'
             'password' => 'required|min:8',
-            'isAdmin' => 'required',
+            'role' => 'required',
         ]);
 
         $user = new user();
@@ -45,7 +45,7 @@ class UsersController extends Controller
         $user->tlp = $request->tlp;
         $user->email = $request->email;
         $user->password = Hash::make($request->password); // Correct case 'Hash'
-        $user->isAdmin = $request->isAdmin;
+        $user->role = $request->role;
 
         if ($request->hasFile('image_user')) {
             $img = $request->file('image_user');

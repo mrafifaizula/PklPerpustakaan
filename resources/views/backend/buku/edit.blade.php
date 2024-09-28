@@ -53,18 +53,7 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                            </div>
-                            <div class="mb-2">
-                                <label for="harga">Harga</label>
-                                <input type="text" placeholder="Harga"
-                                    class="form-control @error('harga') is-invalid @enderror" name="harga" id="harga"
-                                    value="{{ old('harga', number_format($buku->harga, 2, ',', '.')) }}">
-                                @error('harga')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>                            
+                            </div>                       
                             <div class="mb-2">
                                 <label for="image_buku">Foto Buku</label>
                                 @if ($buku->image_buku)
@@ -145,11 +134,5 @@
 @endsection
 
 @push('scripts')
-<script>
-    document.getElementById('harga').addEventListener('input', function (e) {
-        let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-        e.target.value = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value / 100);
-    });
-</script>
 
 @endpush

@@ -6,6 +6,7 @@
 <style>
     .rating .fa-star {
         color: white;
+       
         /* Color for unfilled stars */
     }
 
@@ -161,7 +162,7 @@
             </div>
             <ul class="event_filter">
                 <li>
-                    <a class="is_active" data-filter="*">Show All</a>
+                    <a class="is_active" data-filter="*">Tampilkan Semua</a>
                 </li>
                 @foreach ($kategori as $item)
                     <li>
@@ -176,7 +177,8 @@
                             <div class="thumb"
                                 style="width: 100%; padding-top: 110%; position: relative; overflow: hidden;">
                                 <a href="{{ url('buku', $item->id) }}">
-                                    <img src="{{ file_exists(public_path('images/buku/' . $item->image_buku)) ? asset('images/buku/' . $item->image_buku) : asset('assets/img/noimage.png') }}" alt=""
+                                    <img src="{{ file_exists(public_path('images/buku/' . $item->image_buku)) ? asset('images/buku/' . $item->image_buku) : asset('assets/img/noimage.png') }}"
+                                        alt="{{ $item->judul }}"
                                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
                                 </a>
                                 <span class="category">{{ $item->Kategori->nama_kategori }}</span>
@@ -189,8 +191,33 @@
                 @endforeach
             </div>
         </div>
-    </section>
 
+        <nav aria-label="Page navigation example" class="text-center">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {{ $buku->onFirstPage() ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $buku->previousPageUrl() }}&kategori={{ request()->get('kategori') }}"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                @for ($i = 1; $i <= $buku->lastPage(); $i++)
+                    <li class="page-item {{ $i == $buku->currentPage() ? 'active' : '' }}">
+                        <a class="page-link"
+                            href="{{ $buku->url($i) }}&kategori={{ request()->get('kategori') }}">{{ $i }}</a>
+                    </li>
+                @endfor
+
+                <li class="page-item {{ $buku->hasMorePages() ? '' : 'disabled' }}">
+                    <a class="page-link" href="{{ $buku->nextPageUrl() }}&kategori={{ request()->get('kategori') }}"
+                        aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </section>
 
     <div class="section fun-facts" id="testimoni">
         <div class="container">
@@ -201,7 +228,8 @@
                             <div class="col-lg-3 col-md-6">
                                 <div class="counter">
                                     <h2 class="timer count-title count-number"
-                                        data-to="{{ \App\Models\User::where('isAdmin', 0)->count() }}" data-speed="1000">
+                                        data-to="{{ \App\Models\User::where('role', 'user')->count() }}"
+                                        data-speed="1000">
                                     </h2>
                                     <p class="count-text ">Jumlah Pengguna</p>
                                 </div>
@@ -246,9 +274,10 @@
                                 <p>{{ $item->testimoni }}</p>
                                 <div class="author">
                                     <img src="{{ $item->user->image_user ? asset('images/user/' . $item->user->image_user) : asset('assets/img/user.jpg') }}"
-                                        alt=""  style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
+                                        alt=""
+                                        style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
                                     <h4>{{ $item->user->name }}</h4>
-                                    <div class="col-md-6 mt-2">
+                                    <div class="col-md-12 mt-2">
                                         <div class="rating" style="color: yellow;">
                                             @for ($i = 1; $i <= 5; $i++)
                                                 <i class="fa fa-star {{ $i <= $item->penilaian ? 'checked' : '' }}"></i>
@@ -332,6 +361,31 @@
         </div>
     </div>
 @endsection
+
+<script>
+    document.querySelectorAll('.pagination a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault(); // Mencegah default behavior dari anchor tag
+            const url = this.getAttribute('href'); // Ambil URL
+
+            // Memuat konten baru dengan AJAX
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    // Misalkan Anda mengganti konten dengan yang baru
+                    document.querySelector('.event_box').innerHTML = html;
+
+                    // Scroll ke atas atau ke posisi tertentu
+                    window.scrollTo({
+                        top: document.querySelector('#buku')
+                            .offsetTop, // Scroll ke bagian atas section buku
+                        behavior: 'smooth' // Menambahkan efek scroll yang halus
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
 
 <script>
     // Initialize Isotope

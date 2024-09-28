@@ -83,12 +83,13 @@
                                         @enderror
                                     </div>
                                     <div class="mb-2">
-                                        <label for="isAdmin">IsAdmin</label>
-                                        <select name="isAdmin"
-                                            class="form-control select @error('isAdmin') is-invalid @enderror">
+                                        <label for="role">Role</label>
+                                        <select name="role"
+                                            class="form-control select @error('role') is-invalid @enderror">
                                             <option value="">Pilih</option>
-                                            <option value="0">User</option>
-                                            <option value="1">Admin</option>
+                                            <option value="user">User</option>
+                                            <option value="staf">Staf</option>
+                                            <option value="admin">Admin</option>
                                             {{-- <option value="2">Penjaga</option> --}}
                                         </select>
                                     </div>

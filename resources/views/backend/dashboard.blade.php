@@ -23,7 +23,7 @@
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Pengguna</p>
                                     <h5 class="font-weight-bolder">
-                                        {{ \App\Models\User::where('isAdmin', '0')->count() }}
+                                        {{ \App\Models\User::where('role', 'user')->count() }}
                                     </h5>
                                     <p class="mb-0">
                                         Terbaru
@@ -193,7 +193,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-5" style="height: 400px;">
                 <div class="card card-carousel overflow-hidden h-100 p-0">
                     <div id="carouselExampleCaptions" class="carousel slide h-100" data-bs-ride="carousel">
                         <div class="carousel-inner border-radius-lg h-100">

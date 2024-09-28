@@ -21,14 +21,14 @@ class KategoriController extends Controller
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
         confirmDelete('Delete', 'Apakah Kamu Yakin?');
-        return view('admin.kategori.index', compact('kategori', 'buku', 'notifymenunggu'));
+        return view('backend.kategori.index', compact('kategori', 'buku', 'notifymenunggu'));
     }
 
     public function create()
     {
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
-        return view('admin.kategori.create', compact('notifymenunggu'));
+        return view('backend.kategori.create', compact('notifymenunggu'));
     }
 
     public function store(Request $request)
@@ -63,7 +63,7 @@ class KategoriController extends Controller
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
 
-        return view('admin.kategori.edit', compact('kategori', 'notifymenunggu', ));
+        return view('backend.kategori.edit', compact('kategori', 'notifymenunggu', ));
     }
 
     public function update(Request $request, $id)
