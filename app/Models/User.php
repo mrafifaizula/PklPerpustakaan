@@ -42,14 +42,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function user()
+    public function pinjambuku()
     {
-        return $this->hasMany(user::class, 'id_user');
-    }
-
-    public function profil()
-    {
-        return $this->hasOne(profil::class, 'id_user');
+        return $this->hasMany(pinjambuku::class, 'id_user');
     }
 
     public function hasAnyRole(array $roles)

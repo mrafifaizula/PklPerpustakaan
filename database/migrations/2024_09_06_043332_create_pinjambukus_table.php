@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('jumlah');
             $table->string('pesan')->nullable();
             $table->date('tanggal_pinjambuku');
-            $table->date('tanggal_kembali');
-            
+            $table->date('batas_pengembalian')->nullable();
+            $table->date('tanggal_pengembalian')->nullable();
             $table->enum('status', ['menunggu', 'diterima', 'ditolak', 'menunggu pengembalian', 'dikembalikan', 'pengembalian ditolak', 'dibatalkan'])->default('menunggu');
             $table->unsignedBigInteger('id_buku');
             $table->unsignedBigInteger('id_user');

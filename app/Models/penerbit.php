@@ -12,8 +12,8 @@ class penerbit extends Model
     public $visible = ['nama_penerbit'];
     public $timestamps = true;
 
-    public function penerbit()
+    public function buku()
     {
-        return $this->hasMany(penerbit::class, 'id_penerbit');
+        return $this->hasMany(buku::class, 'id_penerbit'); 
     }
 }

@@ -71,14 +71,14 @@ class FrontController extends Controller
             return redirect('/email/verify')->with('error', 'Please verify your email first.');
         }
 
-        $buku = buku::all();
+        $buku = buku::take(5)->get();
         $kategori = kategori::all();
         $penulis = penulis::all();
         $penerbit = penerbit::all();
         $user = User::all();
         $idUser = Auth::id();
         $totalpinjam = pinjambuku::where('id_user', $idUser)->sum('jumlah');
-        // Ambil notifikasi yang belum dibaca
+       
         $notification = notification::where('id_user', $idUser)
             ->where('read', false)  // Hanya ambil notifikasi yang belum dibaca
             ->orderBy('created_at', 'desc')

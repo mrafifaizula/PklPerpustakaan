@@ -12,8 +12,8 @@ class kategori extends Model
     public $visible = ['nama_kategori'];
     public $timestamps = true;
 
-    public function kategori()
+    public function buku()
     {
-        return $this->hasMany(kategori::class, 'id_kategori');
+        return $this->hasMany(buku::class, 'id_kategori');
     }
 }

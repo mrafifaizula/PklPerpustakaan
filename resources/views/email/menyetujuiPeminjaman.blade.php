@@ -5,6 +5,6 @@
 <p>Nama Peminjam: {{ $pinjamBuku->user->name }}</p>
 <p>Jumlah Buku Dipinjam: {{ $pinjamBuku->jumlah}}</p>
 <p>Jumlah Tanggal Pinjam: {{ $pinjamBuku->tanggal_pinjambuku}}</p>
-<p>Batas Pengembalian: {{ $pinjamBuku->tanggal_kembali}}</p>
+<p>Batas Pengembalian: {{ $pinjamBuku->batas_pengembalian}}</p>
 <p>Status: Diterima</p>
 

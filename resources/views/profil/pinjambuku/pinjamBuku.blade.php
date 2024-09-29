@@ -89,8 +89,8 @@
                         <div class="row g-0">
                             <div class="col-md-4">
                                 <div class="img-container">
-                                    <img src="{{ file_exists(public_path('images/buku/' . $buku->image_buku)) ? asset('images/buku/' . $buku->image_buku) : asset('assets/img/noimage.png') }}" class="img-fluid"
-                                        alt="{{ $buku->judul }}">
+                                    <img src="{{ file_exists(public_path('images/buku/' . $buku->image_buku)) ? asset('images/buku/' . $buku->image_buku) : asset('assets/img/noimage.png') }}"
+                                        class="img-fluid" alt="{{ $buku->judul }}">
                                 </div>
                             </div>
                             <div class="col-md-8">
@@ -130,12 +130,11 @@
 
                                         <div class="row mb-3">
                                             <div class="col-md-6">
-                                                <label for="tanggal_kembali">Tanggal Kembali</label>
-                                                <input type="date" placeholder="Tanggal Kembali"
-                                                    class="form-control @error('tanggal_kembali') is-invalid @enderror"
-                                                    name="tanggal_kembali" value="{{ date('Y-m-d', strtotime('+1 week')) }}"
-                                                    readonly>
-                                                @error('tanggal_kembali')
+                                                <label for="tanggal_pinjambuku">Tanggal Pinjam</label>
+                                                <input type="date" placeholder="Tanggal Pinjam"
+                                                    class="form-control @error('tanggal_pinjambuku') is-invalid @enderror"
+                                                    name="tanggal_pinjambuku" value="{{ date('Y-m-d') }}" readonly>
+                                                @error('tanggal_pinjambuku')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -143,11 +142,13 @@
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label for="tanggal_pinjambuku">Tanggal Pinjam</label>
-                                                <input type="date" placeholder="Tanggal Pinjam"
-                                                    class="form-control @error('tanggal_pinjambuku') is-invalid @enderror"
-                                                    name="tanggal_pinjambuku" value="{{ date('Y-m-d') }}" readonly>
-                                                @error('tanggal_pinjambuku')
+                                                <label for="batas_pengembalian">Batas Pengembalian</label>
+                                                <input type="date" placeholder="Tanggal Kembali"
+                                                    class="form-control @error('batas_pengembalian') is-invalid @enderror"
+                                                    name="batas_pengembalian"
+                                                    value="{{ \Carbon\Carbon::now()->addDays(7)->format('Y-m-d') }}"
+                                                    readonly>
+                                                @error('batas_pengembalian')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -182,7 +183,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="button-container" >
+                                        <div class="button-container">
                                             <button class="btn btn-sm btn-primary" type="submit">Pinjam</button>
                                             <button class="btn btn-sm btn-warning" type="reset">Reset</button>
                                             <a href="{{ url()->previous() }}" class="btn btn-sm btn-secondary">
@@ -202,5 +203,4 @@
 
 
 @push('scripts')
-    
 @endpush

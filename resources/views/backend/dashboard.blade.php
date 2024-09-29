@@ -167,25 +167,40 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table id="bukuTable" class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <td class="text-center">No</td>
-                                    <td>Judul</td>
-                                    <td>Kategori</td>
-                                    <td>Penulis</td>
-                                    <td>Penerbit</td>
-                                </tr>
-                            </thead>
+                        <table class="table align-items-center ">
                             <tbody>
                                 @php $no = 1; @endphp
                                 @foreach ($buku as $item)
                                     <tr>
-                                        <td class="text-center">{{ $no++ }}</td>
-                                        <td>{{ $item->judul }}</td>
-                                        <td class="text-center">{{ $item->Kategori->nama_kategori }}</td>
-                                        <td class="text-center">{{ $item->Penulis->nama_penulis }}</td>
-                                        <td class="text-center">{{ $item->Penerbit->nama_penerbit }}</td>
+                                        <td class="w-30">
+                                            <div class="d-flex px-2 py-1 align-items-center">
+                                                <div>
+                                                    {{ $no++ }}
+                                                </div>
+                                                <div class="ms-4">
+                                                    <p class="text-xs font-weight-bold mb-0">Judul:</p>
+                                                    <h6 class="text-sm mb-0">{{ $item->judul }}</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <p class="text-xs font-weight-bold mb-0">Kategori:</p>
+                                                <h6 class="text-sm mb-0">{{ $item->Kategori->nama_kategori }}</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <p class="text-xs font-weight-bold mb-0">Penulis:</p>
+                                                <h6 class="text-sm mb-0">{{ $item->Penulis->nama_penulis }}</h6>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-sm">
+                                            <div class="col text-center">
+                                                <p class="text-xs font-weight-bold mb-0">Penerbit:</p>
+                                                <h6 class="text-sm mb-0">{{ $item->Penerbit->nama_penerbit }}</h6>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -229,37 +244,6 @@
 
 
 @push('scripts')
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            // Destroy existing DataTable instance for bukuTable
-            if ($.fn.DataTable.isDataTable('#bukuTable')) {
-                $('#bukuTable').DataTable().destroy();
-            }
-
-            // Initialize DataTable for bukuTable only
-            $('#bukuTable').DataTable({
-                "language": {
-                    "zeroRecords": "Tidak ada data yang tersedia",
-                    "info": "   ", // Info display
-                    "infoEmpty": "Tidak ada entri yang tersedia", // When no data is available
-                    "lengthMenu": "Tampilkan _MENU_ entri", // Length menu
-                    "paginate": {
-                        "first": '<i class="bi bi-chevron-double-left"></i>', // First page
-                        "last": '<i class="bi bi-chevron-double-right"></i>', // Last page
-                        "next": '<i class="bi bi-chevron-right"></i>', // Next page
-                        "previous": '<i class="bi bi-chevron-left"></i>' // Previous page
-                    }
-
-                },
-                "paging": true, // Enable pagination
-                "searching": false, // Disable searching
-                "pageLength": 5 // Set default number of entries to show
-            });
-        });
-    </script>
-
     <script>
         var ctx = document.getElementById('chartPinjamBuku').getContext('2d');
         var chartPinjamBuku = new Chart(ctx, {

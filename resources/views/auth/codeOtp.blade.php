@@ -229,7 +229,8 @@
             <input type="text" name="otp" id="otp" required>
         </div>
         <button type="submit">Verifikasi OTP</button>
-    </form>    
+        <button type="button" onclick="location.href='{{ route('otp.mintaUlang') }}'">Kirim Ulang OTP</button>
+    </form>
 </body>
 
 </html>

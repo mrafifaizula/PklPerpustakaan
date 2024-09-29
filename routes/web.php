@@ -14,6 +14,7 @@ use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PenulisController;
 use App\Http\Controllers\Auth\OtpController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -29,15 +30,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-// Rute untuk menampilkan form OTP
 Route::get('/verify-otp', [OtpController::class, 'showOtpForm'])->name('otp.verify');
-
-// Rute untuk memverifikasi OTP
 Route::post('/verify-otp', [OtpController::class, 'verifyOtp'])->name('post.otp.verify');
-
-Route::group(['prefix' => 'profil', 'middleware' => ['auth', 'verified']], function () {
-    Route::get('dashboard', [FrontController::class, 'perpustakaan'])->name('profil.dashboard');
-});
+Route::get('/otp/resend', [RegisterController::class, 'mintaUlangOtp'])->name('otp.mintaUlang');
 
 
 // Guest

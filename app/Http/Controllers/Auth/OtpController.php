@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use RealRashid\SweetAlert\Facades\Alert;
 
 class OtpController extends Controller
 {
@@ -23,7 +23,6 @@ class OtpController extends Controller
             'email' => 'required|email',
         ]);
 
-        // Cari pengguna berdasarkan email dan kode OTP
         $user = User::where('email', $request->email)
             ->where('kode_otp', $request->otp)
             ->where('kadaluarsa_otp', '>', now())
@@ -37,13 +36,15 @@ class OtpController extends Controller
 
             Auth::login($user);
 
-            // Hapus email dari sesi setelah verifikasi
             session()->forget('email');
 
-            return redirect()->route('profil.dashboard')->with('success', 'Email berhasil diverifikasi!');
+            Alert::success('Success', 'Email berhasil diverifikasi!')->autoClose(2000);
+            return redirect()->route('profil.dashboard');
         }
 
-        return back()->withErrors(['otp' => 'Kode OTP tidak valid atau sudah kadaluarsa.']);
+        Alert::error('Error', 'Kode OTP tidak valid atau sudah kadaluarsa.')->autoClose(2000);
+        return back()->withInput();
     }
+
 
 }

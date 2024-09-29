@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use Alert;
 use Validator;
 use App\Models\penulis;
 use App\Models\pinjambuku;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PenulisController extends Controller
 {
@@ -45,7 +45,7 @@ class PenulisController extends Controller
         $penulis->nama_penulis = $request->nama_penulis;
         $penulis->save();
 
-        Alert::success('Success', 'Data Berhasil Disimpan')->autoClose(1000);
+        Alert::success('Success', 'Data Berhasil Disimpan')->autoClose(2000);
         return redirect()->route('penulis.index');
     }
 
@@ -84,7 +84,7 @@ class PenulisController extends Controller
         $penulis->nama_penulis = $request->nama_penulis;
 
         $penulis->save();
-        Alert::success('Success', 'Data Berhasil Diubah')->autoClose(1000);
+        Alert::success('Success', 'Data Berhasil Diubah')->autoClose(2000);
         return redirect()->route('penulis.index');
     }
 
@@ -92,8 +92,14 @@ class PenulisController extends Controller
     public function destroy($id)
     {
         $penulis = penulis::findOrFail($id);
+
+        if ($penulis->buku()->count() > 0) {
+            Alert::error('Error', 'Kategori ini tidak bisa dihapus karena ada buku yang terkait.')->autoClose(2000);
+            return redirect()->route('kategori.index');
+        }
+
         $penulis->delete();
-        Alert::success('Success', 'Data Berhasil Di Hapus')->autoClose(1000);
+        Alert::success('Success', 'Data Berhasil Di Hapus')->autoClose(2000);
         return redirect()->route('penulis.index');
     }
 }

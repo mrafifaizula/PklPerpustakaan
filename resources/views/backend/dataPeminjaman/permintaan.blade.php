@@ -52,7 +52,7 @@
                                 <td>{{ $item->buku->judul }}</td>
                                 <td class="text-center">{{ $item->jumlah }}</td>
                                 {{-- <td>{{ $item->tanggal_pinjambuku }}</td> --}}
-                                <td  class="text-center">{{ $item->tanggal_kembali }}</td>
+                                <td  class="text-center">{{ $item->batas_pengembalian }}</td>
                                 <td>
                                     <span
                                         class="badge badge-sm 
@@ -128,8 +128,8 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="">Batas Pengembalian</label>
-                                                        <input type="text" class="form-control" name="tanggal_kembali"
-                                                            value="{{ $item->tanggal_kembali }}" disabled>
+                                                        <input type="text" class="form-control" name="batas_pengembalian"
+                                                            value="{{ $item->batas_pengembalian }}" disabled>
                                                     </div>
                                                 </div>
                                                 @if ($item->status == 'menunggu' || $item->status == 'menunggu pengembalian')

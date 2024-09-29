@@ -16,7 +16,7 @@ class BackController extends Controller
 {
     public function index()
     {
-        $buku = buku::orderBy("id", "desc")->get();
+        $buku = buku::take(5)->get();
         $kategori = kategori::orderBy("id", "desc")->get();
         $penulis = penulis::all();
         $penerbit = penerbit::all();

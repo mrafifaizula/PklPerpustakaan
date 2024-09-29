@@ -26,19 +26,21 @@ class buku extends Model
     public function kategori()
     {
         return $this->belongsTo(kategori::class, 'id_kategori');
-
     }
 
     public function penulis()
     {
         return $this->belongsTo(penulis::class, 'id_penulis');
-
     }
 
     public function penerbit()
     {
         return $this->belongsTo(penerbit::class, 'id_penerbit');
+    }
 
+    public function pinjambuku()
+    {
+        return $this->hasMany(pinjambuku::class, 'id_buku');
     }
 
 }

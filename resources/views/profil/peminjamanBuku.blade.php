@@ -53,7 +53,7 @@
                                 <td>{{ $item->buku->judul }}</td>
                                 <td class="text-center">{{ $item->jumlah }}</td>
                                 {{-- <td>{{ $item->tanggal_pinjambuku }}</td> --}}
-                                <td class="text-center">{{ $item->tanggal_kembali }}</td>
+                                <td class="text-center">{{ $item->batas_pengembalian }}</td>
                                 <td>
                                     <span
                                         class="badge badge-sm 

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 use Auth;
-use Alert;
 use App\Models\testimoni;
 use App\Models\pinjambuku;
 use App\Models\notification;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class TestimoniController extends Controller
 {
@@ -48,7 +48,7 @@ class TestimoniController extends Controller
             'penilaian' => $request->penilaian,
         ]);
 
-        Alert::success('Success', 'Testimoni Berhasil Dikirim')->autoClose(1000);
+        Alert::success('Success', 'Testimoni Berhasil Dikirim')->autoClose(2000);
         return redirect()->route('profil.testimoni')->with('success', 'Testimoni berhasil disimpan.');
     }
 

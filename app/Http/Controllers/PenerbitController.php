@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use Alert;
 use Validator;
 use App\Models\pinjambuku;
 use App\Models\penerbit;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PenerbitController extends Controller
 {
@@ -45,7 +45,7 @@ class PenerbitController extends Controller
         $penerbit->nama_penerbit = $request->nama_penerbit;
         $penerbit->save();
 
-        Alert::success('Success', 'Data Berhasil Disimpan')->autoClose(1000);
+        Alert::success('Success', 'Data Berhasil Disimpan')->autoClose(2000);
         return redirect()->route('penerbit.index');
     }
 
@@ -84,7 +84,7 @@ class PenerbitController extends Controller
         $penerbit->nama_penerbit = $request->nama_penerbit;
 
         $penerbit->save();
-        Alert::success('Success', 'Data Berhasil Diubah')->autoClose(1000);
+        Alert::success('Success', 'Data Berhasil Diubah')->autoClose(2000);
         return redirect()->route('penerbit.index');
     }
 
@@ -92,8 +92,14 @@ class PenerbitController extends Controller
     public function destroy($id)
     {
         $penerbit = penerbit::findOrFail($id);
+
+        if ($penerbit->buku()->count() > 0) {
+            Alert::error('Error', 'Kategori ini tidak bisa dihapus karena ada buku yang terkait.')->autoClose(2000);
+            return redirect()->route('kategori.index');
+        }
+
         $penerbit->delete();
-        Alert::success('Success', 'Data Berhasil Di Hapus')->autoClose(1000);
+        Alert::success('Success', 'Data Berhasil Di Hapus')->autoClose(2000);
         return redirect()->route('penerbit.index');
     }
 }

@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Alert;
 use App\Models\kategori;
 use App\Models\buku;
 use App\Models\pinjambuku;
 use Validator;
-use App\Imports\KategoriImport;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KategoriController extends Controller
 {
@@ -48,7 +46,7 @@ class KategoriController extends Controller
         $kategori->nama_kategori = $request->nama_kategori;
         $kategori->save();
 
-        Alert::success('Success', 'Data Berhasil Disimpan')->autoClose(1000);
+        Alert::success('Success', 'Data Berhasil Disimpan')->autoClose(2000);
         return redirect()->route('kategori.index');
     }
 
@@ -85,29 +83,22 @@ class KategoriController extends Controller
         $kategori->nama_kategori = $request->nama_kategori;
 
         $kategori->save();
-        Alert::success('Success', 'Data Berhasil Diubah')->autoClose(1000);
+        Alert::success('Success', 'Data Berhasil Diubah')->autoClose(2000);
         return redirect()->route('kategori.index');
     }
 
     public function destroy($id)
     {
         $kategori = kategori::findOrFail($id);
+
+        if ($kategori->buku()->count() > 0) {
+            Alert::error('Error', 'Kategori ini tidak bisa dihapus karena ada buku yang terkait.')->autoClose(2000);
+            return redirect()->route('kategori.index');
+        }
+
         $kategori->delete();
-        Alert::success('Success', 'Data Berhasil Di Hapus')->autoClose(1000);
+        Alert::success('Success', 'Data Berhasil Di Hapus')->autoClose(2000);
         return redirect()->route('kategori.index');
-    }
-
-    public function import(Request $request) 
-    {
-        // Validasi file Excel
-        $request->validate([
-            'file' => 'required|mimes:xls,xlsx'
-        ]);
-
-        // Proses import file Excel
-        Excel::import(new KategoriImport, $request->file('file'));
-
-        return redirect()->back()->with('success', 'Data kategori berhasil diimport!');
     }
 
 }

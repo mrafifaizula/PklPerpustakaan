@@ -11,10 +11,11 @@ use App\Models\kategori;
 use App\Models\penulis;
 use App\Models\penerbit;
 use App\Models\notification;
-use Alert;
 use Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PinjambukuController extends Controller
 {
@@ -58,7 +59,7 @@ class PinjambukuController extends Controller
         $validated = $request->validate([
             'jumlah' => 'required|numeric',
             'tanggal_pinjambuku' => 'required|date',
-            'tanggal_kembali' => 'required|date',
+            'batas_pengembalian' => 'required|date',
             'id_buku' => 'required|numeric',
             'id_user' => 'required|numeric',
         ]);
@@ -100,14 +101,14 @@ class PinjambukuController extends Controller
         $pinjambuku = new pinjambuku();
         $pinjambuku->jumlah = $request->jumlah;
         $pinjambuku->tanggal_pinjambuku = $request->tanggal_pinjambuku;
-        $pinjambuku->tanggal_kembali = $request->tanggal_kembali;
+        $pinjambuku->batas_pengembalian = Carbon::now()->addDays(7);
         $pinjambuku->status = 'menunggu';
         $pinjambuku->id_buku = $request->id_buku;
         $pinjambuku->id_user = $request->id_user;
 
         $pinjambuku->save();
 
-        Alert::success('Success', 'Permintaan peminjaman buku berhasil dibuat. Menunggu persetujuan.')->autoClose(1000);
+        Alert::success('Success', 'Permintaan peminjaman buku berhasil dibuat. Menunggu persetujuan.')->autoClose(2000);
         return redirect()->route('profil.peminjamanBuku');
     }
 

@@ -188,8 +188,8 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="">Batas Pengembalian</label>
-                                        <input type="text" class="form-control" name="tanggal_kembali"
-                                            value="{{ $item->tanggal_kembali }}" disabled>
+                                        <input type="text" class="form-control" name="batas_pengembalian"
+                                            value="{{ $item->batas_pengembalian }}" disabled>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
