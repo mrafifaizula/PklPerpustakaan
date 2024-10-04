@@ -37,10 +37,10 @@
                                         @enderror
                                     </div>
                                     <div class="mb-2">
-                                        <label for="alamat">Nomor Telepon</label>
-                                        <input type="text" class="form-control @error('alamat') is-invalid @enderror"
-                                            name="alamat" value="{{ $user->alamat }}">
-                                        @error('alamat')
+                                        <label for="tlp">Nomor Telepon</label>
+                                        <input type="text" class="form-control @error('tlp') is-invalid @enderror"
+                                            name="tlp" value="{{ $user->tlp }}">
+                                        @error('tlp')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -88,9 +88,10 @@
                                             class="form-control select @error('role') is-invalid @enderror">
                                             <option value="">Pilih</option>
                                             <option value="user">User</option>
-                                            <option value="staf">Staf</option>
-                                            <option value="admin">Admin</option>
-                                            {{-- <option value="2">Penjaga</option> --}}
+                                            @if (Auth::check() && Auth::user()->role === 'admin')
+                                                <option value="staf">Staf</option>
+                                                <option value="admin">Admin</option>
+                                            @endif
                                         </select>
                                     </div>
                                 </div>

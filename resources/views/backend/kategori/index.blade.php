@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', 'Data Kategori')
+@section('title', 'Table Kategori')
 
 @section('styles')
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
@@ -25,14 +25,12 @@
             <div class="float-start">
                 <h5> Kategori </h5>
             </div>
-            {{-- <form action="{{ route('import.kategori') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="file" name="file" required>
-                <button type="submit">Import Kategori</button>
-            </form>             --}}
             <div class="float-end">
-                <a href="{{ route('kategori.create') }}" class="btn btn-sm btn-primary" title="Add">
+                <a href="{{ route('kategori.create') }}" class="btn btn-sm btn-primary" title="Tambah">
                     <i class="bi bi-plus-lg"></i> Tambah
+                </a>
+                <a href="{{ route('import.kategori') }}" class="btn btn-sm btn-success" title="Import Excel">
+                    <i class="bi bi-file-earmark-excel"></i> Import Excel
                 </a>
             </div>
         </div>
@@ -58,12 +56,12 @@
                                             title="Edit">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" title="Detail"
-                                            data-bs-target="#exampleModal{{ $item->id }}" title="Lihat">
+                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal{{ $item->id }}" title="Detail">
                                             <i class="bi bi-eye"></i>
                                         </button>
-                                        <a href="{{ route('kategori.destroy', $item->id) }}" class="btn btn-danger" title="Hapus"
-                                            data-confirm-delete="true" title="Delete">
+                                        <a href="{{ route('kategori.destroy', $item->id) }}" class="btn btn-danger"
+                                            title="Hapus" data-confirm-delete="true">
                                             <i class="bi bi-trash"></i>
                                         </a>
                                     </form>
@@ -101,7 +99,7 @@
             </div>
         </div>
     </div>
-    
+
 @endsection
 
 @push('scripts')
@@ -120,13 +118,14 @@
     <script>
         $(document).ready(function() {
             $('#example').DataTable({
-                dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' + 
-                    '<"row"<"col-sm-12"tr>>' + 
+                dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
+                    '<"row"<"col-sm-12"tr>>' +
                     '<"row"<"col-sm-5"i><"col-sm-7"p>>',
                 buttons: [{
                         extend: 'pdf',
                         text: '<i class="bi bi-file-earmark-pdf"></i> PDF',
                         className: 'btn btn-danger',
+                        titleAttr: 'Export PDF',
                         exportOptions: {
                             columns: [0, 1]
                         }
@@ -135,6 +134,7 @@
                         extend: 'excel',
                         text: '<i class="bi bi-file-earmark-excel"></i> Excel',
                         className: 'btn btn-success',
+                        titleAttr: 'Export Excel',
                         exportOptions: {
                             columns: [0, 1]
                         }
@@ -143,6 +143,7 @@
                         extend: 'print',
                         text: '<i class="bi bi-printer"></i> Print',
                         className: 'btn btn-primary',
+                        titleAttr: 'Print',
                         exportOptions: {
                             columns: [0, 1]
                         }
@@ -160,9 +161,7 @@
             });
         });
     </script>
-    
-    
-    
+
     <script>
         const myModal = document.getElementById('myModal')
         const myInput = document.getElementById('myInput')

@@ -19,8 +19,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'kode_otp',  
-        'kadaluarsa_otp', 
+        'kode_otp',
+        'kadaluarsa_otp',
     ];
 
     /**
@@ -51,4 +51,16 @@ class User extends Authenticatable
     {
         return in_array($this->role, $roles);
     }
+
+    public function deleteImage()
+    {
+        $imagePath = public_path('images/user/' . $this->image_user);
+
+        if ($this->image_user && file_exists($imagePath)) {
+            return unlink($imagePath); // Deletes the file
+        }
+
+        return false;
+    }
+
 }

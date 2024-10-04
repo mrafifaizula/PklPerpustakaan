@@ -11,18 +11,18 @@ class CodeOtp extends Mailable
     use Queueable, SerializesModels;
 
     public $kodeOtp;
+    public $user;
 
-    public function __construct($kodeOtp)
+    public function __construct($kodeOtp, $user)
     {
         $this->kodeOtp = $kodeOtp;
+        $this->user = $user;
     }
 
     public function build()
     {
-        return $this->view('email.codeOtp') // Pastikan ini sesuai dengan nama view yang benar
-            ->subject('Kode OTP Verifikasi')
-            ->with([
-                'kodeOtp' => $this->kodeOtp,
-            ]);
+        return $this->subject('Verifikasi Kode OTP')
+            ->view('email.codeOtp') // Ganti dengan view email yang sesuai
+            ->with(['kodeOtp' => $this->kodeOtp, 'user' => $this->user]);
     }
 }

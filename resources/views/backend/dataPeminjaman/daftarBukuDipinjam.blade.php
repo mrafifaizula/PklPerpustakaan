@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', 'Daftar Buku Yang di Pinjam')
+@section('title', 'Data Buku Yang di Pinjam')
 
 @section('styles')
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
@@ -179,6 +179,7 @@
                         extend: 'pdf',
                         text: '<i class="bi bi-file-earmark-pdf"></i> PDF',
                         className: 'btn btn-danger',
+                        titleAttr: 'Export PDF',
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5]
                         }
@@ -187,6 +188,7 @@
                         extend: 'excel',
                         text: '<i class="bi bi-file-earmark-excel"></i> Excel',
                         className: 'btn btn-success',
+                        titleAttr: 'Export Excel',
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5]
                         }
@@ -195,6 +197,7 @@
                         extend: 'print',
                         text: '<i class="bi bi-printer"></i> Print',
                         className: 'btn btn-primary',
+                        titleAttr: 'Print',
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5]
                         }

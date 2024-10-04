@@ -22,14 +22,14 @@
             </a>
         </li>
         <li class="nav-item">
-            @if(Auth::check() && Auth::user()->role === 'admin')
+            {{-- @if(Auth::check() && Auth::user()->role === 'admin') --}}
                 <a class="nav-link" href="{{ url('admin/user') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-world-2 text-sm" style="color: black;"></i>
                     </div>
                     <span class="nav-link-text ms-1">User</span>
                 </a>
-            @endif
+            {{-- @endif --}}
         </li>        
         {{-- <li class="nav-item">
             <a class="nav-link " href="{{ url('admin/kontak') }}">

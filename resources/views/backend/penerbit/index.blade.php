@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', 'Data Penerbit')
+@section('title', 'Table Penerbit')
 
 @section('styles')
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
@@ -28,8 +28,11 @@
                 <h5> Penerbit </h5>
             </div>
             <div class="float-end">
-                <a href="{{ route('penerbit.create') }}" class="btn btn-sm btn-primary" title="Add">
+                <a href="{{ route('penerbit.create') }}" class="btn btn-sm btn-primary" title="Tambah">
                     <i class="bi bi-plus-lg"></i> Tambah
+                </a>
+                <a href="{{ route('import.penerbit') }}" class="btn btn-sm btn-success" title="Import Excel">
+                    <i class="bi bi-file-earmark-excel"></i> Import Excel
                 </a>
             </div>
         </div>
@@ -51,15 +54,16 @@
                                     <form action="{{ route('penerbit.destroy', $item->id) }}" method="POST">
                                         @method('DELETE')
                                         @csrf
-                                        <a href="{{ route('penerbit.edit', $item->id) }}" class="btn btn-success" title="edit">
+                                        <a href="{{ route('penerbit.edit', $item->id) }}" class="btn btn-success"
+                                            title="edit">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal" title="Detail"
                                             data-bs-target="#exampleModal{{ $item->id }}">
                                             <i class="bi bi-eye"></i>
                                         </button>
-                                        <a href="{{ route('penerbit.destroy', $item->id) }}" class="btn btn btn-danger" title="hapus"
-                                            data-confirm-delete="true">
+                                        <a href="{{ route('penerbit.destroy', $item->id) }}" class="btn btn btn-danger"
+                                            title="hapus" data-confirm-delete="true">
                                             <i class="bi bi-trash"></i>
                                         </a>
                                     </form>
@@ -124,6 +128,7 @@
                         extend: 'pdf',
                         text: '<i class="bi bi-file-earmark-pdf"></i> PDF',
                         className: 'btn btn-danger',
+                        titleAttr: 'Export PDF',
                         exportOptions: {
                             columns: [0, 1]
                         }
@@ -132,6 +137,7 @@
                         extend: 'excel',
                         text: '<i class="bi bi-file-earmark-excel"></i> Excel',
                         className: 'btn btn-success',
+                        titleAttr: 'Export Excel',
                         exportOptions: {
                             columns: [0, 1]
                         }
@@ -140,6 +146,7 @@
                         extend: 'print',
                         text: '<i class="bi bi-printer"></i> Print',
                         className: 'btn btn-primary',
+                        titleAttr: 'Print',
                         exportOptions: {
                             columns: [0, 1]
                         }

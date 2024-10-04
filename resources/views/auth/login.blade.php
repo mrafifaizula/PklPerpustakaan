@@ -184,7 +184,7 @@
             background-color: rgba(255, 255, 255, 0.47);
         }
 
-        .social .fb {
+        .social .go {
             margin-left: 25px;
         }
 
@@ -248,9 +248,9 @@
         </div>
         <button type="submit">Log In</button>
         <div class="social">
-            <div class="go"><i class="fab fa-google"></i> Google</div>
             <div class="fb"><i class="fab fa-facebook"></i> Facebook</div>
-        </div>
+            <div class="go"><i class="fab fa-google"></i> Google</div>
+        </div>        
         <div class="register-link">
             <p>Belum punya akun? <a href="{{ route('register') }}">Daftar di sini</a></p>
         </div>

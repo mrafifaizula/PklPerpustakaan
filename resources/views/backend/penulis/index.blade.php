@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', 'Data Penulis')
+@section('title', 'Table Penulis')
 
 @section('styles')
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
@@ -11,12 +11,10 @@
 <style>
     .dataTables_wrapper .dt-buttons {
         margin-bottom: 2px;
-        /* Adjust margin between buttons and table */
     }
 
     .dataTables_wrapper .dataTables_filter {
         text-align: right;
-        /* Align search box to the right */
     }
 </style>
 
@@ -28,8 +26,11 @@
                 <h5> Penulis </h5>
             </div>
             <div class="float-end">
-                <a href="{{ route('penulis.create') }}" class="btn btn-sm btn-primary" title="Add">
+                <a href="{{ route('penulis.create') }}" class="btn btn-sm btn-primary" title="Tambah">
                     <i class="bi bi-plus-lg"></i> tambah
+                </a>
+                <a href="{{ route('import.penulis') }}" class="btn btn-sm btn-success" title="Import Excel">
+                    <i class="bi bi-file-earmark-excel"></i> Import Excel
                 </a>
             </div>
         </div>
@@ -51,15 +52,16 @@
                                     <form action="{{ route('penulis.destroy', $item->id) }}" method="POST">
                                         @method('DELETE')
                                         @csrf
-                                        <a href="{{ route('penulis.edit', $item->id) }}" class="btn btn-success" title="Edit">
+                                        <a href="{{ route('penulis.edit', $item->id) }}" class="btn btn-success"
+                                            title="Edit">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal" title="Detail"
                                             data-bs-target="#exampleModal{{ $item->id }}">
                                             <i class="bi bi-eye"></i>
                                         </button>
-                                        <a href="{{ route('penulis.destroy', $item->id) }}" class="btn btn-danger" title="Hapus"
-                                            data-confirm-delete="true">
+                                        <a href="{{ route('penulis.destroy', $item->id) }}" class="btn btn-danger"
+                                            title="Hapus" data-confirm-delete="true">
                                             <i class="bi bi-trash"></i>
                                         </a>
                                     </form>
@@ -124,6 +126,7 @@
                         extend: 'pdf',
                         text: '<i class="bi bi-file-earmark-pdf"></i> PDF',
                         className: 'btn btn-danger',
+                        titleAttr: 'Export PDF',
                         exportOptions: {
                             columns: [0, 1]
                         }
@@ -132,6 +135,7 @@
                         extend: 'excel',
                         text: '<i class="bi bi-file-earmark-excel"></i> Excel',
                         className: 'btn btn-success',
+                        titleAttr: 'Export Excel',
                         exportOptions: {
                             columns: [0, 1]
                         }
@@ -140,6 +144,7 @@
                         extend: 'print',
                         text: '<i class="bi bi-printer"></i> Print',
                         className: 'btn btn-primary',
+                        titleAttr: 'Print',
                         exportOptions: {
                             columns: [0, 1]
                         }

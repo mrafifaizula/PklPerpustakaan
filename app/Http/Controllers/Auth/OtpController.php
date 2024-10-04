@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Mail\CodeOtp;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -46,5 +48,30 @@ class OtpController extends Controller
         return back()->withInput();
     }
 
+    public function mintaUlangOtp(Request $request)
+    {
+        $email = session('email');
+        $user = User::where('email', $email)->first();
+
+        if ($user) {
+            $kodeOtp = rand(100000, 999999);
+            $kadaluarsaOtp = now()->addMinutes(10);
+
+            $user->kode_otp = $kodeOtp;
+            $user->kadaluarsa_otp = $kadaluarsaOtp;
+            $user->save();
+            
+            Mail::to($user->email)->send(new CodeOtp($kodeOtp, $user->name));
+
+            Alert::success('Sukses', 'Kode OTP baru telah dikirim ke email Anda.')->autoClose(2000);
+            return back();
+        }
+
+        Alert::error('Error', 'Email tidak ditemukan.')->autoClose(2000);
+        return back();
+    }
 
 }
+
+
+

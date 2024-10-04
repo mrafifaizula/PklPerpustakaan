@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use Auth;
 use Validator;
 use App\Models\buku;
 use App\Models\kategori;
 use App\Models\penulis;
 use App\Models\penerbit;
 use App\Models\pinjambuku;
+use App\Models\notification;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -139,19 +141,17 @@ class BukuController extends Controller
         $buku->id_penerbit = $request->id_penerbit;
 
         if ($request->hasFile('image_buku')) {
-            $buku->deleteImage(); // Deletes the old image if it exists
-            $img = $request->file('image_buku'); // Get the uploaded file
-            $name = rand(2000, 9999) . $img->getClientOriginalName(); // Generate a unique filename
-            $img->move('images/buku/', $name); // Move the file to the specified directory
-            $buku->image_buku = $name; // Save the new filename in the model
+            $buku->deleteImage();
+            $img = $request->file('image_buku');
+            $name = rand(2000, 9999) . $img->getClientOriginalName();
+            $img->move('images/buku/', $name);
+            $buku->image_buku = $name;
         }
 
         $buku->save();
         Alert::success('Success', 'Data Berhasil Diubah')->autoClose(2000);
         return redirect()->route('buku.index');
     }
-
-
 
 
     public function destroy($id)

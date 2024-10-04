@@ -136,7 +136,7 @@
                 </div>
                 <div class="foote">
                     <a href="{{ url('profil/testimoni', $item->id) }}">
-                        <div class="button">Testimoni</div>
+                        <div class="button">Ulasan</div>
                     </a>
                     <div class="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $item->id }}">Detail
                     </div>

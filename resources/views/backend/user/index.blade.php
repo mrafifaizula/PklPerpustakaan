@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', 'Data User')
+@section('title', 'Table User')
 
 @section('styles')
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
@@ -45,7 +45,15 @@
                                 <td class="text-center">{{ $data->tlp }}</td>
                                 <td>{{ $data->email }}</td>
                                 {{-- <td>{{ $data->isAdmin == 1 ? 'Admin' : ($data->isAdmin == 2 ? 'Manager' : 'User') }}</td> --}}
-                                <td>{{ $data->isAdmin == 1 ? 'Admin' : 'User' }}</td>
+                                <td>
+                                    @if ($data->role == 'admin')
+                                        Admin
+                                    @elseif ($data->role == 'staf')
+                                        Staf
+                                    @elseif ($data->role == 'user')
+                                        User
+                                    @endif
+                                </td>                                
                                 <td class="text-center">
                                     <form action="{{ route('user.destroy', $data->id) }}" method="post">
                                         @csrf
@@ -88,6 +96,7 @@
                     extend: 'pdf',
                     text: '<i class="bi bi-file-earmark-pdf"></i> PDF',
                     className: 'btn btn-danger',
+                    titleAttr: 'Export PDF',
                     exportOptions: {
                         columns: [0, 1, 2, 3, 4, 5]
                     }
@@ -96,6 +105,7 @@
                     extend: 'excel',
                     text: '<i class="bi bi-file-earmark-excel"></i> Excel',
                     className: 'btn btn-success',
+                    titleAttr: 'Export Excel',
                     exportOptions: {
                         columns: [0, 1, 2, 3, 4, 5]
                     }
@@ -104,6 +114,7 @@
                     extend: 'print',
                     text: '<i class="bi bi-printer"></i> Print',
                     className: 'btn btn-primary',
+                    titleAttr: 'Print',
                     exportOptions: {
                         columns: [0, 1, 2, 3, 4, 5]
                     }

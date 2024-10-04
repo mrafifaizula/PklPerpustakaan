@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 use Auth;
 use App\Models\user;
 use App\Models\pinjambuku;
@@ -23,7 +23,6 @@ class UsersController extends Controller
     public function create()
     {
         $notifymenunggu = pinjambuku::where('status', 'menunggu')->count();
-        $notifpengajuankembali = pinjambuku::where('status', 'menunggu pengembalian')->count();
 
         return view('backend.user.create', compact('notifymenunggu', 'notifpengajuankembali'));
     }
@@ -32,11 +31,11 @@ class UsersController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:255',
-            'alamat' => 'required',
-            'tlp' => 'required',
-            'email' => 'required|unique:users', // Updated table name to 'users'
-            'password' => 'required|min:8',
-            'role' => 'required',
+            'alamat' => 'nullable|string|max:255',
+            'tlp' => 'nullable|string|max:15',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed',
+            'role' => 'required|string|max:50',
         ]);
 
         $user = new user();
@@ -44,14 +43,15 @@ class UsersController extends Controller
         $user->alamat = $request->alamat;
         $user->tlp = $request->tlp;
         $user->email = $request->email;
-        $user->password = Hash::make($request->password); // Correct case 'Hash'
+        $user->password = Hash::make($request->password);
         $user->role = $request->role;
 
-        if ($request->hasFile('image_user')) {
+        if ($request->hasFile('image_buku')) {
+            $user->deleteImage();
             $img = $request->file('image_user');
-            $name = rand(1000, 9999) . $img->getClientOriginalName();
+            $name = rand(2000, 9999) . $img->getClientOriginalName();
             $img->move('images/user/', $name);
-            $user->image_user = $name;
+            $user->image_buku = $name;
         }
 
         $user->save();
@@ -61,19 +61,28 @@ class UsersController extends Controller
     }
 
 
-    public function edit(User $user)
+    public function edit($id)
     {
+        $user = user::findOrFail($id);
+        $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
+
+        return view('backend.user.edit', compact('user', 'notifymenunggu', ));
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'tlp' => 'required|string|max:15',
-            'alamat' => 'required|string|max:255',
-            'image_user' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+        $user = user::findOrFail($id); // Mengambil pengguna berdasarkan ID
+
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'alamat' => 'nullable|string|max:255',
+            'tlp' => 'nullable|string|max:15',
+            'email' => 'nullable|email|unique:users,email,' . $user->id,
+            'password' => 'nullable|min:8|confirmed',
+            'role' => 'required|string|max:50',
         ]);
+
 
         $user = Auth::user();
         $user->name = $request->name;

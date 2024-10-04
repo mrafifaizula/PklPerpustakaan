@@ -105,4 +105,5 @@ class BackController extends Controller
 
         return view('backend.kontak', compact('kontak', 'user', 'notifymenunggu'));
     }
+    
 }

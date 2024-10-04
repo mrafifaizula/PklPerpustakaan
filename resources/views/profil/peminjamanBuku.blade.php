@@ -21,11 +21,11 @@
 </style>
 
 @section('content')
-    <h4 class="m-5"><span style="color: white">Peminjaman </span>Buku</h4>
+    <h4 class="m-5"><span style="color: white"> Data </span>Peminjaman Buku</h4>
     <div class="card m-5">
         <div class="card-header">
             <div class="float-start">
-                <h5> peminjaman buku </h5>
+                <h5> Data Peminjaman Buku </h5>
             </div>
         </div>
         <div class="card-body">
@@ -141,6 +141,7 @@
                         extend: 'pdf',
                         text: '<i class="bi bi-file-earmark-pdf"></i> PDF',
                         className: 'btn btn-danger',
+                        titleAttr: 'Export PDF',
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5]
                         }
@@ -149,6 +150,7 @@
                         extend: 'excel',
                         text: '<i class="bi bi-file-earmark-excel"></i> Excel',
                         className: 'btn btn-success',
+                        titleAttr: 'Export Excel',
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5]
                         }
@@ -157,6 +159,7 @@
                         extend: 'print',
                         text: '<i class="bi bi-printer"></i> Print',
                         className: 'btn btn-primary',
+                        titleAttr: 'Print',
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5]
                         }

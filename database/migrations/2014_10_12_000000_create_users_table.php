@@ -19,8 +19,8 @@ return new class extends Migration {
             $table->string('tlp')->nullable();
             $table->string('image_user')->nullable();
             $table->string('email')->unique();
-            $table->string('kode_otp')->nullable(); // Menyimpan kode OTP sementara
-            $table->timestamp('kadaluarsa_otp')->nullable(); // Pastikan ini ada di migrasi
+            $table->string('kode_otp')->nullable();
+            $table->timestamp('kadaluarsa_otp')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'staf', 'user'])->default('user');

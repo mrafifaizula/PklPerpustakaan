@@ -164,49 +164,6 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
-        .social {
-            margin-top: 30px;
-            display: flex;
-        }
-
-        .social div {
-            background: red;
-            width: 150px;
-            border-radius: 3px;
-            padding: 5px 10px 10px 5px;
-            background-color: rgba(255, 255, 255, 0.27);
-            color: #eaf0fb;
-            text-align: center;
-        }
-
-        .social div:hover {
-            background-color: rgba(255, 255, 255, 0.47);
-        }
-
-        .social .fb {
-            margin-left: 25px;
-        }
-
-        .social i {
-            margin-right: 4px;
-        }
-
-        .register-link {
-            margin-top: 20px;
-            text-align: center;
-            color: #ffffff;
-        }
-
-        .register-link a {
-            color: #ff512f;
-            /* Warna tautan */
-            text-decoration: none;
-        }
-
-        .register-link a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 

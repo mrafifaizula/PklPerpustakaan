@@ -76,13 +76,16 @@
                                     </div>
                                     <div class="mb-2">
                                         <label for="role">Role</label>
-                                        <select name="role" class="form-control select @error('role') is-invalid @enderror">
+                                        <select name="role"
+                                            class="form-control select @error('role') is-invalid @enderror">
                                             <option value="">Pilih</option>
                                             <option value="user">User</option>
-                                            <option value="staf">Staf</option>
-                                            <option value="admin">Admin</option>
+                                            @if (Auth::check() && Auth::user()->role === 'admin')
+                                                <option value="staf">Staf</option>
+                                                <option value="admin">Admin</option>
+                                            @endif
                                         </select>
-                                    </div>                                    
+                                    </div>
                                 </div>
                             </div>
                             <button class="btn btn-sm btn-success" type="submit">Simpan</button>

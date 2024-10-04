@@ -44,7 +44,7 @@ class RegisterController extends Controller
             'kadaluarsa_otp' => $kadaluarsaOtp,
         ]);
 
-        Mail::to($user->email)->send(new CodeOtp($kodeOtp));
+        Mail::to($user->email)->send(new CodeOtp($kodeOtp, $user->name));
         session(['email' => $user->email]);
 
         return $user;
@@ -55,31 +55,5 @@ class RegisterController extends Controller
     {
         return redirect()->route('otp.verify');
     }
-
-
-    public function mintaUlangOtp(Request $request)
-    {
-        $email = session('email');
-        $pengguna = User::where('email', $email)->first();
-
-        if ($pengguna) {
-            $kodeOtp = rand(100000, 999999);
-            $kadaluarsaOtp = now()->addMinutes(10);
-
-            $pengguna->kode_otp = $kodeOtp;
-            $pengguna->kadaluarsa_otp = $kadaluarsaOtp;
-            $pengguna->save();
-
-            Mail::to($pengguna->email)->send(new CodeOtp($kodeOtp));
-
-            Alert::success('Sukses', 'Kode OTP baru telah dikirim ke email Anda.')->autoClose(2000);
-            return back();
-        }
-
-        // Jika pengguna tidak ditemukan, tampilkan pesan error
-        Alert::error('Error', 'Email tidak ditemukan.')->autoClose(2000);
-        return back();
-    }
-
 
 }

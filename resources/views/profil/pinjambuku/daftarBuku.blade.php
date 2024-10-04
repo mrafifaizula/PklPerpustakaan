@@ -72,9 +72,7 @@
         .card img {
             width: 100%;
             height: 360px;
-            /* Fixed height for the image */
             object-fit: cover;
-            /* Ensure the image covers the area without distortion */
             border-bottom: 2px solid #e0e0e0;
         }
 
@@ -85,7 +83,6 @@
             margin: 0;
             color: #333;
             height: 50px;
-            /* Fixed height for the text area */
         }
 
         .card:hover {
@@ -107,7 +104,6 @@
 
 @section('content')
     <div class="container">
-        <!-- Filter Section -->
         <ul class="event_filter">
             <li>
                 <a class="is_active" data-filter="*">Show All</a>
@@ -119,6 +115,17 @@
             @endforeach
         </ul>
 
+        <div class="input-group mb-3 justify-content-end">
+            {{-- <form action="{{ url('profil/buku') }}" method="GET" class="d-flex"> --}}
+            <div class="form-outline" data-mdb-input-init>
+                <input type="search" id="form1" name="search" class="form-control" placeholder="Cari judul buku..."
+                    value="{{ request()->get('search') }}" />
+            </div>
+            <button type="submit" class="btn btn-secondary">
+                <i class="bi bi-search"></i>
+            </button>
+            {{-- </form> --}}
+        </div>
 
         <div class="cards-container m-4">
             @foreach ($buku as $item)
@@ -132,7 +139,7 @@
                 </div>
             @endforeach
         </div>
-        
+
         <nav aria-label="Page navigation example" class="text-center">
             <ul class="pagination justify-content-center">
                 <li class="page-item {{ $buku->onFirstPage() ? 'disabled' : '' }}">
@@ -162,30 +169,25 @@
 
 @push('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Include Isotope -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
 
     <script>
         $(document).ready(function() {
-            // Inisialisasi Isotope pada container dengan item kartu
             var $grid = $('.cards-container').isotope({
                 itemSelector: '.card',
                 layoutMode: 'fitRows',
-                transitionDuration: '0.6s' // Durasi transisi untuk animasi yang halus
+                transitionDuration: '0.6s'
             });
 
             // Filter item saat klik
             $('.event_filter li a').click(function(e) {
-                e.preventDefault(); // Cegah aksi default pada tautan anchor
+                e.preventDefault(); 
 
-                // Hapus kelas aktif dari semua tautan filter dan tambahkan ke yang diklik
                 $('.event_filter li a').removeClass('is_active');
                 $(this).addClass('is_active');
 
-                // Ambil nilai filter dari atribut data-filter
                 var nilaiFilter = $(this).attr('data-filter');
 
-                // Terapkan filter ke Isotope dengan animasi transisi tunggal
                 $grid.isotope({
                     filter: nilaiFilter
                 });
@@ -196,55 +198,43 @@
     {{-- pagination --}}
     <script>
         $(document).ready(function() {
-            // Inisialisasi Isotope saat halaman pertama kali dimuat
             var $grid = $('.cards-container').isotope({
                 itemSelector: '.card',
                 layoutMode: 'fitRows',
-                transitionDuration: '0.6s' // Durasi transisi untuk animasi yang halus
+                transitionDuration: '0.6s'
             });
 
-            // Fungsi untuk menangani pagination dengan AJAX
             function handlePagination() {
                 $('.pagination a').on('click', function(e) {
-                    e.preventDefault(); // Cegah aksi default dari anchor tag
-                    const url = $(this).attr('href'); // Ambil URL dari pagination
-
-                    // Memuat konten baru dengan AJAX
+                    e.preventDefault();
+                    const url = $(this).attr('href');
                     fetch(url)
                         .then(response => response.text())
                         .then(html => {
-                            // Ganti konten buku dengan yang baru
                             const newContent = $(html).find('.cards-container').html();
                             $('.cards-container').html(newContent);
 
-                            // Ganti pagination dengan yang baru
                             const newPagination = $(html).find('.pagination').html();
                             $('.pagination').html(newPagination);
 
-                            // Inisialisasi ulang Isotope setelah konten diperbarui
                             $grid.isotope('reloadItems').isotope({
                                 itemSelector: '.card',
                                 layoutMode: 'fitRows'
                             });
 
-                            // Atur ulang layout untuk memastikan posisi item sesuai
                             $grid.isotope('layout');
 
-                            // Panggil fungsi handlePagination lagi untuk pagination baru
                             handlePagination();
 
-                            // Scroll ke atas setelah konten dimuat
                             window.scrollTo({
                                 top: document.querySelector('.container')
-                                    .offsetTop, // Scroll ke bagian atas section buku
-                                behavior: 'smooth' // Menambahkan efek scroll yang halus
+                                    .offsetTop,
+                                behavior: 'smooth'
                             });
                         })
                         .catch(error => console.error('Error:', error));
                 });
             }
-
-            // Panggil fungsi handlePagination saat halaman pertama kali dimuat
             handlePagination();
         });
     </script>

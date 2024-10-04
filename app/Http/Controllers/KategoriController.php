@@ -8,6 +8,9 @@ use App\Models\pinjambuku;
 use Validator;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
 
 class KategoriController extends Controller
 {
@@ -72,7 +75,6 @@ class KategoriController extends Controller
             'nama_kategori.required' => 'Nama Kategori Harus Diisi',
         ]);
 
-        // validator nama kategori tidak boleh sama pake alert
         if ($validator->fails()) {
             $errors = $validator->errors()->first('nama_kategori');
             Alert::error('Gagal', 'Gagal ' . $errors)->autoClose(2000);
@@ -100,5 +102,80 @@ class KategoriController extends Controller
         Alert::success('Success', 'Data Berhasil Di Hapus')->autoClose(2000);
         return redirect()->route('kategori.index');
     }
+
+
+    public function import()
+    {
+        $kategori = kategori::all();
+
+        $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
+
+        return view('backend.kategori.importExcel', compact('kategori', 'notifymenunggu'));
+    }
+
+
+    public function importManual(Request $request)
+    {
+        $teksKategoris = $request->input('kategoris');
+        $kategoriList = array_filter(array_map('trim', explode("\n", $teksKategoris)));
+
+        $kategoriListLower = array_map('strtolower', $kategoriList);
+
+        $kategoriAda = Kategori::whereIn('nama_kategori', $kategoriListLower)->pluck('nama_kategori')->toArray();
+
+        $kategoriDuplikat = array_unique(array_diff_assoc($kategoriListLower, array_unique($kategoriListLower)));
+
+        $kategoriBaru = array_diff($kategoriListLower, $kategoriAda);
+
+        if (!empty($kategoriDuplikat)) {
+            Alert::error('Gagal', 'Kategori tidak boleh ada yang sama dalam input.')->autoClose(2000);
+        } elseif (!empty($kategoriBaru)) {
+            Kategori::insert(array_map(fn($nama) => ['nama_kategori' => $nama, 'created_at' => now(), 'updated_at' => now()], $kategoriBaru));
+            Alert::success('Sukses', 'Kategori berhasil disimpan.')->autoClose(2000);
+        } else {
+            Alert::error('Gagal', 'Semua kategori sudah ada.')->autoClose(2000);
+        }
+
+        return redirect()->route('kategori.index');
+    }
+
+    public function exportManual()
+    {
+        $fileName = 'kategori.csv';
+
+        // Data kategori
+        $kategoriData = [
+            ['Langkah-langkah untuk memasukkan Kategori pada Aplikasi:'],
+            ['1. Copy Nama Kategori dari nomber 1 sampe ke bawah'],
+            ['2. Paste kategori berikut pada kolom Import Kategori yang telah disediakan di Aplikasi'],
+            ['3. Klik Import'],
+            [],
+            ['nama_kategori'],
+            ['Kategori Contoh 1'],
+            ['Kategori Contoh 2'],
+            ['Kategori Contoh 3'],
+        ];
+
+        // Membuka handle output untuk file CSV
+        $handle = fopen('php://output', 'w');
+
+        // Set header untuk file CSV
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+
+        // Menulis data ke file CSV
+        foreach ($kategoriData as $row) {
+            fputcsv($handle, $row);
+        }
+
+        // Menutup file
+        fclose($handle);
+        exit;
+    }
+
+
+
 
 }

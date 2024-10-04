@@ -48,9 +48,9 @@
         }
 
         .warning {
-            background-color: #deffcd;
-            color: #048517;
-            border-left: 4px solid #e0ffba;
+            background-color: #fff3cd;
+            color: #856404;
+            border-left: 4px solid #ffeeba;
             padding: 10px;
             margin: 20px 0;
             border-radius: 5px;
@@ -83,18 +83,19 @@
             <h2>Perpustakaan SMK Assalaam Bandung</h2>
         </div>
         <div class="content">
-            <h1>Pengembalian Buku Disetujui</h1>
+            <h1>Peminjaman Buku ditolak</h1>
             <p>Halo, {{ $pinjamBuku->user->name }}</p>
-            <p>Pengembalian buku berikut telah disetujui:</p>
+            <p>Peminjaman buku berikut telah ditolak:</p>
             <p>Judul Buku: <strong>{{ $pinjamBuku->buku->judul }}</strong></p>
             <p>Jumlah Buku Dipinjam: <strong>{{ $pinjamBuku->jumlah }}</strong></p>
             <p>Tanggal Pinjam: <strong>{{ $pinjamBuku->tanggal_pinjambuku }}</strong></p>
             <p>Batas Pengembalian: <strong>{{ $pinjamBuku->batas_pengembalian }}</strong></p>
-            <p>Status: <span class="status">Dikembalikan</span></p>
+            <p>Status: <span class="status">Ditolak</span></p>
 
             <div class="warning">
-                <strong>Peringatan Pengembalian Buku:</strong> Terima kasih telah mengembalikan buku tepat waktu. Pastikan Anda terus mematuhi jadwal pengembalian untuk menghindari denda di masa mendatang. Jika Anda memiliki pertanyaan atau butuh bantuan terkait pengembalian buku, jangan ragu untuk menghubungi perpustakaan.
-            </div>         
+                <strong>Peringatan:</strong> Pastikan Anda mengembalikan buku tepat waktu untuk menghindari denda. Jika
+                ada pertanyaan, silakan hubungi perpustakaan.
+            </div>
         </div>
         <div class="footer">
             <p>&copy; 2024 Perpustakaan SMK Assalaam Bandung. Semua hak dilindungi.</p>

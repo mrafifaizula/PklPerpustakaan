@@ -15,6 +15,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PenulisController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -28,11 +29,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+// Route::get('/ggg', function () {
+//     return view(view: 'backend.kategori.importExcel');
+// });
+
+
 Auth::routes();
 
 Route::get('/verify-otp', [OtpController::class, 'showOtpForm'])->name('otp.verify');
 Route::post('/verify-otp', [OtpController::class, 'verifyOtp'])->name('post.otp.verify');
-Route::get('/otp/resend', [RegisterController::class, 'mintaUlangOtp'])->name('otp.mintaUlang');
+Route::get('/otp/resend', [OtpController::class, 'mintaUlangOtp'])->name('otp.mintaUlang');
+
+
+
+Route::get('login/google', [GoogleController::class, 'redirectToGoogle']);
+Route::get('google/redirect', [GoogleController::class, 'handleGoogleCallback']);
+
 
 
 // Guest
@@ -90,6 +102,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,staf']],
     Route::resource('penulis', PenulisController::class);
     Route::resource('penerbit', PenerbitController::class);
     Route::resource('buku', BukuController::class);
+    Route::resource('user', UsersController::class);
 
     // Rute lainnya terkait peminjaman dan pengembalian buku
     Route::get('dipinjam', [BackController::class, 'dipinjam']);
@@ -104,10 +117,25 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,staf']],
 
     Route::get('ditolak', [BackController::class, 'tidakdisetujui']);
     Route::get('kontak', [BackController::class, 'kontak']);
+
+
+    // import excel
+    Route::get('import/kategori', [KategoriController::class, 'import'])->name('import.kategori');
+    Route::post('importManual/kategori', [KategoriController::class, 'importManual'])->name('importManual.kategori');
+    Route::get('export-kategori', [KategoriController::class, 'exportManual'])->name('export.kategori');
+
+    Route::get('import/penerbit', [PenerbitController::class, 'import'])->name('import.penerbit');
+    Route::post('importManual/penerbit', [PenerbitController::class, 'importManual'])->name('importManual.penerbit');
+    Route::get('export-penerbit', [PenerbitController::class, 'exportManual'])->name('export.penerbit');
+
+    Route::get('import/penulis', [PenulisController::class, 'import'])->name('import.penulis');
+    Route::post('importManual/penulis', [PenulisController::class, 'importManual'])->name('importManual.penulis');
+    Route::get('export-penulis', [PenulisController::class, 'exportManual'])->name('export.penulis');
+
 });
 
-// user hanya untuk admin
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin']], function () {
-    Route::resource('user', UsersController::class); // Hanya admin yang bisa mengakses resource user
-});
+// // user hanya untuk admin
+// Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin']], function () {
+//     Route::resource('user', UsersController::class); // Hanya admin yang bisa mengakses resource user
+// });
 
