@@ -144,29 +144,7 @@ class FrontController extends Controller
         return view('profil.pinjambuku.detailBuku', compact('buku', 'pinjambuku', 'notification'));
     }
 
-    public function profil()
-    {
-        $user = Auth::user();
-        $idUser = Auth::id();
-        // Ambil notifikasi yang belum dibaca
-        $notification = notification::where('id_user', $idUser)
-            ->where('read', false)  // Hanya ambil notifikasi yang belum dibaca
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $userPinjamBuku = pinjambuku::where('id_user', Auth::id())
-            ->whereIn('status', ['diterima', 'menunggu pengembalian'])
-            ->count();
-
-        $jumlahBukuPinjam = pinjambuku::where('id_user', Auth::id())
-            ->whereNotIn('status', ['dikembalikan', 'ditolak'])
-            ->sum('jumlah');
-
-
-
-        return view('profil.profil', compact('user', 'notification', 'userPinjamBuku', 'jumlahBukuPinjam'));
-    }
-
+    
     public function riwayat()
     {
         $buku = buku::all();

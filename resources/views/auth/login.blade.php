@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Stylesheet -->
     <style media="screen">
         *,
@@ -168,6 +169,7 @@
         .social {
             margin-top: 30px;
             display: flex;
+            gap: 25px;
         }
 
         .social div {
@@ -249,7 +251,7 @@
         <button type="submit">Log In</button>
         <div class="social">
             <div class="fb"><i class="fab fa-facebook"></i> Facebook</div>
-            <div class="go"><i class="fab fa-google"></i> Google</div>
+            <div class="google"> <a href="{{ url('login/google') }}"><i class="bi bi-google"></i> Google</a></div>
         </div>        
         <div class="register-link">
             <p>Belum punya akun? <a href="{{ route('register') }}">Daftar di sini</a></p>

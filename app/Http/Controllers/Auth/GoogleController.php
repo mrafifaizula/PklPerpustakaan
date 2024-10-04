@@ -27,30 +27,22 @@ class GoogleController extends Controller
                 $user = User::create([
                     'name' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),
-                    'password' => bcrypt(uniqid()), // Password acak untuk pengguna baru
-                    'kode_otp' => null,
-                    'kadaluarsa_otp' => null,
-                    'email_verified_at' => now(), // Set waktu verifikasi ke saat ini
+                    'password' => bcrypt(uniqid()),
+                    'email_verified_at' => now(),
                 ]);
-            } else {
-                // Jika pengguna sudah ada, periksa status verifikasi email
-                if ($user->email_verified_at) {
-                    // Jika sudah terverifikasi, login langsung
-                    Auth::login($user, true);
-                    return redirect()->route('profil.dashboard'); // Arahkan ke dashboard
-                }
+
+                // Buat pesan bahwa registrasi berhasil
+                return redirect('/login')->with('success', 'Registrasi berhasil, silakan login.');
             }
 
-            // Jika pengguna sudah terdaftar tetapi belum terverifikasi,
-            // arahkan mereka ke halaman verifikasi OTP
-            return redirect()->route('otp.verify');
+            // Jika sudah terdaftar, langsung login
+            Auth::login($user, true);
 
+            return redirect()->route('profil.dashboard');
         } catch (\Exception $e) {
-            return redirect('/login')->with('error', 'Terjadi masalah saat login menggunakan Google: ' . $e->getMessage());
+            return redirect('/login')->with('error', 'Terjadi masalah saat login menggunakan Google.');
         }
     }
-
-
 
 
 }

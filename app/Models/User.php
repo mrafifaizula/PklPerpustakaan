@@ -21,6 +21,10 @@ class User extends Authenticatable
         'password',
         'kode_otp',
         'kadaluarsa_otp',
+        'email_verified_at',
+        'tlp',
+        'image_user',
+        'alamat',
     ];
 
     /**

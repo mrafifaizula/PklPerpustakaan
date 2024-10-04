@@ -14,7 +14,7 @@ use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PenulisController;
 use App\Http\Controllers\Auth\OtpController;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 /*
@@ -70,8 +70,8 @@ Route::group(['prefix' => 'profil', 'middleware' => ['auth', 'verified']], funct
     Route::get('pinjam/buku/{id}', [FrontController::class, 'pinjambukuprofil']);
 
     // Profil pengguna
-    Route::get('anda', [FrontController::class, 'profil'])->name('profil.show');
-    Route::patch('anda/{id}', [UsersController::class, 'update'])->name('profil.update');
+    Route::get('anda', [ProfilController::class, 'index'])->name('profil.show');
+    Route::patch('anda/{id}', [ProfilController::class, 'update'])->name('profil.update');
 
     // Rute untuk peminjaman buku
     Route::get('pinjambuku', [PinjamBukuController::class, 'index'])->name('profil.peminjamanBuku');

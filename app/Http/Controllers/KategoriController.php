@@ -150,7 +150,7 @@ class KategoriController extends Controller
             ['2. Paste kategori berikut pada kolom Import Kategori yang telah disediakan di Aplikasi'],
             ['3. Klik Import'],
             [],
-            ['nama_kategori'],
+            ['Nama Kategori'],
             ['Kategori Contoh 1'],
             ['Kategori Contoh 2'],
             ['Kategori Contoh 3'],
