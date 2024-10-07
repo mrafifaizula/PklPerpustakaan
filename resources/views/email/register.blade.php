@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peminjaman Buku Ditolak</title>
+    <title>Selamat Bergabung di Perpustakaan</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -47,15 +47,6 @@
             line-height: 1.5;
         }
 
-        .warning {
-            background-color: #fff3cd;
-            color: #856404;
-            border-left: 4px solid #ffeeba;
-            padding: 10px;
-            margin: 20px 0;
-            border-radius: 5px;
-        }
-
         .footer {
             text-align: center;
             padding: 10px;
@@ -67,11 +58,6 @@
         .footer p {
             margin: 5px 0;
         }
-
-        .status {
-            font-weight: bold;
-            color: #dc3545; /* Warna merah untuk status ditolak */
-        }
     </style>
 </head>
 
@@ -82,21 +68,13 @@
             <h2>Perpustakaan SMK Assalaam Bandung</h2>
         </div>
         <div class="content">
-            <h1>Pengembalian Buku Ditolak</h1>
-            <p>Halo, {{ $pinjamBuku->user->name }}</p>
-            <p>Pengembalian buku berikut telah ditolak:</p>
-            <p>Judul Buku: <strong>{{ $pinjamBuku->buku->judul }}</strong></p>
-            <p>Jumlah Buku Dipinjam: <strong>{{ $pinjamBuku->jumlah }}</strong></p>
-            <p>Tanggal Pinjam: <strong>{{ $pinjamBuku->tanggal_pinjambuku }}</strong></p>
-            <p>Batas Pengembalian: <strong>{{ $pinjamBuku->batas_pengembalian }}</strong></p>
-            <p>Status: <span class="status">Ditolak</span></p>
-
-            <p><strong>Alasan Penolakan:</strong> {{ $pinjamBuku->pesan }}</p>
-
-            <div class="warning">
-                <strong>Peringatan:</strong> Pastikan Anda mengembalikan buku tepat waktu untuk menghindari denda. Jika
-                ada pertanyaan, silakan hubungi perpustakaan.
-            </div>
+            <h1>Selamat Datang, {{ $user->name }}!</h1>
+            <p>Terima kasih telah mendaftar sebagai anggota Perpustakaan SMK Assalaam Bandung.
+            </p>
+            <p>Berikut adalah informasi akun Anda:</p>
+            <p><strong>Email:</strong> {{ $user->email }}</p>
+            <p>Anda sekarang dapat mulai meminjam buku dan menikmati semua layanan yang kami tawarkan.</p>
+            <p>Jika Anda memiliki pertanyaan atau butuh bantuan, jangan ragu untuk menghubungi kami.</p>
         </div>
         <div class="footer">
             <p>&copy; 2024 Perpustakaan SMK Assalaam Bandung. Semua hak dilindungi.</p>

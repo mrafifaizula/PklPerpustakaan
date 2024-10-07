@@ -7,7 +7,7 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header">Data Buku
+                    <div class="card-header">Create Buku
                         <a href="{{ route('buku.index') }}" class="btn btn-sm btn-primary" style="float: right">Kembali</a>
                     </div>
                     <div class="card-body">

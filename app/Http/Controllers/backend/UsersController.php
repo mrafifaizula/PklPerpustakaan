@@ -12,7 +12,7 @@ class UsersController extends Controller
 {
     public function index()
     {
-        $user = user::all(); // Use plural 'user' for variable name
+        $user = User::whereNotNull('email_verified_at')->get();
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
         confirmDelete('Delete', 'Apakah Kamu Yakin?');
@@ -74,10 +74,25 @@ class UsersController extends Controller
 
     public function destroy($id)
     {
-        $user = user::findOrFail($id);
+        $user = User::findOrFail($id);
+
+        $pinjamBukuCount = PinjamBuku::where('id_user', $user->id)
+            ->whereIn('status', ['menunggu pengembalian', 'diterima', 'pengembalian ditolak']) // Atau status lain yang sesuai
+            ->count();
+
+        if ($pinjamBukuCount > 0) {
+            $errorMessages = 'User tidak dapat dihapus karena masih memiliki peminjaman.';
+
+            Alert::error('Gagal', 'Gagal: ' . $errorMessages)->autoClose(2000);
+
+            return redirect()->route('user.index');
+        }
+
         $user->delete();
 
         Alert::success('Success', 'Data Berhasil Di Hapus')->autoClose(1000);
-        return redirect()->route('user.index')->with('success', 'User deleted successfully.');
+
+        return redirect()->route('user.index');
     }
+
 }

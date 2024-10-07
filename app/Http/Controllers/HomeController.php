@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Auth;
 use App\Models\Buku;
+use App\Models\user;
 use App\Models\Kategori;
 use App\Models\Penulis;
 use App\Models\Penerbit;
@@ -83,6 +84,11 @@ class HomeController extends Controller
             $dataDikembalikan[] = $dikembalikan[$bulan] ?? 0; // Isi dengan 0 jika tidak ada data 'dikembalikan' untuk bulan tersebut
         }
 
+        
+        $jmlUser = User::where('role', 'user')
+            ->whereNotNull('email_verified_at')
+            ->count();
+
 
         // chart 2
 
@@ -94,11 +100,11 @@ class HomeController extends Controller
 
 
         if ($user->role === 'admin') {
-            return view('backend.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'totalbuku', 'totalpinjam', 'notifymenunggu', 'notifpengajuankembali', 'userPinjamBuku', 'totalJumlahBukuDipinjam', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'notification', 'bukuYangDipinjam', 'namaBulan', 'dataDitolak', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku'));
+            return view('backend.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'totalbuku', 'totalpinjam', 'notifymenunggu', 'notifpengajuankembali', 'userPinjamBuku', 'totalJumlahBukuDipinjam', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'notification', 'bukuYangDipinjam', 'namaBulan', 'dataDitolak', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku', 'jmlUser'));
         } elseif ($user->role === 'staf') {
-            return view('backend.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'totalbuku', 'totalpinjam', 'notifymenunggu', 'notifpengajuankembali', 'userPinjamBuku', 'totalJumlahBukuDipinjam', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'notification', 'bukuYangDipinjam', 'namaBulan', 'dataDitolak', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku'));
+            return view('backend.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'totalbuku', 'totalpinjam', 'notifymenunggu', 'notifpengajuankembali', 'userPinjamBuku', 'totalJumlahBukuDipinjam', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'notification', 'bukuYangDipinjam', 'namaBulan', 'dataDitolak', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku', 'jmlUser'));
         } else {
-            return view('profil.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'totalbuku', 'totalpinjam', 'notifymenunggu', 'notifpengajuankembali', 'userPinjamBuku', 'totalJumlahBukuDipinjam', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'notification', 'bukuYangDipinjam', 'namaBulan', 'dataDitolak', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku'));
+            return view('profil.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'totalbuku', 'totalpinjam', 'notifymenunggu', 'notifpengajuankembali', 'userPinjamBuku', 'totalJumlahBukuDipinjam', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'notification', 'bukuYangDipinjam', 'namaBulan', 'dataDitolak', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku', 'jmlUser'));
         }
 
     }

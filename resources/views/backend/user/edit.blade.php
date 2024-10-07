@@ -7,7 +7,7 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header">Data User
+                    <div class="card-header">Edit User
                         <a href="{{ route('user.index') }}" class="btn btn-sm btn-primary" style="float: right">Kembali</a>
                     </div>
                     <div class="card-body">

@@ -82,16 +82,16 @@
             <h2>Perpustakaan SMK Assalaam Bandung</h2>
         </div>
         <div class="content">
-            <h1>Pengembalian Buku Ditolak</h1>
+            <h1>Peminjaman Buku Ditolak</h1>
             <p>Halo, {{ $pinjamBuku->user->name }}</p>
-            <p>Pengembalian buku berikut telah ditolak:</p>
+            <p>Peminjaman buku berikut telah ditolak:</p>
             <p>Judul Buku: <strong>{{ $pinjamBuku->buku->judul }}</strong></p>
             <p>Jumlah Buku Dipinjam: <strong>{{ $pinjamBuku->jumlah }}</strong></p>
             <p>Tanggal Pinjam: <strong>{{ $pinjamBuku->tanggal_pinjambuku }}</strong></p>
             <p>Batas Pengembalian: <strong>{{ $pinjamBuku->batas_pengembalian }}</strong></p>
             <p>Status: <span class="status">Ditolak</span></p>
 
-            <p><strong>Alasan Penolakan:</strong> {{ $pinjamBuku->pesan }}</p>
+            <p><strong>Alasan Penolakan:</strong> {{ $pinjamBuku->pesan }}</p> 
 
             <div class="warning">
                 <strong>Peringatan:</strong> Pastikan Anda mengembalikan buku tepat waktu untuk menghindari denda. Jika

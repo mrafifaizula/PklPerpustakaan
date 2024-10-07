@@ -7,7 +7,7 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header">Data Penerbit
+                    <div class="card-header">Create Penerbit
                         <a href="{{ route('penerbit.index') }}" class="btn btn-sm btn-primary" style="float: right">
                             Kembali
                         </a>

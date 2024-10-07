@@ -8,6 +8,7 @@ use App\Mail\CodeOtp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\Register;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class OtpController extends Controller
@@ -40,6 +41,9 @@ class OtpController extends Controller
 
             session()->forget('email');
 
+            Mail::to($user->email)->send(new Register($user));
+
+
             Alert::success('Success', 'Email berhasil diverifikasi!')->autoClose(2000);
             return redirect()->route('profil.dashboard');
         }
@@ -60,7 +64,7 @@ class OtpController extends Controller
             $user->kode_otp = $kodeOtp;
             $user->kadaluarsa_otp = $kadaluarsaOtp;
             $user->save();
-            
+
             Mail::to($user->email)->send(new CodeOtp($kodeOtp, $user->name));
 
             Alert::success('Sukses', 'Kode OTP baru telah dikirim ke email Anda.')->autoClose(2000);

@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\PinjamBuku;
+use App\Models\pinjambuku;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -18,7 +18,7 @@ class TolakPinjamKirimEmail extends Mailable
     public $buku;
 
 
-    public function __construct(PinjamBuku $pinjambuku,)
+    public function __construct(pinjambuku $pinjambuku,)
     {
         $this->pinjambuku = $pinjambuku;
     }
@@ -26,7 +26,7 @@ class TolakPinjamKirimEmail extends Mailable
     public function build()
     {
         return $this->subject('Peminjaman Buku Disetujui')
-            ->view('email.tolakPengembalianBuku')
+            ->view('email.tolakPinjamBuku')
             ->with([
                 'pinjamBuku' => $this->pinjambuku,
                 'buku' => $this->buku,

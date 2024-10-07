@@ -9,7 +9,7 @@
             <div class="col-md-10">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Form Tambah Buku</span>
+                        <span>Edit Buku</span>
                         <a href="{{ route('buku.index') }}" class="btn btn-sm btn-primary">Kembali</a>
                     </div>
                     <div class="card-body">

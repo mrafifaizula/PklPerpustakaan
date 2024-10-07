@@ -23,7 +23,7 @@
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Pengguna</p>
                                     <h5 class="font-weight-bolder">
-                                        {{ \App\Models\User::where('role', 'user')->count() }}
+                                        {{ $jmlUser }}
                                     </h5>
                                     <p class="mb-0">
                                         Terbaru
@@ -124,6 +124,41 @@
                 </div>
             </div>
         </div>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <h6 class="mb-3">Laporan Hari Ini</h6>
+                <p class="text-sm text-muted mb-3">{{$tanggalFormat}}</p>
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <i class="bi bi-person-plus-fill text-success mb-1" style="font-size: 20px;"></i>
+                        <p class="text-sm text-uppercase font-weight-bold mb-0">Pengguna Baru</p>
+                        <h5 class="font-weight-bolder">0</h5>
+                    </div>
+
+                    <div class="col-md-3">
+                        <i class="bi bi-book-fill text-primary mb-1" style="font-size: 20px;"></i>
+                        <p class="text-sm text-uppercase font-weight-bold mb-0">Peminjaman</p>
+                        <h5 class="font-weight-bolder">0</h5>
+                    </div>
+
+                    <div class="col-md-3">
+                        <i class="bi bi-arrow-repeat text-info mb-1" style="font-size: 20px;"></i>
+                        <p class="text-sm text-uppercase font-weight-bold mb-0">Pengembalian</p>
+                        <h5 class="font-weight-bolder">0</h5>
+                    </div>
+
+                    <div class="col-md-3">
+                        <i class="bi bi-exclamation-triangle-fill text-danger mb-1" style="font-size: 20px;"></i>
+                        <p class="text-sm text-uppercase font-weight-bold mb-0">Jatuh Tempo</p>
+                        <h5 class="font-weight-bolder">0</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
         <div class="row mt-4">
             <div class="col-lg-6 mb-lg-0 mb-4">
                 <div class="card z-index-2 h-100">

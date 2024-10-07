@@ -241,13 +241,15 @@
                 </span>
             @enderror
         </div>
+
         <div class="password" style="margin-top: 10px">
             @if (Route::has('password.request'))
                 <a class="btn btn-link" href="{{ route('password.request') }}">
-                    {{ __('Ganti Password?') }}
+                    {{ __('Lupa Password?') }}
                 </a>
             @endif
         </div>
+
         <button type="submit">Log In</button>
         <div class="social">
             <div class="fb"><i class="fab fa-facebook"></i> Facebook</div>

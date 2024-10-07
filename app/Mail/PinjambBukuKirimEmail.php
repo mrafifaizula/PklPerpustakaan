@@ -1,8 +1,8 @@
 <?php
 namespace App\Mail;
 
-use App\Models\PinjamBuku;
-use App\Models\Buku;
+use App\Models\pinjambuku;
+use App\Models\buku;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -15,7 +15,7 @@ class PinjambBukuKirimEmail extends Mailable
     public $buku;
 
 
-    public function __construct(PinjamBuku $pinjambuku, Buku $buku)
+    public function __construct(pinjambuku $pinjambuku, buku $buku)
     {
         $this->pinjambuku = $pinjambuku;
         $this->buku = $buku;

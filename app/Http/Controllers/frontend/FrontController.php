@@ -119,8 +119,7 @@ class FrontController extends Controller
 
     public function daftarbuku(Request $request)
     {
-        $query = $request->input('search');
-        
+       
         $buku = Buku::where('jumlah_buku', '>', 0)
             ->paginate(9);
 

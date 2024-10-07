@@ -235,8 +235,6 @@ class BukuController extends Controller
         return redirect()->route('buku.index');
     }
 
-
-
     public function exportManual()
     {
         $fileName = 'buku.csv';

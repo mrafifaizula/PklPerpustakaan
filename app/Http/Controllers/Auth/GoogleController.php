@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\RegisterGoogle;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,9 @@ class GoogleController extends Controller
                     'password' => bcrypt(uniqid()),
                     'email_verified_at' => now(),
                 ]);
+
+                Mail::to($user->email)->send(new RegisterGoogle($user));
+
             }
 
             // Login pengguna (baik yang baru maupun yang sudah ada)
