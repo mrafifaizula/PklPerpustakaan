@@ -3,14 +3,13 @@
         width: 50px;
         height: 50px;
         background-color: #fff;
-        /* Warna background putih */
         border-radius: 50%;
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 14px;
         color: #000;
-        /* Warna font */
+
     }
 
 

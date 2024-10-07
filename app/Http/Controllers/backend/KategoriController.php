@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
-use App\Models\kategori;
-use App\Models\buku;
-use App\Models\pinjambuku;
 use Validator;
+use App\Models\buku;
+use App\Models\kategori;
+use App\Models\pinjambuku;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 
 class KategoriController extends Controller

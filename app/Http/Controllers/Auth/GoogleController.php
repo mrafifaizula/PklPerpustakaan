@@ -30,12 +30,9 @@ class GoogleController extends Controller
                     'password' => bcrypt(uniqid()),
                     'email_verified_at' => now(),
                 ]);
-
-                // Buat pesan bahwa registrasi berhasil
-                return redirect('/login')->with('success', 'Registrasi berhasil, silakan login.');
             }
 
-            // Jika sudah terdaftar, langsung login
+            // Login pengguna (baik yang baru maupun yang sudah ada)
             Auth::login($user, true);
 
             return redirect()->route('profil.dashboard');
@@ -43,6 +40,7 @@ class GoogleController extends Controller
             return redirect('/login')->with('error', 'Terjadi masalah saat login menggunakan Google.');
         }
     }
+
 
 
 }

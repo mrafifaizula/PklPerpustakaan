@@ -11,12 +11,10 @@
 <style>
     .dataTables_wrapper .dt-buttons {
         margin-bottom: 2px;
-        /* Adjust margin between buttons and table */
     }
 
     .dataTables_wrapper .dataTables_filter {
         text-align: right;
-        /* Align search box to the right */
     }
 </style>
 
@@ -97,40 +95,56 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
+
                                             <div class="row">
-                                                <div class="row mb-2">
-                                                    <div class="col-md-6">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Nama</label>
                                                         <input type="text" class="form-control" name="name"
                                                             value="{{ $item->user->name }}" disabled>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Judul</label>
                                                         <input type="text" class="form-control" name="judul"
                                                             value="{{ $item->buku->judul }}" disabled>
                                                     </div>
                                                 </div>
+                                            </div>
 
-                                                <div class="row mb-2">
-                                                    <div class="col-md-6">
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Jumlah</label>
                                                         <input type="text" class="form-control" name="jumlah_buku"
                                                             value="{{ $item->jumlah }}" disabled>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Kode Buku</label>
                                                         <input type="text" class="form-control" name="code_buku"
                                                             value="{{ $item->buku->code_buku }}" disabled>
                                                     </div>
                                                 </div>
+                                            </div>
 
-                                                <div class="row mb-2">
-                                                    <div class="col-md-6">
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Tanggal Pinjam</label>
                                                         <input type="text" class="form-control" name="tanggal_pinjambuku"
                                                             value="{{ $item->tanggal_pinjambuku }}" disabled>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Batas Pengembalian</label>
                                                         <input type="text" class="form-control" name="batas_pengembalian"
                                                             value="{{ $item->batas_pengembalian }}" disabled>
@@ -138,6 +152,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-sm btn-secondary"
                                                 data-bs-dismiss="modal">Kembali</button>

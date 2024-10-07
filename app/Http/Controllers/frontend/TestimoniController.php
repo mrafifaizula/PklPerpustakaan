@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\frontend;
 use Auth;
 use App\Models\testimoni;
 use App\Models\pinjambuku;
 use App\Models\notification;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class TestimoniController extends Controller

@@ -1,22 +1,31 @@
 <?php
 
+// backend
+use App\Http\Controllers\backend\UsersController;
+use App\Http\Controllers\backend\BukuController;
+use App\Http\Controllers\backend\PenulisController;
+use App\Http\Controllers\backend\KategoriController;
+use App\Http\Controllers\backend\PenerbitController;
+use App\Http\Controllers\backend\BackController;
 
-use App\Http\Controllers\BackController;
-use App\Http\Controllers\FrontController;
-use App\Http\Controllers\UsersController;
-use App\Http\Controllers\BukuController;
-use App\Http\Controllers\PinjambukuController;
-use App\Http\Controllers\KontakController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\TestimoniController;
-use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\PenerbitController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PenulisController;
+// frontend
+use App\Http\Controllers\frontend\NotificationController;
+use App\Http\Controllers\frontend\PinjambukuController;
+use App\Http\Controllers\frontend\ProfilController;
+use App\Http\Controllers\frontend\TestimoniController;
+use App\Http\Controllers\frontend\FrontController;
+
+// auth
 use App\Http\Controllers\Auth\OtpController;
-use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\Auth\GoogleController;
+
+// guest
+use App\Http\Controllers\KontakController;
+use App\Http\Controllers\HomeController;
+
 use Illuminate\Support\Facades\Route;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,12 +45,13 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+// register kirim otp email
 Route::get('/verify-otp', [OtpController::class, 'showOtpForm'])->name('otp.verify');
 Route::post('/verify-otp', [OtpController::class, 'verifyOtp'])->name('post.otp.verify');
 Route::get('/otp/resend', [OtpController::class, 'mintaUlangOtp'])->name('otp.mintaUlang');
 
 
-
+// login dan register google
 Route::get('login/google', [GoogleController::class, 'redirectToGoogle']);
 Route::get('google/redirect', [GoogleController::class, 'handleGoogleCallback']);
 
@@ -86,7 +96,7 @@ Route::group(['prefix' => 'profil', 'middleware' => ['auth', 'verified']], funct
     Route::post('testimoni', [TestimoniController::class, 'store'])->name('testimoni.store');
 
     // Notifikasi
-    Route::post('/notification/{id}/mark-as-read', [NotificationController::class, 'index'])->name('notifications.markAsRead');
+    Route::post('notification/{id}', [NotificationController::class, 'index'])->name('notifications.markAsRead');
 });
 
 
@@ -104,16 +114,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,staf']],
     Route::resource('buku', BukuController::class);
     Route::resource('user', UsersController::class);
 
-    // Rute lainnya terkait peminjaman dan pengembalian buku
     Route::get('dipinjam', [BackController::class, 'dipinjam']);
     Route::get('pengembalian', [BackController::class, 'riwayat']);
     Route::get('pengajuankembali', [BackController::class, 'pengajuankembali'])->name('admin.dataPeminjaman.permintaanPengembalian');
     Route::get('pinjambuku', [BackController::class, 'permintaan'])->name('admin.dataPeminjaman.permintaanPeminjaman');
 
-    Route::put('pinjambuku/menyetujui/{id}', [PinjamBukuController::class, 'menyetujui'])->name('pinjambuku.menyetujui');
-    Route::put('pinjambuku/{id}', [PinjamBukuController::class, 'tolakpengajuan'])->name('pinjambuku.tolak');
-    Route::put('pinjambuku/{id}/accpengembalian', [PinjamBukuController::class, 'accpengembalian'])->name('admin.dataPeminjaman.accpengembalian');
-    Route::put('pinjambuku/tolak/{id}', [PinjamBukuController::class, 'tolakpengembalian'])->name('pengengembalian.tolak');
+    Route::put('pinjambuku/menyetujui/{id}', [BackController::class, 'menyetujui'])->name('pinjambuku.menyetujui');
+    Route::put('pinjambuku/{id}', [BackController::class, 'tolakpengajuan'])->name('pinjambuku.tolak');
+    Route::put('pinjambuku/{id}/accpengembalian', [BackController::class, 'accpengembalian'])->name('admin.dataPeminjaman.accpengembalian');
+    Route::put('pinjambuku/tolak/{id}', [BackController::class, 'tolakpengembalian'])->name('pengengembalian.tolak');
 
     Route::get('ditolak', [BackController::class, 'tidakdisetujui']);
     Route::get('kontak', [BackController::class, 'kontak']);
@@ -131,6 +140,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin,staf']],
     Route::get('import/penulis', [PenulisController::class, 'import'])->name('import.penulis');
     Route::post('importManual/penulis', [PenulisController::class, 'importManual'])->name('importManual.penulis');
     Route::get('export-penulis', [PenulisController::class, 'exportManual'])->name('export.penulis');
+
+    Route::get('import/buku', [BukuController::class, 'import'])->name('import.buku');
+    Route::post('importManual/buku', [BukuController::class, 'importManual'])->name('importManual.buku');
+    Route::get('export-buku', [BukuController::class, 'exportManual'])->name('export.buku');
 
 });
 

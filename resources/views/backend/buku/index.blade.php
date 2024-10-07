@@ -31,6 +31,9 @@
                 <a href="{{ route('buku.create') }}" class="btn btn-sm btn-primary" title="Tambah">
                     <i class="bi bi-plus-lg"></i> Tambah
                 </a>
+                <a href="{{ route('import.buku') }}" class="btn btn-sm btn-success" title="Import Excel">
+                    <i class="bi bi-file-earmark-excel"></i> Import Excel
+                </a>
             </div>
         </div>
         <div class="card-body">
@@ -65,21 +68,26 @@
                                         style="width: 50px; height: 50px;">
                                 </td> --}}
                                 <td>
-                                    <form action="{{ route('buku.destroy', $item->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('buku.destroy', $item->id) }}" method="POST"
+                                        style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <a href="{{ route('buku.edit', $item->id) }}" class="btn btn-success" title="Edit">
+                                        <a href="{{ route('buku.edit', $item->id) }}" class="btn btn-success"
+                                            title="Edit">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" title="Detail" data-bs-target="#exampleModal{{ $item->id }}">
+                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" title="Detail"
+                                            data-bs-target="#exampleModal{{ $item->id }}">
                                             <i class="bi bi-eye"></i>
                                         </button>
-                                        <button type="submit" class="btn btn-danger" title="Hapus" data-confirm-delete="true">
+                                        <button type="submit" class="btn btn-danger" title="Hapus"
+                                            data-confirm-delete="true">
                                             <i class="bi bi-trash"></i>
                                         </button>
-                                    </form>                                    
+                                    </form>
                                 </td>
                             </tr>
+
                             <!-- start Modal -->
                             <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -91,15 +99,19 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
+
                                             <div class="row">
-                                                <div class="row mb-2">
-                                                    <div class="col-md-6">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Judul</label>
                                                         <input type="text"
                                                             class="form-control @error('judul') is-invalid @enderror"
                                                             name="judul" value="{{ $item->judul }}" disabled>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Kategori</label>
                                                         <input type="text"
                                                             class="form-control @error('kategori') is-invalid @enderror"
@@ -107,29 +119,43 @@
                                                             disabled>
                                                     </div>
                                                 </div>
-                                                <div class="row mb-2">
-                                                    <div class="col-md-6">
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Stok</label>
                                                         <input type="text"
                                                             class="form-control @error('jumlah_buku') is-invalid @enderror"
                                                             name="jumlah_buku" value="{{ $item->jumlah_buku }}" disabled>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Tahun Terbit</label>
                                                         <input type="text"
                                                             class="form-control @error('tahun_terbit') is-invalid @enderror"
                                                             name="tahun_terbit" value="{{ $item->tahun_terbit }}" disabled>
                                                     </div>
                                                 </div>
-                                                <div class="row mb-2">
-                                                    <div class="col-md-6">
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Nama Penulis</label>
                                                         <input type="text"
                                                             class="form-control @error('nama_penulis') is-invalid @enderror"
                                                             name="nama_penulis" value="{{ $item->Penulis->nama_penulis }}"
                                                             disabled>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Nama Penerbit</label>
                                                         <input type="text"
                                                             class="form-control @error('nama_penerbit') is-invalid @enderror"
@@ -137,24 +163,31 @@
                                                             value="{{ $item->Penerbit->nama_penerbit }}" disabled>
                                                     </div>
                                                 </div>
-                                                <div class="row mb-2">
-                                                    <div class="col-md-12">
-                                                        <label for="">Deskripsi</label>
-                                                        <textarea class="form-control @error('desc_buku') is-invalid @enderror" name="desc_buku" disabled>{{ $item->desc_buku }}
-                                                        </textarea>
-                                                    </div>
-                                                </div>
-                                                <center>
-                                                    <div class="mb-2">
-                                                        <label for="">Foto Buku</label>
-                                                        <img class="form-control"
-                                                            src="{{ asset('images/buku/' . $item->image_buku) }}"
-                                                            alt="" style="width: 150px; height: 150px">
-                                                    </div>
-                                                </center>
                                             </div>
+
+
+                                            <div class="row mb-2">
+                                                <div class="col-md-12">
+                                                    <label for="">Deskripsi</label>
+                                                    <textarea class="form-control @error('desc_buku') is-invalid @enderror" name="desc_buku" disabled>{{ $item->desc_buku }}
+                                                        </textarea>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="mb-2 text-center">
+                                                <label for="">Foto Buku</label>
+                                                <div>
+                                                    <img src="{{ asset('images/buku/' . $item->image_buku) }}"
+                                                        alt="Foto Buku"
+                                                        style="width: 150px; height: 150px; object-fit: cover;"
+                                                        class="rounded">
+                                                </div>
+                                            </div>
+
+
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
+                                                <button type="button" class="btn btn-sm btn-secondary"
                                                     data-bs-dismiss="modal">Kembali</button>
                                             </div>
                                         </div>

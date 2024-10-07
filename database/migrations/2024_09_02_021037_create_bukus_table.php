@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('bukus', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->date('tahun_terbit');
+            $table->string('tahun_terbit');
             $table->integer('jumlah_buku');
             $table->string('image_buku');
             $table->string('desc_buku');

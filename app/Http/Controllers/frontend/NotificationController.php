@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\frontend;
+
 use Auth;
-use App\Models\notification;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\notification;
 
 class NotificationController extends Controller
 {
@@ -11,13 +13,11 @@ class NotificationController extends Controller
     {
         $idUser = Auth::id();
 
-        // Ambil notifikasi yang belum dibaca
         $notification = notification::where('id_user', $idUser)
             ->where('read', false)  // Hanya ambil notifikasi yang belum dibaca
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Kirim notifikasi ke view
         return view('layouts.profil.nav', ['notification' => $notification]);
 
     }

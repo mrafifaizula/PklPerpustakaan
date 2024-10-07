@@ -19,9 +19,7 @@
 
     .card {
         width: 218px;
-        /* Lebar kartu */
         height: auto;
-        /* Tinggi kartu menyesuaikan konten */
         border-radius: 10px;
         display: flex;
         flex-direction: column;
@@ -41,7 +39,6 @@
 
     .image {
         height: 60%;
-        /* Tinggi bagian gambar disesuaikan */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -112,101 +109,109 @@
         background-color: #0056b3;
         transform: translateY(-2px);
     }
-
 </style>
 
 @section('content')
-    <div class="container">
-        @foreach ($pinjambuku as $item)
-            <div class="card">
-                <div class="status-badge">
-                    @if ($item->status == 'ditolak')
-                        Ditolak
-                    @elseif($item->status == 'dikembalikan')
-                        Dikembalikan
-                    @else
-                        {{ ucfirst($item->status) }}
-                    @endif
-                </div>
-                <a href="#" class="image">
-                    <img src="{{ file_exists(public_path('images/buku/' . $item->buku->image_buku)) ? asset('images/buku/' . $item->buku->image_buku) : asset('assets/img/noimage.png') }}" alt="{{ $item->buku->judul }}">
-                </a>
-                <div class="title">
-                    <p>{{ $item->buku->judul }}</p>
-                </div>
-                <div class="foote">
-                    <a href="{{ url('profil/testimoni', $item->id) }}">
-                        <div class="button">Ulasan</div>
+    @if ($pinjambuku->isEmpty())
+        <div class="d-flex m-5 justify-content-center align-items-center">
+            <p style="color: white; font-size: 50px; text: bold;"><strong>Tidak Ada Riwayat</strong></p>
+        </div>
+    @else
+        <div class="container">
+            @foreach ($pinjambuku as $item)
+                <div class="card">
+                    <div class="status-badge">
+                        @if ($item->status == 'ditolak')
+                            Ditolak
+                        @elseif($item->status == 'dikembalikan')
+                            Dikembalikan
+                        @else
+                            {{ ucfirst($item->status) }}
+                        @endif
+                    </div>
+                    <a href="#" class="image">
+                        <img src="{{ file_exists(public_path('images/buku/' . $item->buku->image_buku)) ? asset('images/buku/' . $item->buku->image_buku) : asset('assets/img/noimage.png') }}"
+                            alt="{{ $item->buku->judul }}">
                     </a>
-                    <div class="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $item->id }}">Detail
+                    <div class="title">
+                        <p>{{ $item->buku->judul }}</p>
+                    </div>
+                    <div class="foote">
+                        <a href="{{ url('profil/testimoni', $item->id) }}">
+                            <div class="button">Ulasan</div>
+                        </a>
+                        <div class="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $item->id }}">Detail
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                Riwayat
-                            </h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="row mb-2">
-                                    <div class="col-md-6">
-                                        <label for="">Nama</label>
-                                        <input type="text" class="form-control" name="name"
-                                            value="{{ $item->user->name }}" disabled>
+                <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                    Riwayat
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="row mb-2">
+                                        <div class="col-md-6">
+                                            <label for="">Nama</label>
+                                            <input type="text" class="form-control" name="name"
+                                                value="{{ $item->user->name }}" disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="">Judul</label>
+                                            <input type="text" class="form-control" name="judul"
+                                                value="{{ $item->buku->judul }}" disabled>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="">Judul</label>
-                                        <input type="text" class="form-control" name="judul"
-                                            value="{{ $item->buku->judul }}" disabled>
-                                    </div>
-                                </div>
 
-                                <div class="row mb-2">
-                                    <div class="col-md-6">
-                                        <label for="">Jumlah</label>
-                                        <input type="text" class="form-control" name="jumlah_buku"
-                                            value="{{ $item->jumlah }}" disabled>
+                                    <div class="row mb-2">
+                                        <div class="col-md-6">
+                                            <label for="">Jumlah</label>
+                                            <input type="text" class="form-control" name="jumlah_buku"
+                                                value="{{ $item->jumlah }}" disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="">Kode Buku</label>
+                                            <input type="text" class="form-control" name="code_buku"
+                                                value="{{ $item->buku->code_buku }}" disabled>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="">Kode Buku</label>
-                                        <input type="text" class="form-control" name="code_buku"
-                                            value="{{ $item->buku->code_buku }}" disabled>
-                                    </div>
-                                </div>
 
-                                <div class="row mb-2">
-                                    <div class="col-md-6">
-                                        <label for="">Tanggal Pinjam</label>
-                                        <input type="text" class="form-control" name="tanggal_pinjambuku"
-                                            value="{{ $item->tanggal_pinjambuku }}" disabled>
+                                    <div class="row mb-2">
+                                        <div class="col-md-6">
+                                            <label for="">Tanggal Pinjam</label>
+                                            <input type="text" class="form-control" name="tanggal_pinjambuku"
+                                                value="{{ $item->tanggal_pinjambuku }}" disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="">Batas Pengembalian</label>
+                                            <input type="text" class="form-control" name="batas_pengembalian"
+                                                value="{{ $item->batas_pengembalian }}" disabled>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="">Batas Pengembalian</label>
-                                        <input type="text" class="form-control" name="batas_pengembalian"
-                                            value="{{ $item->batas_pengembalian }}" disabled>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <label for="">Status</label>
-                                        <input type="text" class="form-control" name="status"
-                                            value="{{ $item->status }}" disabled>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label for="">Status</label>
+                                            <input type="text" class="form-control" name="status"
+                                                value="{{ $item->status }}" disabled>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    data-bs-dismiss="modal">Kembali</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
-    </div>
+            @endforeach
+        </div>
+    @endif
 @endsection

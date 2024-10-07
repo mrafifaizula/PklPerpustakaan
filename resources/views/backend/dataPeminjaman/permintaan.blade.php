@@ -36,9 +36,9 @@
                             <td class="text-center">No</td>
                             <td>Nama</td>
                             <td>Judul</td>
-                            <td  class="text-center">Jumlah</td>
+                            <td class="text-center">Jumlah</td>
                             {{-- <td>Tanggal Pinjam</td> --}}
-                            <td  class="text-center">Batas Pengembalian</td>
+                            <td class="text-center">Batas Pengembalian</td>
                             <td>Status</td>
                             <td>Aksi</td>
                         </tr>
@@ -52,7 +52,7 @@
                                 <td>{{ $item->buku->judul }}</td>
                                 <td class="text-center">{{ $item->jumlah }}</td>
                                 {{-- <td>{{ $item->tanggal_pinjambuku }}</td> --}}
-                                <td  class="text-center">{{ $item->batas_pengembalian }}</td>
+                                <td class="text-center">{{ $item->batas_pengembalian }}</td>
                                 <td>
                                     <span
                                         class="badge badge-sm 
@@ -95,53 +95,74 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
+
                                             <div class="row">
-                                                <div class="row mb-2">
-                                                    <div class="col-md-6">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Nama</label>
                                                         <input type="text" class="form-control" name="name"
                                                             value="{{ $item->user->name }}" disabled>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Judul</label>
                                                         <input type="text" class="form-control" name="judul"
                                                             value="{{ $item->buku->judul }}" disabled>
                                                     </div>
                                                 </div>
-                                                <div class="row mb-2">
-                                                    <div class="col-md-6">
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Jumlah Buku</label>
                                                         <input type="text" class="form-control" name="jumlah_buku"
                                                             value="{{ $item->jumlah }}" disabled>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Kode Buku</label>
                                                         <input type="text" class="form-control" name="code_buku"
                                                             value="{{ $item->buku->code_buku }}" disabled>
                                                     </div>
                                                 </div>
-                                                <div class="row mb-2">
-                                                    <div class="col-md-6">
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Tanggal Pinjam</label>
                                                         <input type="text" class="form-control" name="tanggal_pinjambuku"
                                                             value="{{ $item->tanggal_pinjambuku }}" disabled>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="">Batas Pengembalian</label>
                                                         <input type="text" class="form-control" name="batas_pengembalian"
                                                             value="{{ $item->batas_pengembalian }}" disabled>
                                                     </div>
                                                 </div>
-                                                @if ($item->status == 'menunggu' || $item->status == 'menunggu pengembalian')
-                                                    <div class="row mb-2">
-                                                        <div class="col-md-12">
-                                                            <label for="pesan{{ $item->id }}">Alasan Penolakan</label>
-                                                            <textarea id="pesan{{ $item->id }}" name="pesan" class="form-control" rows="3"
-                                                                placeholder="Masukkan alasan penolakan"></textarea>
-                                                        </div>
-                                                    </div>
-                                                @endif
                                             </div>
+
+
+                                            @if ($item->status == 'menunggu' || $item->status == 'menunggu pengembalian')
+                                                <div class="row mb-2">
+                                                    <div class="col-md-12">
+                                                        <label for="pesan{{ $item->id }}">Alasan Penolakan</label>
+                                                        <textarea id="pesan{{ $item->id }}" name="pesan" class="form-control" rows="3"
+                                                            placeholder="Masukkan alasan penolakan"></textarea>
+                                                    </div>
+                                                </div>
+                                            @endif
+
                                         </div>
                                         <div class="modal-footer">
                                             <div style="display: flex; gap: 5px;">

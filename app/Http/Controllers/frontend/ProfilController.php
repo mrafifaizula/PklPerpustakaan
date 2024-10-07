@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\frontend;
 
-
-use App\Models\kategori;
-use App\Models\penulis;
-use App\Models\penerbit;
-use App\Models\User;
-use App\Models\pinjambuku;
-use App\Models\testimoni;
-use App\Models\notification;
-use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\Notification;
+use App\Models\PinjamBuku;
+use App\Models\User;
+
 
 class ProfilController extends Controller
 {

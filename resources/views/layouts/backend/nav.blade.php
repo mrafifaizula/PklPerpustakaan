@@ -35,7 +35,7 @@
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
         z-index: 1;
         border-radius: 5px;
-        z-index: 9999; /* or a higher value */
+        z-index: 9999; 
     }
 
     .dropdown-content a {

@@ -1,30 +1,29 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 use RealRashid\SweetAlert\Facades\Alert;
-use Auth;
 use App\Models\user;
 use App\Models\pinjambuku;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
+
 
 class UsersController extends Controller
 {
     public function index()
     {
         $user = user::all(); // Use plural 'user' for variable name
-        $notifymenunggu = pinjambuku::where('status', 'menunggu')->count();
-        $notifpengajuankembali = pinjambuku::where('status', 'menunggu pengembalian')->count();
+        $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
         confirmDelete('Delete', 'Apakah Kamu Yakin?');
-        return view('backend.user.index', compact('user', 'notifymenunggu', 'notifpengajuankembali')); // Compact with plural 'user'
+        return view('backend.user.index', compact('user', 'notifymenunggu'));
     }
 
     public function create()
     {
-        $notifymenunggu = pinjambuku::where('status', 'menunggu')->count();
+        $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
-        return view('backend.user.create', compact('notifymenunggu', 'notifpengajuankembali'));
+        return view('backend.user.create', compact('notifymenunggu'));
     }
 
     public function store(Request $request)
@@ -45,6 +44,7 @@ class UsersController extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role = $request->role;
+        $user->email_verified_at = now();
 
         if ($request->hasFile('image_buku')) {
             $user->deleteImage();
@@ -68,7 +68,7 @@ class UsersController extends Controller
 
     public function update(Request $request, )
     {
-        
+
     }
 
 

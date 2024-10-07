@@ -32,7 +32,7 @@
         background-color: #fff;
         min-width: 200px;
         box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-        z-index: 1;
+        z-index: 9999;
         border-radius: 10px;
     }
 
@@ -87,18 +87,14 @@
         top: 100%;
         right: 0;
         background-color: #f9f9f9;
-        /* Warna latar belakang yang lebih cerah */
         min-width: 300px;
-        /* Lebar minimum lebih besar */
         width: 350px;
-        /* Lebar tetap untuk dropdown */
         max-height: 300px;
         overflow-y: auto;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         border-radius: 8px;
         z-index: 1000;
         padding: 15px;
-        /* Tambahkan padding untuk ruang di sekitar konten */
     }
 
     .notification-icon:hover .notification-dropdown {
@@ -110,13 +106,9 @@
         text-decoration: none;
         display: block;
         padding: 10px 15px;
-        /* Padding yang lebih besar untuk area klik yang lebih nyaman */
         border-radius: 4px;
-        /* Rounded corners untuk setiap item */
         margin-bottom: 8px;
-        /* Spacing antar notifikasi */
         transition: background-color 0.3s;
-        /* Transisi halus untuk hover */
     }
 
     .notification-dropdown a:last-child {
@@ -133,16 +125,12 @@
 
     .notification-dropdown p {
         font-size: 12px;
-        /* Ukuran font untuk teks tambahan */
         margin: 0;
-        /* Menghapus margin default */
     }
 
     .notification-dropdown small {
         font-size: 10px;
-        /* Ukuran font untuk waktu */
         color: #888;
-        /* Warna lebih terang untuk waktu */
     }
 </style>
 

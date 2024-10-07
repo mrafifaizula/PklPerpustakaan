@@ -58,9 +58,7 @@
         .card {
             position: relative;
             width: 260px;
-            /* Width of the card */
             height: 410px;
-            /* Fixed height for the card */
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
@@ -116,7 +114,6 @@
         </ul>
 
         <div class="input-group mb-3 justify-content-end">
-            {{-- <form action="{{ url('profil/buku') }}" method="GET" class="d-flex"> --}}
             <div class="form-outline" data-mdb-input-init>
                 <input type="search" id="form1" name="search" class="form-control" placeholder="Cari judul buku..."
                     value="{{ request()->get('search') }}" />
@@ -124,7 +121,6 @@
             <button type="submit" class="btn btn-secondary">
                 <i class="bi bi-search"></i>
             </button>
-            {{-- </form> --}}
         </div>
 
         <div class="cards-container m-4">
@@ -181,7 +177,7 @@
 
             // Filter item saat klik
             $('.event_filter li a').click(function(e) {
-                e.preventDefault(); 
+                e.preventDefault();
 
                 $('.event_filter li a').removeClass('is_active');
                 $(this).addClass('is_active');
@@ -192,47 +188,31 @@
                     filter: nilaiFilter
                 });
             });
-        });
-    </script>
 
-    {{-- pagination --}}
-    <script>
-        $(document).ready(function() {
-            var $grid = $('.cards-container').isotope({
-                itemSelector: '.card',
-                layoutMode: 'fitRows',
-                transitionDuration: '0.6s'
-            });
-
+            // Pagination handling
             function handlePagination() {
                 $('.pagination a').on('click', function(e) {
                     e.preventDefault();
                     const url = $(this).attr('href');
-                    fetch(url)
-                        .then(response => response.text())
-                        .then(html => {
-                            const newContent = $(html).find('.cards-container').html();
-                            $('.cards-container').html(newContent);
+                    $.get(url, function(data) {
+                        const newContent = $(data).find('.cards-container').html();
+                        $('.cards-container').html(newContent);
 
-                            const newPagination = $(html).find('.pagination').html();
-                            $('.pagination').html(newPagination);
+                        const newPagination = $(data).find('.pagination').html();
+                        $('.pagination').html(newPagination);
 
-                            $grid.isotope('reloadItems').isotope({
-                                itemSelector: '.card',
-                                layoutMode: 'fitRows'
-                            });
+                        $grid.isotope('reloadItems').isotope({
+                            itemSelector: '.card',
+                            layoutMode: 'fitRows'
+                        });
 
-                            $grid.isotope('layout');
+                        handlePagination();
 
-                            handlePagination();
-
-                            window.scrollTo({
-                                top: document.querySelector('.container')
-                                    .offsetTop,
-                                behavior: 'smooth'
-                            });
-                        })
-                        .catch(error => console.error('Error:', error));
+                        window.scrollTo({
+                            top: document.querySelector('.container').offsetTop,
+                            behavior: 'smooth'
+                        });
+                    });
                 });
             }
             handlePagination();

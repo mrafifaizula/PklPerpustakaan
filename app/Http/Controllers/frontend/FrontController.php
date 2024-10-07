@@ -1,16 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
-use App\Models\buku;
-use App\Models\kategori;
-use App\Models\penulis;
-use App\Models\penerbit;
-use App\Models\User;
-use App\Models\pinjambuku;
-use App\Models\testimoni;
-use App\Models\notification;
-use Illuminate\Http\Request;
+namespace App\Http\Controllers\frontend;
+
 use Auth;
+use Illuminate\Http\Request;
+use App\Models\Buku;
+use App\Models\Kategori;
+use App\Models\Notification;
+use App\Models\Penulis;
+use App\Models\Penerbit;
+use App\Models\PinjamBuku;
+use App\Models\Testimoni;
+use App\Models\User;
+use App\Http\Controllers\Controller;
+
 
 class FrontController extends Controller
 {
@@ -46,21 +49,7 @@ class FrontController extends Controller
         return view('frontend.detailbuku', compact('buku', 'kategori', 'penulis', 'penerbit', 'pinjambuku'));
     }
 
-    public function ShowPinjambuku($id)
-    {
-        $buku = buku::findOrFail($id);
-        $pinjambuku = pinjambuku::where('id_buku', $buku->id)->first();
-        $user = Auth::user();
-        $idUser = Auth::id();
-        $notification = notification::where('id_user', $idUser)
-            ->where('read', false)  // Hanya ambil notifikasi yang belum dibaca
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return view('profil.pinjambuku.pinjamBuku', compact('buku', 'pinjambuku', 'user', 'notification'));
-    }
-
-
+   
 
     // profile
 
@@ -111,6 +100,22 @@ class FrontController extends Controller
 
         return view('profil.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'user', 'totalpinjam', 'notification', 'pinjambuku', 'jumlahBukuPinjam', 'userPinjamBuku', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'totalJumlahBukuDipinjam'));
     }
+
+
+    public function ShowPinjambuku($id)
+    {
+        $buku = buku::findOrFail($id);
+        $pinjambuku = pinjambuku::where('id_buku', $buku->id)->first();
+        $user = Auth::user();
+        $idUser = Auth::id();
+        $notification = notification::where('id_user', $idUser)
+            ->where('read', false)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('profil.pinjambuku.pinjamBuku', compact('buku', 'pinjambuku', 'user', 'notification'));
+    }
+
 
     public function daftarbuku(Request $request)
     {
@@ -164,7 +169,5 @@ class FrontController extends Controller
 
         return view('profil.riwayat', compact('pinjambuku', 'buku', 'user', 'notification'));
     }
-
-
 
 }
