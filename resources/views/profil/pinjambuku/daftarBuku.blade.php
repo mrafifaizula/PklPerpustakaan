@@ -104,11 +104,12 @@
     <div class="container">
         <ul class="event_filter">
             <li>
-                <a class="is_active" data-filter="*">Show All</a>
+                <a class="is_active" href="{{ route('daftarbuku') }}">Show All</a>
             </li>
-            @foreach ($kategori as $item)
+            @foreach ($kategoriList as $item)
                 <li>
-                    <a data-filter=".{{ $item->nama_kategori }}">{{ $item->nama_kategori }}</a>
+                    <a href="{{ route('daftarbuku', ['kategori' => $item->nama_kategori]) }}"
+                        data-filter=".{{ $item->nama_kategori }}">{{ $item->nama_kategori }}</a>
                 </li>
             @endforeach
         </ul>
@@ -136,30 +137,6 @@
             @endforeach
         </div>
 
-        <nav aria-label="Page navigation example" class="text-center">
-            <ul class="pagination justify-content-center">
-                <li class="page-item {{ $buku->onFirstPage() ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $buku->previousPageUrl() }}&kategori={{ request()->get('kategori') }}"
-                        aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-
-                @for ($i = 1; $i <= $buku->lastPage(); $i++)
-                    <li class="page-item {{ $i == $buku->currentPage() ? 'active' : '' }}">
-                        <a class="page-link"
-                            href="{{ $buku->url($i) }}&kategori={{ request()->get('kategori') }}">{{ $i }}</a>
-                    </li>
-                @endfor
-
-                <li class="page-item {{ $buku->hasMorePages() ? '' : 'disabled' }}">
-                    <a class="page-link" href="{{ $buku->nextPageUrl() }}&kategori={{ request()->get('kategori') }}"
-                        aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
     </div>
 @endsection
 
@@ -175,7 +152,6 @@
                 transitionDuration: '0.6s'
             });
 
-            // Filter item saat klik
             $('.event_filter li a').click(function(e) {
                 e.preventDefault();
 
@@ -188,34 +164,6 @@
                     filter: nilaiFilter
                 });
             });
-
-            // Pagination handling
-            function handlePagination() {
-                $('.pagination a').on('click', function(e) {
-                    e.preventDefault();
-                    const url = $(this).attr('href');
-                    $.get(url, function(data) {
-                        const newContent = $(data).find('.cards-container').html();
-                        $('.cards-container').html(newContent);
-
-                        const newPagination = $(data).find('.pagination').html();
-                        $('.pagination').html(newPagination);
-
-                        $grid.isotope('reloadItems').isotope({
-                            itemSelector: '.card',
-                            layoutMode: 'fitRows'
-                        });
-
-                        handlePagination();
-
-                        window.scrollTo({
-                            top: document.querySelector('.container').offsetTop,
-                            behavior: 'smooth'
-                        });
-                    });
-                });
-            }
-            handlePagination();
         });
     </script>
 @endpush

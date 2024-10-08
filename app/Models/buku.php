@@ -43,4 +43,9 @@ class buku extends Model
         return $this->hasMany(pinjambuku::class, 'id_buku');
     }
 
+    public function testimoni()
+    {
+        return $this->hasMany(testimoni::class, 'id_buku');
+    }
+
 }

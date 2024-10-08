@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 use Auth;
-use App\Models\Buku;
+use App\Models\buku;
 use App\Models\user;
-use App\Models\Kategori;
-use App\Models\Penulis;
-use App\Models\Penerbit;
-use App\Models\Pinjambuku;
+use App\Models\kategori;
+use App\Models\penulis;
+use App\Models\penerbit;
+use App\Models\pinjambuku;
+use App\Models\testimoni;
 use App\Models\notification;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -84,7 +86,7 @@ class HomeController extends Controller
             $dataDikembalikan[] = $dikembalikan[$bulan] ?? 0; // Isi dengan 0 jika tidak ada data 'dikembalikan' untuk bulan tersebut
         }
 
-        
+
         $jmlUser = User::where('role', 'user')
             ->whereNotNull('email_verified_at')
             ->count();
@@ -97,14 +99,54 @@ class HomeController extends Controller
         $jumlahPenerbit = Penerbit::count();
         $jumlahBuku = Buku::count();
 
+        // tanggal 
+        $tanggalSekarang = Carbon::now();
+        $namaBulanLengkap = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+        ];
+
+        $bulan = $namaBulanLengkap[$tanggalSekarang->month];
+        $tanggalFormat = $tanggalSekarang->day . ' ' . $bulan . ' ' . $tanggalSekarang->year;
+
+        $jumlahUserHariIni = user::where('role', 'user')
+            ->whereDate('created_at', Carbon::today())
+            ->count();
+
+
+        $jumlahPinjamBukuHariIni = pinjambuku::whereIn('status', ['diterima', 'menunggu pengembalian', 'pengembalian ditolak'])
+            ->whereDate('created_at', Carbon::today()) // Menggunakan kolom created_at
+            ->count();
+
+        $jumlahPengembalianBukuHariIni = pinjambuku::where('status', ['dikembalikan'])
+            ->whereDate('created_at', Carbon::today())
+            ->count();
+
+        $jumlahPinjamBukuJatuhTempo = pinjambuku::where('status', '!=', 'dikembalikan')
+            ->whereDate('batas_pengembalian', '<', Carbon::today())
+            ->count();
+
+        $testimoni = testimoni::all();
+        
+        
 
 
         if ($user->role === 'admin') {
-            return view('backend.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'totalbuku', 'totalpinjam', 'notifymenunggu', 'notifpengajuankembali', 'userPinjamBuku', 'totalJumlahBukuDipinjam', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'notification', 'bukuYangDipinjam', 'namaBulan', 'dataDitolak', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku', 'jmlUser'));
+            return view('backend.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'totalbuku', 'totalpinjam', 'notifymenunggu', 'notifpengajuankembali', 'userPinjamBuku', 'totalJumlahBukuDipinjam', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'notification', 'bukuYangDipinjam', 'namaBulan', 'dataDitolak', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku', 'jmlUser', 'tanggalFormat', 'jumlahUserHariIni', 'jumlahPinjamBukuHariIni', 'jumlahPengembalianBukuHariIni', 'jumlahPinjamBukuJatuhTempo', 'testimoni'));
         } elseif ($user->role === 'staf') {
-            return view('backend.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'totalbuku', 'totalpinjam', 'notifymenunggu', 'notifpengajuankembali', 'userPinjamBuku', 'totalJumlahBukuDipinjam', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'notification', 'bukuYangDipinjam', 'namaBulan', 'dataDitolak', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku', 'jmlUser'));
+            return view('backend.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'totalbuku', 'totalpinjam', 'notifymenunggu', 'notifpengajuankembali', 'userPinjamBuku', 'totalJumlahBukuDipinjam', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'notification', 'bukuYangDipinjam', 'namaBulan', 'dataDitolak', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku', 'jmlUser', 'tanggalFormat', 'jumlahUserHariIni', 'jumlahPinjamBukuHariIni', 'jumlahPengembalianBukuHariIni', 'jumlahPinjamBukuJatuhTempo', 'testimoni'));
         } else {
-            return view('profil.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'totalbuku', 'totalpinjam', 'notifymenunggu', 'notifpengajuankembali', 'userPinjamBuku', 'totalJumlahBukuDipinjam', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'notification', 'bukuYangDipinjam', 'namaBulan', 'dataDitolak', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku', 'jmlUser'));
+            return view('profil.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'totalbuku', 'totalpinjam', 'notifymenunggu', 'notifpengajuankembali', 'userPinjamBuku', 'totalJumlahBukuDipinjam', 'pinjamBukuUserTolak', 'pinjamBukuDikembalikan', 'notification', 'bukuYangDipinjam', 'namaBulan', 'dataDitolak', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku', 'jmlUser', 'tanggalFormat', 'jumlahUserHariIni', 'jumlahPinjamBukuHariIni', 'jumlahPengembalianBukuHariIni', 'jumlahPinjamBukuJatuhTempo', 'testimoni'));
         }
 
     }

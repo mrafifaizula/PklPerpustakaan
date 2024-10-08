@@ -192,33 +192,22 @@
                             style="display: flex; align-items: center; text-decoration: none; color: #333; padding: 5px 0;">
                             <i class="bi bi-house-fill" style="margin-right: 10px;"></i> Halaman Utama
                         </a>
-                        @guest
-                            <a class="nav-link" href="{{ url('login') }}"
+                        @if (in_array(Auth::user()->role, ['admin', 'staf']))
+                            <a href="{{ url('admin/dashboard') }}"
                                 style="display: flex; align-items: center; text-decoration: none; color: #333; padding: 5px 0;">
-                                <i class="bi bi-box-arrow-in-right" style="margin-right: 10px;"></i> Login
+                                <i class="bi bi-speedometer2" style="margin-right: 10px;"></i> Admin Dashboard
                             </a>
-                            <a class="nav-link" href="{{ url('register') }}"
-                                style="display: flex; align-items: center; text-decoration: none; color: #333; padding: 5px 0;">
-                                <i class="bi bi-r-circle" style="margin-right: 10px;"></i> Register
-                            </a>
-                        @else
-                            @if (Auth::user()->role === 'admin')
-                                <a href="{{ url('admin/dashboard') }}"
-                                    style="display: flex; align-items: center; text-decoration: none; color: #333; padding: 5px 0;">
-                                    <i class="bi bi-speedometer2" style="margin-right: 10px;"></i> Admin Dashboard
-                                </a>
-                            @endif
-                            <a class="nav-link text-dark" href="{{ route('logout') }}"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                style="display: flex; align-items: center; text-decoration: none; color: #333; padding: 5px 0;">
-                                <i class="bi bi-box-arrow-left" style="margin-right: 10px; color: #333;"></i> <span
-                                    style="color: black">Logout</span>
-                            </a>
+                        @endif
+                        <a class="nav-link text-dark" href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                            style="display: flex; align-items: center; text-decoration: none; color: #333; padding: 5px 0;">
+                            <i class="bi bi-box-arrow-left" style="margin-right: 10px; color: #333;"></i> <span
+                                style="color: black">Logout</span>
+                        </a>
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        @endguest
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </div>
@@ -226,29 +215,29 @@
     </div>
 </nav>
 @push('scripts')
-<script>
-    $(document).on('click', '.notification-item', function() {
-        const notificationId = $(this).data('id');
+    <script>
+        $(document).on('click', '.notification-item', function() {
+            const notificationId = $(this).data('id');
 
-        $.post(`/notification/${notificationId}/markAsRead`, {
-            _token: '{{ csrf_token() }}' // Menambahkan token CSRF untuk keamanan
-        }).done(function(response) {
-            if (response.success) {
-                // Hapus notifikasi dari tampilan atau tandai sebagai dibaca
-                $(this).fadeOut();
+            $.post(`/notification/${notificationId}/markAsRead`, {
+                _token: '{{ csrf_token() }}' // Menambahkan token CSRF untuk keamanan
+            }).done(function(response) {
+                if (response.success) {
+                    // Hapus notifikasi dari tampilan atau tandai sebagai dibaca
+                    $(this).fadeOut();
 
-                // Perbarui jumlah notifikasi
-                const badge = $('.notification-icon .badge');
-                const count = parseInt(badge.text()) - 1;
+                    // Perbarui jumlah notifikasi
+                    const badge = $('.notification-icon .badge');
+                    const count = parseInt(badge.text()) - 1;
 
-                // Jika tidak ada notifikasi, sembunyikan badge
-                if (count <= 0) {
-                    badge.remove(); // Hapus badge jika jumlah notifikasi 0
-                } else {
-                    badge.text(count); // Perbarui angka pada badge
+                    // Jika tidak ada notifikasi, sembunyikan badge
+                    if (count <= 0) {
+                        badge.remove(); // Hapus badge jika jumlah notifikasi 0
+                    } else {
+                        badge.text(count); // Perbarui angka pada badge
+                    }
                 }
-            }
-        }.bind(this)); // Mengikat `this` ke konteks saat ini
-    });
-</script>
+            }.bind(this)); // Mengikat `this` ke konteks saat ini
+        });
+    </script>
 @endpush

@@ -19,8 +19,10 @@ return new class extends Migration
             $table->unsignedTinyInteger('penilaian');
             $table->unsignedBigInteger('id_pinjambuku');
             $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_buku');
             $table->foreign('id_pinjambuku')->references('id')->on('pinjambukus')->onDelete('cascade');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_buku')->references('id')->on('bukus')->onDelete('cascade');
             $table->timestamps();
         });
     }

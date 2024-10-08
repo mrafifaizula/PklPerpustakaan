@@ -128,30 +128,30 @@
         <div class="card mt-3">
             <div class="card-body">
                 <h6 class="mb-3">Laporan Hari Ini</h6>
-                <p class="text-sm text-muted mb-3">{{$tanggalFormat}}</p>
+                <p class="text-sm text-muted mb-3">{{ $tanggalFormat }}</p>
                 <div class="row text-center">
                     <div class="col-md-3">
                         <i class="bi bi-person-plus-fill text-success mb-1" style="font-size: 20px;"></i>
                         <p class="text-sm text-uppercase font-weight-bold mb-0">Pengguna Baru</p>
-                        <h5 class="font-weight-bolder">0</h5>
+                        <h5 class="font-weight-bolder">{{ $jumlahUserHariIni }}</h5>
                     </div>
 
                     <div class="col-md-3">
                         <i class="bi bi-book-fill text-primary mb-1" style="font-size: 20px;"></i>
                         <p class="text-sm text-uppercase font-weight-bold mb-0">Peminjaman</p>
-                        <h5 class="font-weight-bolder">0</h5>
+                        <h5 class="font-weight-bolder">{{ $jumlahPinjamBukuHariIni }}</h5>
                     </div>
 
                     <div class="col-md-3">
                         <i class="bi bi-arrow-repeat text-info mb-1" style="font-size: 20px;"></i>
                         <p class="text-sm text-uppercase font-weight-bold mb-0">Pengembalian</p>
-                        <h5 class="font-weight-bolder">0</h5>
+                        <h5 class="font-weight-bolder">{{ $jumlahPengembalianBukuHariIni }}</h5>
                     </div>
 
                     <div class="col-md-3">
                         <i class="bi bi-exclamation-triangle-fill text-danger mb-1" style="font-size: 20px;"></i>
                         <p class="text-sm text-uppercase font-weight-bold mb-0">Jatuh Tempo</p>
-                        <h5 class="font-weight-bolder">0</h5>
+                        <h5 class="font-weight-bolder">{{ $jumlahPinjamBukuJatuhTempo }}</h5>
                     </div>
                 </div>
             </div>
@@ -198,7 +198,7 @@
                 <div class="card ">
                     <div class="card-header pb-0 p-3">
                         <div class="d-flex justify-content-between">
-                            <h6 class="mb-2">Table Buku</h6>
+                            <h6 class="mb-2">Buku Favorit</h6>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -243,7 +243,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5" style="height: 400px;">
+            {{-- <div class="col-lg-5" style="height: 400px;">
                 <div class="card card-carousel overflow-hidden h-100 p-0">
                     <div id="carouselExampleCaptions" class="carousel slide h-100" data-bs-ride="carousel">
                         <div class="carousel-inner border-radius-lg h-100">
@@ -269,6 +269,45 @@
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
+                    </div>
+                </div>
+            </div> --}}
+
+            <div class="col-lg-5">
+                <!-- Card for Total Pendapatan Denda -->
+                <div class="card border-0 shadow-sm p-4 mb-3">
+                    <div class="card-body p-3">
+                        <h6 class="card-title text-uppercase text-muted mb-1" style="font-size: 14px;">Total Pendapatan
+                            Denda</h6>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <div class="d-flex align-items-center">
+                                <h4 class="text-dark mb-0" style="font-size: 18px;">Rp0</h4>
+                            </div>
+                            <div class="rounded-circle bg-success d-flex justify-content-center align-items-center shadow-sm"
+                                style="width: 30px; height: 30px; position: relative;">
+                                <i class="bi bi-currency-dollar text-white" style="font-size: 16px;"></i>
+                            </div>
+                        </div>
+                        <p class="mb-1 text-muted" style="font-size: 12px;">{{ $tanggalFormat }}</p>
+                        <p class="text-success small mb-0" style="font-size: 12px;">+0% dari bulan sebelumnya</p>
+                    </div>
+                </div>
+
+                <!-- Card for Total Tunggakan -->
+                <div class="card border-0 shadow-sm p-4">
+                    <div class="card-body p-3">
+                        <h6 class="card-title text-uppercase text-muted mb-1" style="font-size: 14px;">Total Tunggakan
+                        </h6>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <div class="d-flex align-items-center">
+                                <h4 class="text-dark mb-0" style="font-size: 18px;">Rp0</h4>
+                            </div>
+                            <div class="rounded-circle bg-danger d-flex justify-content-center align-items-center shadow-sm"
+                                style="width: 30px; height: 30px; position: relative;">
+                                <i class="bi bi-currency-dollar text-white" style="font-size: 16px;"></i>
+                            </div>
+                        </div>
+                        <p class="mb-1 text-muted" style="font-size: 12px;">{{ $tanggalFormat }}</p>
                     </div>
                 </div>
             </div>

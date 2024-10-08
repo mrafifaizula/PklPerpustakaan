@@ -49,7 +49,7 @@ class FrontController extends Controller
         return view('frontend.detailbuku', compact('buku', 'kategori', 'penulis', 'penerbit', 'pinjambuku'));
     }
 
-   
+
 
     // profile
 
@@ -60,16 +60,20 @@ class FrontController extends Controller
             return redirect('/email/verify')->with('error', 'Please verify your email first.');
         }
 
-        $buku = buku::take(5)->get();
+        $buku = Buku::withCount('pinjambuku')
+            ->orderBy('pinjambuku_count', 'desc')
+            ->take(5)
+            ->get();
+
+
         $kategori = kategori::all();
         $penulis = penulis::all();
         $penerbit = penerbit::all();
         $user = User::all();
         $idUser = Auth::id();
         $totalpinjam = pinjambuku::where('id_user', $idUser)->sum('jumlah');
-       
+
         $notification = notification::where('id_user', $idUser)
-            ->where('read', false)  // Hanya ambil notifikasi yang belum dibaca
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -119,45 +123,49 @@ class FrontController extends Controller
 
     public function daftarbuku(Request $request)
     {
-       
-        $buku = Buku::where('jumlah_buku', '>', 0)
-            ->paginate(9);
+
+        $kategori = $request->get('kategori');
+
+        if ($kategori) {
+            $buku = Buku::where('kategori', $kategori)->where('jumlah_buku', '>', 0)->get();
+        } else {
+            $buku = Buku::where('jumlah_buku', '>', 0)->get(); // Ambil semua jika tidak ada kategori
+        }
+
+        $kategoriList = Kategori::all();
 
         $idUser = Auth::id();
         $kategori = kategori::all();
-        // Ambil notifikasi yang belum dibaca
         $notification = notification::where('id_user', $idUser)
-            ->where('read', false)  // Hanya ambil notifikasi yang belum dibaca
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('profil.pinjambuku.daftarBuku', compact('buku', 'kategori', 'notification'));
+        return view('profil.pinjambuku.daftarBuku', compact('buku', 'kategori', 'notification', 'kategoriList'));
     }
 
     public function showbukuprofil($id)
     {
-        $buku = buku::findorfail($id);
-        $pinjambuku = pinjambuku::all();
+        $buku = Buku::findOrFail($id);
+        $pinjambuku = PinjamBuku::all();
+        $testimoni = Testimoni::where('id_buku', $id)->get();
         $idUser = Auth::id();
-        // Ambil notifikasi yang belum dibaca
-        $notification = notification::where('id_user', $idUser)
-            ->where('read', false)  // Hanya ambil notifikasi yang belum dibaca
+
+        $notification = Notification::where('id_user', $idUser)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('profil.pinjambuku.detailBuku', compact('buku', 'pinjambuku', 'notification'));
+        return view('profil.pinjambuku.detailBuku', compact('buku', 'pinjambuku', 'notification', 'testimoni'));
     }
 
-    
+
+
     public function riwayat()
     {
         $buku = buku::all();
         $user = User::all();
         $pinjambuku = pinjambuku::all();
         $idUser = Auth::id();
-        // Ambil notifikasi yang belum dibaca
         $notification = notification::where('id_user', $idUser)
-            ->where('read', false)  // Hanya ambil notifikasi yang belum dibaca
             ->orderBy('created_at', 'desc')
             ->get();
 

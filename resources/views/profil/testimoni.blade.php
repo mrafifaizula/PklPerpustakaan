@@ -71,19 +71,19 @@
                 <form action="{{ route('testimoni.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="id_pinjambuku" value="{{ $pinjambuku->id }}">
+                    <input type="hidden" name="id_buku" value="{{ $pinjambuku->buku->id ?? '' }}"> <!-- Added hidden field -->
+                
                     <div class="row mb-2 mt-4">
                         <div class="col-md-6">
                             <label for="">Nama</label>
-                            <input type="text" name="name" class="form-control me-2" value="{{ $user->name }}"
-                                readonly>
+                            <input type="text" name="name" class="form-control me-2" value="{{ $user->name }}" readonly>
                         </div>
                         <div class="col-md-6">
                             <label for="">Judul Buku</label>
-                            <input type="text" name="judul" class="form-control me-2"
-                                value="{{ $pinjambuku->buku->judul ?? 'Tidak ada pinjaman' }}" readonly>
+                            <input type="text" name="judul" class="form-control me-2" value="{{ $pinjambuku->buku->judul ?? 'Tidak ada pinjaman' }}" readonly>
                         </div>
                     </div>
-
+                
                     <div class="row mb-2 mt-4">
                         <div class="col-md-6">
                             <label for="">Email</label>
@@ -92,17 +92,18 @@
                         <div class="col-md-6">
                             <label for="">Nomor Handphone</label>
                             <div class="d-flex">
-                                <input type="text" name="tlp" class="form-control me-2" value="{{ $user->tlp }}"
-                                    readonly>
+                                <input type="text" name="tlp" class="form-control me-2" value="{{ $user->tlp }}" readonly>
                             </div>
                         </div>
                     </div>
+                
                     <div class="row mb-2 mt-4">
                         <div class="col-md-12">
                             <label for="testimoni" class="form-label">Testimoni Anda *</label>
                             <textarea name="testimoni" class="form-control" placeholder="Ketik di sini..." rows="4" required></textarea>
                         </div>
                     </div>
+                
                     <div class="row mb-2 mt-4">
                         <div class="col-md-6">
                             <label for="penilaian" class="form-label">Penilaian layanan kami *</label>
@@ -116,6 +117,7 @@
                             <input type="hidden" name="penilaian" id="penilaian" value="0">
                         </div>
                     </div>
+                
                     <!-- Submit Button -->
                     <div class="d-flex justify-content-end mt-4">
                         <button type="submit" class="btn btn-success me-2">Kirim</button>
@@ -124,6 +126,7 @@
                         </a>
                     </div>
                 </form>
+                
             </div>
         </div>
     </div>

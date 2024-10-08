@@ -29,7 +29,7 @@ class TestimoniController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-            
+
         return view('profil.testimoni', compact('pinjambuku', 'user', 'notification'));
     }
 
@@ -37,14 +37,16 @@ class TestimoniController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_pinjambuku' => 'required|exists:pinjambukus,id', // Ubah 'pinjambuku' menjadi 'pinjambukus'
+            'id_pinjambuku' => 'required|exists:pinjambukus,id',
+            'id_buku' => 'required|exists:bukus,id', // Validate the id_buku
             'testimoni' => 'required|string|max:255',
             'penilaian' => 'required|integer|min:1|max:5',
         ]);
 
         Testimoni::create([
             'id_user' => Auth::id(),
-            'id_pinjambuku' => $request->id_pinjambuku, // Pastikan ini ada
+            'id_pinjambuku' => $request->id_pinjambuku,
+            'id_buku' => $request->id_buku, // Ensure this is populated
             'testimoni' => $request->testimoni,
             'penilaian' => $request->penilaian,
         ]);
@@ -52,7 +54,6 @@ class TestimoniController extends Controller
         Alert::success('Success', 'Testimoni Berhasil Dikirim')->autoClose(2000);
         return redirect()->route('profil.testimoni')->with('success', 'Testimoni berhasil disimpan.');
     }
-
 
 
     public function show(testimoni $testimoni)

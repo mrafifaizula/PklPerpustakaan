@@ -26,7 +26,11 @@ class BackController extends Controller
 {
     public function index()
     {
-        $buku = buku::take(5)->get();
+        $buku = Buku::withCount('pinjambuku')
+            ->orderBy('pinjambuku_count', 'desc')
+            ->take(5)
+            ->get();
+
         $kategori = kategori::orderBy("id", "desc")->get();
         $penulis = penulis::all();
         $penerbit = penerbit::all();
@@ -35,11 +39,6 @@ class BackController extends Controller
         $notifymenunggu = pinjambuku::whereIn('status', ['menunggu', 'menunggu pengembalian'])->count();
 
         $bukuYangDipinjam = pinjambuku::whereIn('status', ['diterima', 'menunggu pengembalian'])
-            ->count();
-
-
-        $jmlUser = User::where('role', 'user')
-            ->whereNotNull('email_verified_at')
             ->count();
 
         // chart
@@ -67,6 +66,11 @@ class BackController extends Controller
         $jumlahPenerbit = Penerbit::count();
         $jumlahBuku = Buku::count();
 
+        // jumlah user yang sudah email_verified_at
+        $jmlUser = User::where('role', 'user')
+            ->whereNotNull('email_verified_at')
+            ->count();
+
 
         // Tanggal Data harian
         $tanggalSekarang = Carbon::now();
@@ -88,8 +92,26 @@ class BackController extends Controller
         $bulan = $namaBulanLengkap[$tanggalSekarang->month];
         $tanggalFormat = $tanggalSekarang->day . ' ' . $bulan . ' ' . $tanggalSekarang->year;
 
+        $jumlahUserHariIni = user::where('role', 'user')
+            ->whereNotNull('email_verified_at')
+            ->whereDate('created_at', Carbon::today())
+            ->count();
 
-        return view('backend.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'user', 'notifymenunggu', 'bukuYangDipinjam', 'namaBulan', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku', 'jmlUser', 'tanggalFormat'));
+        $jumlahPinjamBukuHariIni = pinjambuku::whereIn('status', ['diterima', 'menunggu pengembalian', 'pengembalian ditolak'])
+            ->whereDate('created_at', Carbon::today())
+            ->count();
+
+        $jumlahPengembalianBukuHariIni = pinjambuku::where('status', ['dikembalikan'])
+            ->whereDate('created_at', Carbon::today())
+            ->count();
+
+        $jumlahPinjamBukuJatuhTempo = pinjambuku::where('status', '!=', 'dikembalikan')
+            ->whereDate('batas_pengembalian', '<', Carbon::today())
+            ->count();
+
+
+
+        return view('backend.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'user', 'notifymenunggu', 'bukuYangDipinjam', 'namaBulan', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku', 'jmlUser', 'tanggalFormat', 'jumlahUserHariIni', 'jumlahPinjamBukuHariIni', 'jumlahPengembalianBukuHariIni', 'jumlahPinjamBukuJatuhTempo'));
     }
 
     public function permintaan()
