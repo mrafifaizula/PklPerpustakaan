@@ -9,14 +9,13 @@ class testimoni extends Model
 {
     use HasFactory;
 
-    protected $visible = ['testimoni', 'penilaian'];
     protected $fillable = ['id_user', 'id_pinjambuku', 'id_buku', 'testimoni', 'penilaian'];
-
+    protected $visible = ['testimoni', 'penilaian'];
     public $timestamps = true;
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(user::class, 'id_user');
     }
 
     public function pinjambuku()
@@ -28,7 +27,4 @@ class testimoni extends Model
     {
         return $this->belongsTo(buku::class, 'id_buku');
     }
-    
-    
-
 }

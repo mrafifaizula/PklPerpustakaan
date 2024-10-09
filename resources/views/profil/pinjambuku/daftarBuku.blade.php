@@ -9,7 +9,7 @@
         }
 
         .container {
-            padding: 20px;
+            padding: 10px;
         }
 
         .event_filter {
@@ -49,38 +49,41 @@
         }
 
         .cards-container {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            /* Empat kolom */
             gap: 20px;
-            justify-content: center;
+            justify-items: center;
+            /* Pusatkan item dalam grid */
+            margin-top: 20px;
         }
 
         .card {
             position: relative;
-            width: 260px;
-            height: 410px;
-            border-radius: 15px;
+            border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             text-align: center;
             background-color: #f9f9f9;
             transition: transform 0.3s;
+            width: 100%;
+            max-width: 195px;
         }
 
         .card img {
             width: 100%;
-            height: 360px;
+            height: 250px;
             object-fit: cover;
             border-bottom: 2px solid #e0e0e0;
         }
 
         .card p {
-            padding: 15px 10px;
-            font-size: 18px;
+            padding: 5px 10px;
+            font-size: 14px;
             font-weight: bold;
             margin: 0;
             color: #333;
-            height: 50px;
+            height: 40px;
         }
 
         .card:hover {
@@ -92,10 +95,64 @@
             top: 10px;
             left: 10px;
             background-color: #e0e0e0;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
             font-weight: bold;
+        }
+
+        .heart-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            color: red;
+            cursor: pointer;
+        }
+
+        .card-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            margin-top: 2px;
+        }
+
+        .card-buttons a {
+            width: 45%;
+            font-size: 11px;
+            padding: 4px;
+            border: none;
+            color: white;
+            border-radius: 20px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .card-buttons a:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 1200px) {
+            .cards-container {
+                grid-template-columns: repeat(3, 1fr);
+                /* 3 buku per baris */
+            }
+        }
+
+        @media (max-width: 992px) {
+            .cards-container {
+                grid-template-columns: repeat(2, 1fr);
+                /* 2 buku per baris */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cards-container {
+                grid-template-columns: repeat(1, 1fr);
+                /* 1 buku per baris */
+            }
         }
     </style>
 @endsection
@@ -104,39 +161,35 @@
     <div class="container">
         <ul class="event_filter">
             <li>
-                <a class="is_active" href="{{ route('daftarbuku') }}">Show All</a>
+                <a class="is_active" href="{{ route('daftarbuku') }}" data-filter="*">Show All</a>
             </li>
             @foreach ($kategoriList as $item)
                 <li>
                     <a href="{{ route('daftarbuku', ['kategori' => $item->nama_kategori]) }}"
-                        data-filter=".{{ $item->nama_kategori }}">{{ $item->nama_kategori }}</a>
+                        data-filter=".{{ strtolower($item->nama_kategori) }}">{{ $item->nama_kategori }}</a>
                 </li>
             @endforeach
         </ul>
 
-        <div class="input-group mb-3 justify-content-end">
-            <div class="form-outline" data-mdb-input-init>
-                <input type="search" id="form1" name="search" class="form-control" placeholder="Cari judul buku..."
-                    value="{{ request()->get('search') }}" />
-            </div>
-            <button type="submit" class="btn btn-secondary">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
-
         <div class="cards-container m-4">
             @foreach ($buku as $item)
-                <div class="card m-3 {{ $item->kategori->nama_kategori }}">
+                <div class="card m-3 {{ strtolower($item->kategori->nama_kategori) }}">
                     <a href="{{ url('profil/buku', $item->id) }}">
                         <img src="{{ file_exists(public_path('images/buku/' . $item->image_buku)) ? asset('images/buku/' . $item->image_buku) : asset('assets/img/noimage.png') }}"
                             alt="{{ $item->judul }}">
                     </a>
                     <span class="badge">{{ $item->kategori->nama_kategori }}</span>
+                    <i class="bi bi-heart-fill heart-icon"></i>
                     <p>{{ $item->judul }}</p>
+                    <div class="card-buttons">
+                        <a href="{{ url('pinjam/buku', $item->id) }}" class="btn-detail"
+                            style="background-color: green">Pinjam</a>
+                        <a href="{{ url('profil/buku', $item->id) }}" class="btn-favorite"
+                            style="background-color: rgb(232, 232, 42)">Detail</a>
+                    </div>
                 </div>
             @endforeach
         </div>
-
     </div>
 @endsection
 
@@ -148,8 +201,7 @@
         $(document).ready(function() {
             var $grid = $('.cards-container').isotope({
                 itemSelector: '.card',
-                layoutMode: 'fitRows',
-                transitionDuration: '0.6s'
+                layoutMode: 'fitRows'
             });
 
             $('.event_filter li a').click(function(e) {
@@ -161,8 +213,10 @@
                 var nilaiFilter = $(this).attr('data-filter');
 
                 $grid.isotope({
-                    filter: nilaiFilter
+                    filter: nilaiFilter,
                 });
+                
+                $grid.isotope('layout');
             });
         });
     </script>

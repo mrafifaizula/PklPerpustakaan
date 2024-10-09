@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class kategori extends Model
 {
     use HasFactory;
-    public $fillable = ['nama_kategori'];
-    public $visible = ['nama_kategori'];
+
+    protected $fillable = ['nama_kategori'];
+    protected $visible = ['nama_kategori'];
     public $timestamps = true;
 
     public function buku()

@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class penulis extends Model
 {
     use HasFactory;
-    public $fillable = ['nama_penulis'];
-    public $visible = ['nama_penulis'];
+
+    protected $fillable = ['nama_penulis'];
+    protected $visible = ['nama_penulis'];
     public $timestamps = true;
 
     public function buku()
@@ -17,3 +18,4 @@ class penulis extends Model
         return $this->hasMany(buku::class, 'id_penulis');
     }
 }
+

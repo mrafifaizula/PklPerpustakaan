@@ -9,13 +9,13 @@ class notification extends Model
 {
     use HasFactory;
 
-    public $fillable = ['id_user', 'type', 'pesan', 'read'];
-    public $visible = ['id_user', 'type', 'pesan', 'read'];
+    protected $fillable = ['id_user', 'type', 'pesan', 'read'];
+    protected $visible = ['id_user', 'type', 'pesan', 'read'];
     public $timestamps = true;
 
     public function user()
     {
         return $this->belongsTo(user::class, 'id_user');
-
     }
+
 }

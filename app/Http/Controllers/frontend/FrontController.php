@@ -135,7 +135,6 @@ class FrontController extends Controller
         $kategoriList = Kategori::all();
 
         $idUser = Auth::id();
-        $kategori = kategori::all();
         $notification = notification::where('id_user', $idUser)
             ->orderBy('created_at', 'desc')
             ->get();

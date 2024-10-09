@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class buku extends Model
 {
     use HasFactory;
-    public $fillable = ['judul', 'tahun_terbit', 'jumlah_buku', 'desc_buku'];
-    public $visible = ['judul', 'tahun_terbit', 'jumlah_buku', 'desc_buku'];
+
+    protected $fillable = ['judul', 'tahun_terbit', 'jumlah_buku', 'desc_buku'];
+    protected $visible = ['judul', 'tahun_terbit', 'jumlah_buku', 'desc_buku'];
     public $timestamps = true;
 
     public function deleteImage()
@@ -17,7 +18,7 @@ class buku extends Model
         $imagePath = public_path('images/buku/' . $this->image_buku);
 
         if ($this->image_buku && file_exists($imagePath)) {
-            return unlink($imagePath); // Deletes the file
+            return unlink($imagePath);
         }
 
         return false;
@@ -47,5 +48,4 @@ class buku extends Model
     {
         return $this->hasMany(testimoni::class, 'id_buku');
     }
-
 }

@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class penerbit extends Model
 {
     use HasFactory;
-    public $fillable = ['nama_penerbit'];
-    public $visible = ['nama_penerbit'];
+
+    protected $fillable = ['nama_penerbit'];
+    protected $visible = ['nama_penerbit'];
     public $timestamps = true;
 
     public function buku()
     {
-        return $this->hasMany(buku::class, 'id_penerbit'); 
+        return $this->hasMany(buku::class, 'id_penerbit');
     }
 }

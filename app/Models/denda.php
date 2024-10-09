@@ -9,8 +9,8 @@ class denda extends Model
 {
     use HasFactory;
 
-    public $fillable = ['jumlah_denda', 'jenis_denda', 'status_dibayar'];
-    public $visible = ['jumlah_denda', 'jenis_denda', 'status_dibayar'];
+    protected $fillable = ['jumlah_denda', 'jenis_denda', 'status_dibayar'];
+    protected $visible = ['jumlah_denda', 'jenis_denda', 'status_dibayar'];
     public $timestamps = true;
 
     public function pinjambuku()
