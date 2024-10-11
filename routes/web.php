@@ -13,6 +13,7 @@ use App\Http\Controllers\frontend\NotificationController;
 use App\Http\Controllers\frontend\PinjambukuController;
 use App\Http\Controllers\frontend\ProfilController;
 use App\Http\Controllers\frontend\TestimoniController;
+use App\Http\Controllers\frontend\FavoritController;
 use App\Http\Controllers\frontend\FrontController;
 
 // auth
@@ -97,8 +98,15 @@ Route::group(['prefix' => 'profil', 'middleware' => ['auth', 'verified']], funct
 
     // Notifikasi
     Route::post('notification/{id}', [NotificationController::class, 'index'])->name('notifications.markAsRead');
-});
 
+    // buku Favorit
+    Route::get('buku-favorit', [FavoritController::class, 'index']);
+    // routes/web.php
+    Route::post('favorit/buku/{id}', [FavoritController::class, 'tambahKeFavorit'])->name('buku.favorit');
+    Route::post('favorit/buku/hapus/{id}', [FavoritController::class, 'hapusDariFavorit'])->name('buku.hapusFavorit');
+
+
+});
 
 
 // Rute untuk admin dan staf

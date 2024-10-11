@@ -12,6 +12,7 @@ use App\Models\Penerbit;
 use App\Models\PinjamBuku;
 use App\Models\Testimoni;
 use App\Models\User;
+use App\Models\favorit;
 use App\Http\Controllers\Controller;
 
 
@@ -127,19 +128,23 @@ class FrontController extends Controller
         $kategori = $request->get('kategori');
 
         if ($kategori) {
-            $buku = Buku::where('kategori', $kategori)->where('jumlah_buku', '>', 0)->get();
+            $buku = Buku::where('id_kategori', $kategori)->where('jumlah_buku', '>', 0)->get();
         } else {
             $buku = Buku::where('jumlah_buku', '>', 0)->get(); // Ambil semua jika tidak ada kategori
         }
 
         $kategoriList = Kategori::all();
 
+        $userId = auth()->id();
+
+        $favoritBukuIds = auth()->user()->favorit()->pluck('id_buku')->toArray();
+
         $idUser = Auth::id();
         $notification = notification::where('id_user', $idUser)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('profil.pinjambuku.daftarBuku', compact('buku', 'kategori', 'notification', 'kategoriList'));
+        return view('profil.pinjambuku.daftarBuku', compact('buku', 'kategori', 'notification', 'kategoriList', 'favoritBukuIds'));
     }
 
     public function showbukuprofil($id)

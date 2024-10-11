@@ -24,13 +24,7 @@
     <link rel="stylesheet" href="{{ asset('front/assets/css/owl.css') }}">
     <link rel="stylesheet" href="{{ asset('front/assets/css/animate.css') }}">
     <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css')}}" />
-    <!--
-
-TemplateMo 586 Scholar
-
-https://templatemo.com/tm-586-scholar
-
--->
+    
 </head>
 
 <body style="overflow-x: hidden">

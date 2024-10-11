@@ -16,6 +16,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('cek:pengembalian')->daily();
+        $schedule->call(function () {
+            // Panggil fungsi untuk menghitung denda otomatis
+            app('App\Http\Controllers\frontend\Pinjambuku')->hitungDendaOtomatis();
+        })->daily(); // Bisa diubah sesuai kebutuhan (daily, hourly, etc.)
     }
 
     /**
@@ -25,7 +29,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

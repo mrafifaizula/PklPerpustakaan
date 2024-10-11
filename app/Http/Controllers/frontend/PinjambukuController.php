@@ -12,7 +12,7 @@ use App\Models\Kategori;
 use App\Models\Notification;
 use App\Models\Penulis;
 use App\Models\Penerbit;
-use App\Models\PinjamBuku;
+use App\Models\pinjambuku;
 
 
 class PinjambukuController extends Controller
@@ -92,7 +92,7 @@ class PinjambukuController extends Controller
         $pinjambuku = new pinjambuku();
         $pinjambuku->jumlah = $request->jumlah;
         $pinjambuku->tanggal_pinjambuku = $request->tanggal_pinjambuku;
-        $pinjambuku->batas_pengembalian = Carbon::now()->addDays(7);
+        $pinjambuku->batas_pengembalian = Carbon::now()->addDays(-1);
         $pinjambuku->status = 'menunggu';
         $pinjambuku->id_buku = $request->id_buku;
         $pinjambuku->id_user = $request->id_user;
@@ -107,11 +107,11 @@ class PinjambukuController extends Controller
     // batalpengajuan
     public function batalkanpengajuan($id)
     {
-        $item = pinjambuku::findOrFail($id);
+        $pinjambuku = pinjambuku::findOrFail($id);
 
-        if ($item->status === 'menunggu') {
-            $item->status = 'dibatalkan';
-            $item->save();
+        if ($pinjambuku->status === 'menunggu') {
+            $pinjambuku->status = 'dibatalkan';
+            $pinjambuku->save();
 
             Alert::success('Sukses', 'Pengajuan berhasil dibatalkan.')->autoClose(2000);
             return redirect()->back()->with('success', 'Pengajuan berhasil dibatalkan.');
@@ -156,6 +156,12 @@ class PinjambukuController extends Controller
 
         return redirect()->route('profil.peminjamanBuku');
     }
+
+
+    // denda
+    
+
+
 
 
 

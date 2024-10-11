@@ -36,6 +36,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(pinjambuku::class, 'id_user');
     }
+    public function buku()
+    {
+        return $this->hasMany(buku::class, 'id_user');
+    }
+
+    public function favorit()
+    {
+        return $this->belongsToMany(buku::class, 'favorits', 'id_user', 'id_buku');
+    }
+
 
     public function hasAnyRole(array $roles)
     {

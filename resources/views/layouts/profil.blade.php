@@ -38,6 +38,42 @@
     <link id="pagestyle" href="{{ asset('assets/css/argon-dashboard.css') }}?v=2.0.4" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+
+    <style>
+        .crisp-client {
+            max-width: 400px !important;
+            /* Ganti dengan lebar yang diinginkan */
+            width: auto !important;
+            height: auto !important;
+        }
+    </style>
+
+    <script type="text/javascript">
+        window.$crisp = [];
+        window.CRISP_WEBSITE_ID = "dbde1bfd-4933-4bf3-a803-3d1807a6faa9";
+        (function() {
+            d = document;
+            s = d.createElement("script");
+            s.src = "https://client.crisp.chat/l.js";
+            s.async = 1;
+            d.getElementsByTagName("head")[0].appendChild(s);
+        })();
+
+        window.addEventListener('load', function() {
+            const interval = setInterval(function() {
+                const chatBox = document.querySelector('.crisp-client'); // Pastikan ini selector yang benar
+                if (chatBox) {
+                    chatBox.style.maxWidth = '400px'; // Ganti dengan lebar yang diinginkan
+                    chatBox.style.width = 'auto'; // Sesuaikan lebar
+                    clearInterval(interval);
+                }
+            }, 100); // Cek setiap 100ms sampai elemen tersedia
+        });
+    </script>
+
+
     @yield('styles')
 </head>
 

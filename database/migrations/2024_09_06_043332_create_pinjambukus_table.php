@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('pinjambukus', function (Blueprint $table) {
             $table->id();
-            $table->string('jumlah');
+            $table->integer('jumlah');
+            $table->integer('denda')->default(0);
             $table->string('pesan')->nullable();
             $table->date('tanggal_pinjambuku');
             $table->date('batas_pengembalian')->nullable();

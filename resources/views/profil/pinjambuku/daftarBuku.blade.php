@@ -4,20 +4,29 @@
 
 @section('styles')
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
         }
 
         .container {
-            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 20px;
+            padding-left: 45px;
         }
 
         .event_filter {
-            width: 100%;
-            text-align: center;
-            margin-bottom: 20px;
-            list-style: none;
+            margin: 0;
             padding: 0;
+            list-style: none;
+            text-align: center;
         }
 
         .event_filter li {
@@ -50,12 +59,10 @@
 
         .cards-container {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            /* Empat kolom */
-            gap: 20px;
-            justify-items: center;
-            /* Pusatkan item dalam grid */
-            margin-top: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 20px 0;
+            width: 100%;
         }
 
         .card {
@@ -67,12 +74,13 @@
             background-color: #f9f9f9;
             transition: transform 0.3s;
             width: 100%;
-            max-width: 195px;
+            max-width: 270px;
+            margin: 0 auto;
         }
 
         .card img {
             width: 100%;
-            height: 250px;
+            height: 310px;
             object-fit: cover;
             border-bottom: 2px solid #e0e0e0;
         }
@@ -117,17 +125,29 @@
             margin-top: 2px;
         }
 
-        .card-buttons a {
-            width: 45%;
-            font-size: 11px;
-            padding: 4px;
+        .card-buttons a,
+        .card-buttons button {
+            width: auto;
+            font-size: 14px;
+            padding: 6px 16px;
             border: none;
             color: white;
-            border-radius: 20px;
+            border-radius: 25px;
             text-align: center;
             text-decoration: none;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-right: 5px;
+            background-color: red;
+        }
+
+        .card-buttons button:hover {
+            background-color: #c00;
+        }
+
+        .card-buttons a:last-child,
+        .card-buttons button:last-child {
+            margin-right: 0;
         }
 
         .card-buttons a:hover {
@@ -137,21 +157,18 @@
         @media (max-width: 1200px) {
             .cards-container {
                 grid-template-columns: repeat(3, 1fr);
-                /* 3 buku per baris */
             }
         }
 
         @media (max-width: 992px) {
             .cards-container {
                 grid-template-columns: repeat(2, 1fr);
-                /* 2 buku per baris */
             }
         }
 
         @media (max-width: 768px) {
             .cards-container {
                 grid-template-columns: repeat(1, 1fr);
-                /* 1 buku per baris */
             }
         }
     </style>
@@ -179,13 +196,20 @@
                             alt="{{ $item->judul }}">
                     </a>
                     <span class="badge">{{ $item->kategori->nama_kategori }}</span>
-                    <i class="bi bi-heart-fill heart-icon"></i>
+                    <i class="bi bi-heart-fill heart-icon"
+                        style="color: {{ in_array($item->id, $favoritBukuIds) ? 'red' : 'gray' }};"></i>
                     <p>{{ $item->judul }}</p>
                     <div class="card-buttons">
-                        <a href="{{ url('pinjam/buku', $item->id) }}" class="btn-detail"
-                            style="background-color: green">Pinjam</a>
-                        <a href="{{ url('profil/buku', $item->id) }}" class="btn-favorite"
-                            style="background-color: rgb(232, 232, 42)">Detail</a>
+                        <a href="{{ url('pinjam/buku', $item->id) }}" class="btn" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Pinjam Buku"
+                            style="background-color: green;">Pinjam</a>
+                        <a href="{{ url('profil/buku', $item->id) }}" class="btn" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Detail Buku"
+                            style="background-color: rgb(232, 232, 42);">Detail</a>
+                        <form action="{{ route('buku.favorit', $item->id) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            <button type="submit" class="btn" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tambah Favorit">
+                                Favorit
+                            </button>
+                        </form>
                     </div>
                 </div>
             @endforeach
@@ -215,7 +239,7 @@
                 $grid.isotope({
                     filter: nilaiFilter,
                 });
-                
+
                 $grid.isotope('layout');
             });
         });

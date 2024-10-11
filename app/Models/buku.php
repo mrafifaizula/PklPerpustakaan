@@ -48,4 +48,11 @@ class buku extends Model
     {
         return $this->hasMany(testimoni::class, 'id_buku');
     }
+
+    public function favoritByUsers()
+    {
+        return $this->belongsToMany(User::class, 'favorits', 'id_user', 'id_buku');
+    }
+
+
 }

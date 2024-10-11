@@ -110,7 +110,6 @@ class BackController extends Controller
             ->count();
 
 
-
         return view('backend.dashboard', compact('buku', 'kategori', 'penulis', 'penerbit', 'user', 'notifymenunggu', 'bukuYangDipinjam', 'namaBulan', 'dataDikembalikan', 'jumlahKategori', 'jumlahPenulis', 'jumlahPenerbit', 'jumlahBuku', 'jmlUser', 'tanggalFormat', 'jumlahUserHariIni', 'jumlahPinjamBukuHariIni', 'jumlahPengembalianBukuHariIni', 'jumlahPinjamBukuJatuhTempo'));
     }
 
