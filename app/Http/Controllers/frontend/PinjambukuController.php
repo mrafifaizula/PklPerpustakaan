@@ -92,7 +92,7 @@ class PinjambukuController extends Controller
         $pinjambuku = new pinjambuku();
         $pinjambuku->jumlah = $request->jumlah;
         $pinjambuku->tanggal_pinjambuku = $request->tanggal_pinjambuku;
-        $pinjambuku->batas_pengembalian = Carbon::now()->addDays(-1);
+        $pinjambuku->batas_pengembalian = Carbon::now()->addDays(7);
         $pinjambuku->status = 'menunggu';
         $pinjambuku->id_buku = $request->id_buku;
         $pinjambuku->id_user = $request->id_user;
@@ -159,7 +159,7 @@ class PinjambukuController extends Controller
 
 
     // denda
-    
+
 
 
 

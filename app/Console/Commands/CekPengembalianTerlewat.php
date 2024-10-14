@@ -15,29 +15,5 @@ class CekPengembalianTerlewat extends Command
 
     public function handle()
     {
-        $today = Carbon::now()->toDateString();
-        $besok = Carbon::now()->addDay()->toDateString();  // Cek 1 hari sebelum batas pengembalian
-
-        // Cek buku yang telah melewati batas pengembalian
-        $peminjamansTerlewat = pinjambuku::where('batas_pengembalian', '<', $today)
-            ->whereNull('tanggal_pengembalian')
-            ->get();
-
-        foreach ($peminjamansTerlewat as $peminjaman) {
-            // Kirim email peringatan pengembalian yang terlambat
-            Mail::to($peminjaman->user->email)->send(new PeringatanPengembalian($peminjaman));
-        }
-
-        // Cek buku yang batas pengembaliannya besok
-        $peminjamansBesok = pinjambuku::where('batas_pengembalian', '=', $besok)
-            ->whereNull('tanggal_pengembalian')
-            ->get();
-
-        foreach ($peminjamansBesok as $peminjaman) {
-            // Kirim email pengingat 1 hari sebelum batas pengembalian
-            Mail::to($peminjaman->user->email)->send(new PeringatanSebelumPengembalian($peminjaman));
-        }
-
-        $this->info('Email peringatan pengembalian dikirim.');
     }
 }
